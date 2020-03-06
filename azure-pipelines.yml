@@ -5,7 +5,10 @@
 trigger:
 - master
 
+
+
 variables:
+  buildConfiguration: 'Release'
   Major: '1'
   Minor: '0'
   Patch: '0'
@@ -18,7 +21,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '--configuration Release' # Update this to match your need
+    arguments: '--configuration $(buildConfiguration)'
 - task: DotNetCoreCLI@2
   inputs:
     command: test
@@ -27,12 +30,13 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
+    arguments: '--configuration $(buildConfiguration)'
     packagesToPack: '**/*.csproj'
     versioningScheme: byPrereleaseNumber
     majorVersion: '$(Major)'
     minorVersion: '$(Minor)'
     patchVersion: '$(Patch)'
-
+  
 - script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
 - task: NuGetAuthenticate@0
   inputs:
