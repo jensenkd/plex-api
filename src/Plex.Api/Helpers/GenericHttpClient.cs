@@ -66,7 +66,7 @@ namespace Plex.Api.Helpers
                     _handler = new HttpClientHandler();
                 }
                 _client = new HttpClient(_handler);
-                _client.DefaultRequestHeaders.Add("User-Agent","Ombi");
+                _client.DefaultRequestHeaders.Add("User-Agent","PlexApi");
             }
         }
     }
