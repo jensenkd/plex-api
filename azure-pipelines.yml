@@ -27,12 +27,11 @@ steps:
 
 - script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
 - task: NuGetAuthenticate@0
-  input:
-    nuGetServiceConnections: '<Name of the NuGet service connection>'
+  inputs:
+    nuGetServiceConnections: 'nugetorg'
 - task: NuGetCommand@2
   inputs:
     command: push
     nuGetFeedType: external
-    publishFeedCredentials: 'nugetorg'
     versioningScheme: byEnvVar
     versionEnvVar: version
