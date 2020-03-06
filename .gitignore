@@ -183,6 +183,7 @@ publish/
 PublishScripts/
 
 # NuGet Packages
+nupkg/
 *.nupkg
 # NuGet Symbol Packages
 *.snupkg
@@ -348,3 +349,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Rider
+.idea
+
+# Visual Studio Code
+.vscode
+
