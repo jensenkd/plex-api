@@ -13,8 +13,26 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+    arguments: '--configuration Release' # Update this to match your need
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
     versioningScheme: 'byBuildNumber'
+
+- script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
+- task: NuGetAuthenticate@0
+  input:
+    nuGetServiceConnections: '<Name of the NuGet service connection>'
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: '<Name of the NuGet service connection>'
+    versioningScheme: byEnvVar
+    versionEnvVar: version
