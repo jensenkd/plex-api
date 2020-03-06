@@ -79,10 +79,6 @@ stages:
     - download: current
       artifact: 'packages'
 
-    - task: NuGetAuthenticate@0
-      inputs:
-        nuGetServiceConnections: 'nugetorg'
-
     - script: dotnet nuget push $(Build.ArtifactStagingDirectory)/packages/releases/*.nupkg  -k $(nuget-api-key) -s https://api.nuget.org/v3/index.json
 
 
