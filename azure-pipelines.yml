@@ -5,6 +5,11 @@
 trigger:
 - master
 
+variables:
+  Major: '1'
+  Minor: '0'
+  Patch: '0'
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -23,7 +28,10 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    versioningScheme: 'byBuildNumber'
+    versioningScheme: byPrereleaseNumber
+    majorVersion: '$(Major)'
+    minorVersion: '$(Minor)'
+    patchVersion: '$(Patch)'
 
 - script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
 - task: NuGetAuthenticate@0
