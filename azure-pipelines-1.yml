@@ -77,33 +77,7 @@ stages:
     - download: current
       artifact: 'packages'
 
-    - task: NuGetCommand@2
-      displayName: 'Push NuGet Package'
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Pipeline.Workspace)/packages/prereleases/*.nupkg'
-        nuGetFeedType: 'internal'
-        publishVstsFeed: 'Test'
+
 
 
         
-- stage: 'PublishReleaseNuGetPackage'
-  displayName: 'Publish Release NuGet Package'
-  dependsOn: 'PublishPrereleaseNuGetPackage'
-  condition: succeeded()
-  jobs:
-  - deployment:
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'nuget-org'
-    strategy:
-     runOnce:
-       deploy:
-         steps:
-         - task: NuGetCommand@2
-           displayName: 'Push NuGet Package'
-           inputs:
-             command: 'push'
-             packagesToPush: '$(Pipeline.Workspace)/packages/releases/*.nupkg'
-             nuGetFeedType: 'external'
-             publishFeedCredentials: 'NuGet'
