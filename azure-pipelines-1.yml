@@ -58,10 +58,10 @@ stages:
       inputs:
         command: pack
         buildProperties: 'VersionSuffix="$(Build.BuildNumber)"'
-        packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/packages/prerelease'
         configuration: $(BuildConfiguration)
         
-    - publish: '$(Build.ArtifactStagingDirectory)/packages'
+    - publish: '$(Build.ArtifactStagingDirectory)/packages/releases'
       artifact: 'packages'
 
 - stage: 'PublishPrereleaseNuGetPackage'
@@ -79,7 +79,7 @@ stages:
     - download: current
       artifact: 'packages'
 
-    - script: dotnet nuget push $(Build.ArtifactStagingDirectory)/packages/releases/*.nupkg  -k $(nuget-api-key) -s https://api.nuget.org/v3/index.json
+    - script: dotnet nuget push /home/vsts/work/1/packages/*.nupkg  -k $(nuget-api-key) -s https://api.nuget.org/v3/index.json
 
 
 
