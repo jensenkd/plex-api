@@ -2,9 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Plex Api</Title>
         <Description>.net core sdk for Plex  </Description>
+        <Authors>Kevin Jensen</Authors>
+        <RepositoryUrl>https://github.com/jensenkd/plex-api</RepositoryUrl>
+        <PackageTags>plex dotnet core api</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
