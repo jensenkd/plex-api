@@ -24,9 +24,9 @@
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //  ************************************************************************/
 #endregion
-namespace Kineticmedia.Plex.Api.Models.Status
-{
 
+namespace Plex.Api.Models.Status
+{
     public class PlexStatus
     {
         public Mediacontainer MediaContainer { get; set; }

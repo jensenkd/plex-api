@@ -24,7 +24,8 @@
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //  ************************************************************************/
 #endregion
-namespace Kineticmedia.Plex.Api.Models
+
+namespace Plex.Api.Models
 {
     public class PlexMetadata
     {

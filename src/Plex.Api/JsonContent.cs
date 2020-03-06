@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     internal class JsonContent : StringContent
     {

@@ -1,4 +1,4 @@
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     public enum ContentType
     {

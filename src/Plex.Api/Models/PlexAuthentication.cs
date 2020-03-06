@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace Kineticmedia.Plex.Api.Models
+﻿namespace Plex.Api.Models
 {
     public class PlexAuthentication
     {

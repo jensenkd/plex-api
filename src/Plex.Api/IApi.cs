@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using Plex.Api.Helpers;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     public interface IApi
     {

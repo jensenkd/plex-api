@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Kineticmedia.Plex.Api.Ombi
+namespace Plex.Api.Helpers
 {
     public interface IGenericHttpClient
     {

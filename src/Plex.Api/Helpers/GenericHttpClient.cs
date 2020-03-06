@@ -28,9 +28,8 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Kineticmedia.Plex.Api.Ombi;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api.Helpers
 {
     /// <summary>
     /// The purpose of this class is simple, keep one instance of the HttpClient in play.
@@ -47,41 +46,28 @@ namespace Kineticmedia.Plex.Api
     
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
-            await Setup();
+            Setup();
             return await _client.SendAsync(request);
         }
 
         public async Task<string> GetStringAsync(Uri requestUri)
         {
-            await Setup();
+            Setup();
             return await _client.GetStringAsync(requestUri);
         }
 
-        private async Task Setup()
+        private void Setup()
         {
             if (_client == null)
             {
                 if (_handler == null)
                 {
                     // Get the handler
-                    _handler = await GetHandler();
+                    _handler = new HttpClientHandler();
                 }
                 _client = new HttpClient(_handler);
                 _client.DefaultRequestHeaders.Add("User-Agent","Ombi");
             }
-        }
-
-        private async Task<HttpMessageHandler> GetHandler()
-        {
-            // var settings = await _settings.GetSettingsAsync();
-            // if (settings.IgnoreCertificateErrors)
-            // {
-            //     return new HttpClientHandler
-            //     {
-            //         ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true,
-            //     };
-            // }
-            return new HttpClientHandler();
         }
     }
 }

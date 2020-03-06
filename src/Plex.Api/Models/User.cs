@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kineticmedia.Plex.Api.Models
+namespace Plex.Api.Models
 {
     public class PlexAccount
     {

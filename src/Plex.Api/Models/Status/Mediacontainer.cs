@@ -1,4 +1,4 @@
-﻿namespace Kineticmedia.Plex.Api.Models.Status
+﻿namespace Plex.Api.Models.Status
 {
     public class Mediacontainer
     {

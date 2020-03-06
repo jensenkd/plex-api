@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
+using Newtonsoft.Json;
 
-namespace Kineticmedia.Plex.Api.Models.Friends
+namespace Plex.Api.Models.Friends
 {
     [XmlRoot(ElementName = "Server")]
     public class Server

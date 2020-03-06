@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     public sealed class PlexSettings
     {

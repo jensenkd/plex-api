@@ -28,7 +28,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Kineticmedia.Plex.Api.Models.Server
+namespace Plex.Api.Models.Server
 {
     [XmlRoot(ElementName = "MediaContainer")]
     public class PlexServer

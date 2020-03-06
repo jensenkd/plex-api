@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 
-namespace Kineticmedia.Plex.Api.Ombi
+namespace Plex.Api.Helpers
 {
       public class Api : IApi
     {

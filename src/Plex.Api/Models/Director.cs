@@ -1,12 +1,16 @@
 ﻿using Newtonsoft.Json;
 
-namespace Kineticmedia.Plex.Api.Models
+namespace Plex.Api.Models
 {
     public class Director
     {
         [JsonProperty("id")]
-        public int id { get; set; }
-        public string filter { get; set; }
-        public string tag { get; set; }
+        public int Id { get; set; }
+        
+        [JsonProperty("filter")]
+        public string Filter { get; set; }
+
+        [JsonProperty("tag")]
+        public string Tag { get; set; }
     }
 }

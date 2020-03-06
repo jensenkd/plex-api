@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Kineticmedia.Plex.Api.Models;
-using Kineticmedia.Plex.Api.Models.Friends;
-using Kineticmedia.Plex.Api.Models.OAuth;
-using Kineticmedia.Plex.Api.Models.Server;
-using Kineticmedia.Plex.Api.Models.Status;
+using Plex.Api.Helpers;
+using Plex.Api.Models;
+using Plex.Api.Models.Friends;
+using Plex.Api.Models.OAuth;
+using Plex.Api.Models.Server;
+using Plex.Api.Models.Status;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     public class PlexApi : IPlexApi
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Kineticmedia.Plex.Api.Models
+namespace Plex.Api.Models
 {
     [XmlRoot(ElementName = "Section")]
     public class Section

@@ -1,6 +1,6 @@
 using System;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     public static class UriHelper
     {

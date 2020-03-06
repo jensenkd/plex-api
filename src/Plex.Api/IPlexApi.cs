@@ -1,13 +1,13 @@
 using System;
 using System.Threading.Tasks;
-using Kineticmedia.Plex.Api.Models;
-using Kineticmedia.Plex.Api.Models.Friends;
-using Kineticmedia.Plex.Api.Models.OAuth;
-using Kineticmedia.Plex.Api.Models.Server;
-using Kineticmedia.Plex.Api.Models.Status;
+using Plex.Api.Models;
+using Plex.Api.Models.Friends;
+using Plex.Api.Models.OAuth;
+using Plex.Api.Models.Server;
+using Plex.Api.Models.Status;
 
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api
 {
     public interface IPlexApi
     {
@@ -27,6 +27,5 @@ namespace Kineticmedia.Plex.Api
         Task<OAuthPin> GetPin(int pinId);
         Task<Uri> GetOAuthUrl(string code, string applicationUrl);
         Task<PlexAddWrapper> AddUser(string emailAddress, string serverId, string authToken, int[] libs);
-
     }
 }

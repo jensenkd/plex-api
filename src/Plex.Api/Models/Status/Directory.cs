@@ -1,9 +1,14 @@
-﻿namespace Kineticmedia.Plex.Api.Models.Status
+﻿using Newtonsoft.Json;
+
+namespace Plex.Api.Models.Status
 {
     public class Directory
     {
-        public int count { get; set; }
-        public string key { get; set; }
-        public string title { get; set; }
+        [JsonProperty("count")]
+        public int Count { get; set; }
+        [JsonProperty("key")]
+        public string Key { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
     }
 }

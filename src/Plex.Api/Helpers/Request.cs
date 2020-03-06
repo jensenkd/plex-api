@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 
-namespace Kineticmedia.Plex.Api
+namespace Plex.Api.Helpers
 {
     public class Request
     {

@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Kineticmedia.Plex.Api.Models
+namespace Plex.Api.Models
 {
     public class Metadata
     {

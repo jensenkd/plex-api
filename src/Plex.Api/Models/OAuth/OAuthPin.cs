@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kineticmedia.Plex.Api.Models.OAuth
+namespace Plex.Api.Models.OAuth
 {
     public class OAuthPin
     {
