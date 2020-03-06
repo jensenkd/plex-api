@@ -63,11 +63,9 @@ stages:
         
     - publish: '$(Build.ArtifactStagingDirectory)/packages'
       artifact: 'packages'
-        
-
 
 - stage: 'PublishPrereleaseNuGetPackage'
-  displayName: 'Publish Prerelease NuGet Package'
+  displayName: 'Publish NuGet Package'
   dependsOn: 'Build'
   condition: succeeded()
   jobs:
@@ -80,6 +78,15 @@ stages:
 
     - download: current
       artifact: 'packages'
+
+    - task: NuGetAuthenticate@0
+      inputs:
+        nuGetServiceConnections: 'nugetorg'
+    - task: NuGetCommand@2
+      inputs:
+        command: push
+        nuGetFeedType: external
+        versioningScheme: byBuildNumber
 
 
 
