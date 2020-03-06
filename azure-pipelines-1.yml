@@ -58,7 +58,7 @@ stages:
       inputs:
         command: pack
         buildProperties: 'VersionSuffix="$(Build.BuildNumber)"'
-        packDirectory: '$(Build.ArtifactStagingDirectory)/packages/prereleases'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
         configuration: $(BuildConfiguration)
         
     - publish: '$(Build.ArtifactStagingDirectory)/packages'
@@ -82,11 +82,8 @@ stages:
     - task: NuGetAuthenticate@0
       inputs:
         nuGetServiceConnections: 'nugetorg'
-    - task: NuGetCommand@2
-      inputs:
-        command: push
-        nuGetFeedType: external
-        versioningScheme: byBuildNumber
+
+    - script: dotnet nuget push $(Build.ArtifactStagingDirectory)/packages/releases/*.nupkg  -k oy2pyizgldwoqplqlwbqazyophojd6gu5kdt2rgpjmatgy -s https://api.nuget.org/v3/index.json
 
 
 
