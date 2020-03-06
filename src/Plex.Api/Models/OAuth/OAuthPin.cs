@@ -1,10 +1,12 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Plex.Api.Models.OAuth
 {
     public class OAuthPin
     {
-        public int id { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
         public string code { get; set; }
         public bool trusted { get; set; }
         public string clientIdentifier { get; set; }
