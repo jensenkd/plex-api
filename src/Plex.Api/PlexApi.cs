@@ -19,42 +19,11 @@ namespace Plex.Api
         {
             Api = api;
         }
-
      
-        private string _app;
-
         private string DeviceName => "TBD";
 
         private string ApplicationName => "TBD";
-        // {
-        //     get
-        //     {
-        //         if (string.IsNullOrEmpty(_app))
-        //         {
-        //             
-        //             else
-        //             {
-        //                 // Check for non-ascii characters (New .Net Core HTTPLib does not allow this)
-        //                 var chars = settings.ApplicationName.ToCharArray();
-        //                 var hasNonAscii = false;
-        //                 foreach (var c in chars)
-        //                 {
-        //                     if (c > 128)
-        //                     {
-        //                         hasNonAscii = true;
-        //                     }
-        //                 }
-        //
-        //                 _app = hasNonAscii ? "Ombi" : settings.ApplicationName;
-        //             }
-        //
-        //             return _app;
-        //         }
-        //
-        //         return _app;
-        //     }
-        // }
-
+      
         private const string SignInUri = "https://plex.tv/users/sign_in.json";
         private const string FriendsUri = "https://plex.tv/pms/friends/all";
         private const string GetAccountUri = "https://plex.tv/users/account.json";

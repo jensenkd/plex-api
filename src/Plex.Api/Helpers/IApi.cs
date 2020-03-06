@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
-using Plex.Api.Helpers;
 
-namespace Plex.Api
+namespace Plex.Api.Helpers
 {
     public interface IApi
     {
