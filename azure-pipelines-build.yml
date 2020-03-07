@@ -28,7 +28,7 @@ stages:
       displayName: 'Use .NET Core sdk'
       inputs:
         packageType: sdk
-        version: 2.2.x
+        version: 3.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
     
     - task: DotNetCoreCLI@2
@@ -41,7 +41,7 @@ stages:
       displayName: "Build Solution"
       inputs:
         command: build
-        projects: '**/*.csproj'
+        projects: '**/Plex.Api.csproj'
         arguments: '--configuration $(buildConfiguration)'
     
     - task: DotNetCoreCLI@2
