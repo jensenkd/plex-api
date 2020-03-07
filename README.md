@@ -1,4 +1,4 @@
 # plex-api
 .NET Core SDK for Plex Media Server
 
-![](https://github.com/jensenkd/plex-api/workflows/.github/workflows/dotnetcore.yml/badge.svg)
+![.NET Core](https://github.com/jensenkd/plex-api/workflows/.NET%20Core/badge.svg)
