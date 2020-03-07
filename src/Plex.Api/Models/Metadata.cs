@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace Plex.Api.Models
 {
     public class Metadata
@@ -39,7 +41,10 @@ namespace Plex.Api.Models
         public string GrandparentTheme { get; set; }
         public string ChapterSource { get; set; }
         
+        [JsonPropertyName("Media")]
         public Medium[] Media { get; set; }
+        
+        [JsonPropertyName("Genre")]
         public Genre[] Genre { get; set; }
     }
 }
