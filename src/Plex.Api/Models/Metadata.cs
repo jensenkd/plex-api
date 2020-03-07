@@ -3,7 +3,7 @@ namespace Plex.Api.Models
 {
     public class Metadata
     {
-        public int RatingKey { get; set; }
+        public string RatingKey { get; set; }
         public string Key { get; set; }
         public string Studio { get; set; }
         public string Type { get; set; }

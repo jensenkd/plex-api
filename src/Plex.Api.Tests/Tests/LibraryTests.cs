@@ -22,7 +22,11 @@ namespace Plex.Api.Tests.Tests
             
             PlexServer account = plexApi.GetServer(auth.User.AuthenticationToken).Result;
 
-            PlexContainer sections = plexApi.GetLibrarySections(account.Server[0].AccessToken, account.Server[0].FullUri.ToString()).Result;
+            string fullUri = account.Server[0].FullUri.ToString();
+
+            PlexContainer sections = plexApi.GetLibrarySections(account.Server[0].AccessToken, fullUri).Result;
+
+            PlexContainer library = plexApi.GetLibrary(account.Server[0].AccessToken, fullUri, sections.MediaContainer.Directory[0].Key).Result;
 
             Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
             Assert.IsNotNull(sections.MediaContainer, "Error retrieving Libraries");
