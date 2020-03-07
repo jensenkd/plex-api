@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Plex.Api.Models
 {
     public class Medium
@@ -17,6 +19,7 @@ namespace Plex.Api.Models
         public string AudioProfile { get; set; }
         public string VideoProfile { get; set; }
         
+        [JsonPropertyName("Part")]
         public Part[] Part { get; set; }
     }
 }

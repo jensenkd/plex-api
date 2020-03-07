@@ -1,4 +1,6 @@
-﻿namespace Plex.Api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Plex.Api.Models
 {
     public class Part
     {
@@ -10,6 +12,8 @@
         public string AudioProfile { get; set; }
         public string Container { get; set; }
         public string VideoProfile { get; set; }
+        
+        [JsonPropertyName("Stream")]
         public Stream[] Stream { get; set; }
     }
 }
