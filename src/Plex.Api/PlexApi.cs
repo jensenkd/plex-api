@@ -37,7 +37,7 @@ namespace Plex.Api
         {
             var userModel = new PlexUserRequest
             {
-                user = user
+                User = user
             };
             var request = new Request(SignInUri, string.Empty, HttpMethod.Post);
 

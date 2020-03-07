@@ -2,20 +2,21 @@ namespace Plex.Api.Models
 {
     public class Medium
     {
-        public string videoResolution { get; set; }
-        public int id { get; set; }
-        public int duration { get; set; }
-        public int bitrate { get; set; }
-        public int width { get; set; }
-        public int height { get; set; }
-        public float aspectRatio { get; set; }
-        public int audioChannels { get; set; }
-        public string audioCodec { get; set; }
-        public string videoCodec { get; set; }
-        public string container { get; set; }
-        public string videoFrameRate { get; set; }
-        public string audioProfile { get; set; }
-        public string videoProfile { get; set; }
+        public string VideoResolution { get; set; }
+        public int Id { get; set; }
+        public int Duration { get; set; }
+        public int Bitrate { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public float AspectRatio { get; set; }
+        public int AudioChannels { get; set; }
+        public string AudioCodec { get; set; }
+        public string VideoCodec { get; set; }
+        public string Container { get; set; }
+        public string VideoFrameRate { get; set; }
+        public string AudioProfile { get; set; }
+        public string VideoProfile { get; set; }
+        
         public Part[] Part { get; set; }
     }
 }

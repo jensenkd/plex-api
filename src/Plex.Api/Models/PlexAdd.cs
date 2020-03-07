@@ -30,7 +30,7 @@ namespace Plex.Api.Models
         [XmlAttribute(AttributeName = "email")]
         public string Email { get; set; }
         [XmlAttribute(AttributeName = "userID")]
-        public string UserID { get; set; }
+        public string UserId { get; set; }
         [XmlAttribute(AttributeName = "accessToken")]
         public string AccessToken { get; set; }
         [XmlAttribute(AttributeName = "name")]

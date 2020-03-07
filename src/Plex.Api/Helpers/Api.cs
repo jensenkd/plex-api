@@ -2,10 +2,11 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+
 using Polly;
 
 namespace Plex.Api.Helpers
@@ -21,9 +22,10 @@ namespace Plex.Api.Helpers
         private ILogger<Api> Logger { get; }
         private readonly IGenericHttpClient _client;
 
-        private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        private static readonly JsonSerializerOptions Settings = new JsonSerializerOptions
         {
-            NullValueHandling = NullValueHandling.Ignore
+            IgnoreNullValues = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
         public async Task<T> Request<T>(Request request)
@@ -73,7 +75,7 @@ namespace Plex.Api.Helpers
                 if (request.ContentType == ContentType.Json)
                 {
                     request.OnBeforeDeserialization?.Invoke(receivedString);
-                    return JsonConvert.DeserializeObject<T>(receivedString, Settings);
+                    return  JsonSerializer.Deserialize<T>(receivedString, Settings);
                 }
                 else
                 {

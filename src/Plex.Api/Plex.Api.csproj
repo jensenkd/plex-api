@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <Title>Plex Api</Title>
         <Description>.net core sdk for Plex  </Description>
         <Authors>Kevin Jensen</Authors>
@@ -17,8 +17,8 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.2" />
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="Polly" Version="7.2.0" />
+      <PackageReference Include="System.Text.Json" Version="4.7.1" />
       <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
     </ItemGroup>
 

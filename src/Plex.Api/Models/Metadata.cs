@@ -1,95 +1,45 @@
-using Newtonsoft.Json;
 
 namespace Plex.Api.Models
 {
     public class Metadata
     {
-        [JsonProperty("ratingKey")]
         public int RatingKey { get; set; }
-        
-        [JsonProperty("key")]
         public string Key { get; set; }
-        
-        [JsonProperty("studio")]
-        public string studio { get; set; }
-
-        [JsonProperty("type")]
-        public string type { get; set; }
-    
-        [JsonProperty("title")]
+        public string Studio { get; set; }
+        public string Type { get; set; }
         public string Title { get; set; }
-        
-        [JsonProperty("contentRating")]
         public string ContentRating { get; set; }
-        
-        [JsonProperty("summary")]
         public string Summary { get; set; }
-        
-        [JsonProperty("index")]
         public int Index { get; set; }
-
-        [JsonProperty("rating")]
         public float Rating { get; set; }
-        //public int viewCount { get; set; }
-        //public int lastViewedAt { get; set; }
-        [JsonProperty("year")]
+        public int ViewCount { get; set; }
+        public int LastViewedAt { get; set; }
         public int Year { get; set; }
-       
-        public string thumb { get; set; }
+        public string Thumb { get; set; }
+        public string Art { get; set; }
+        public string Banner { get; set; }
+        public string Theme { get; set; }
+        public int LeafCount { get; set; }
+        public int ViewedLeafCount { get; set; }
+        public int ChildCount { get; set; }
+        public string PrimaryExtraKey { get; set; }
+        public int ParentRatingKey { get; set; }
+        public int GrandparentRatingKey { get; set; }
+        public string Guid { get; set; }
+        public int LibrarySectionId { get; set; }
+        public string LibrarySectionKey { get; set; }
+        public string GrandparentKey { get; set; }
+        public string ParentKey { get; set; }
+        public string GrandparentTitle { get; set; }
+        public string ParentTitle { get; set; }
+        public int ParentIndex { get; set; }
+        public string ParentThumb { get; set; }
+        public string GrandparentThumb { get; set; }
+        public string GrandparentArt { get; set; }
+        public string GrandparentTheme { get; set; }
+        public string ChapterSource { get; set; }
         
-        public string art { get; set; }
-        
-        public string banner { get; set; }
-        
-        public string theme { get; set; }
-        
-        //public string duration { get; set; }
-        //public string originallyAvailableAt { get; set; }
-        
-        public int leafCount { get; set; }
-        
-        public int viewedLeafCount { get; set; }
-        
-        public int childCount { get; set; }
-        
-        //public long addedAt { get; set; }
-        //public int updatedAt { get; set; }
-        
-        public Genre[] Genre { get; set; }
-        //public Role[] Role { get; set; }
-        
-        public string primaryExtraKey { get; set; }
-        
-        public int parentRatingKey { get; set; }
-        
-        public int grandparentRatingKey { get; set; }
-        public string guid { get; set; }
-        
-        public int librarySectionID { get; set; }
-        
-        public string librarySectionKey { get; set; }
-        
-        public string grandparentKey { get; set; }
-        
-        public string parentKey { get; set; }
-        
-        public string grandparentTitle { get; set; }
-        
-        public string parentTitle { get; set; }
-        
-        public int parentIndex { get; set; }
-        
-        public string parentThumb { get; set; }
-        
-        public string grandparentThumb { get; set; }
-        
-        public string grandparentArt { get; set; }
-        
-        public string grandparentTheme { get; set; }
-        
-        public string chapterSource { get; set; }
         public Medium[] Media { get; set; }
-        //    public Director[] Director { get; set; }
-        //    public Writer[] Writer { get; set; }
+        public Genre[] Genre { get; set; }
     }
 }

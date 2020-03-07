@@ -2,9 +2,9 @@
 {
     public class Subscription
     {
-        public bool active { get; set; }
-        public string status { get; set; }
-        public object plan { get; set; }
-        public object features { get; set; }
+        public bool Active { get; set; }
+        public string Status { get; set; }
+        public object Plan { get; set; }
+        public object Features { get; set; }
     }
 }

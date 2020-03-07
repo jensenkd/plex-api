@@ -2,6 +2,6 @@ namespace Plex.Api.Models
 {
     public class Role
     {
-        public string tag { get; set; }
+        public string Tag { get; set; }
     }
 }

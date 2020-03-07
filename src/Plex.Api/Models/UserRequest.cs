@@ -1,8 +1,13 @@
-﻿namespace Plex.Api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Plex.Api.Models
 {
     public class UserRequest
     {
-        public string login { get; set; }
-        public string password { get; set; }
+        [JsonPropertyName("login")]
+        public string Login { get; set; }
+        
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
     }
 }

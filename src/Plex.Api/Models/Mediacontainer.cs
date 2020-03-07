@@ -4,24 +4,24 @@ namespace Plex.Api.Models
 {
     public class Mediacontainer
     {
-        public int size { get; set; }
-        public int totalSize { get; set; }
-        public bool allowSync { get; set; }
-        public string identifier { get; set; }
-        public string mediaTagPrefix { get; set; }
-        public int mediaTagVersion { get; set; }
-        public string title1 { get; set; }
-        public List<Directory> Directory { get; set; }
-        public string art { get; set; }
-        public int librarySectionID { get; set; }
-        public string librarySectionTitle { get; set; }
-        public string librarySectionUUID { get; set; }
-        public bool nocache { get; set; }
-        public string thumb { get; set; }
-        public string title2 { get; set; }
-        public string viewGroup { get; set; }
-        public int viewMode { get; set; }
+        public int Size { get; set; }
+        public int TotalSize { get; set; }
+        public bool AllowSync { get; set; }
+        public string Identifier { get; set; }
+        public string MediaTagPrefix { get; set; }
+        public int MediaTagVersion { get; set; }
+        public string Title1 { get; set; }
+        public string Art { get; set; }
+        public int LibrarySectionId { get; set; }
+        public string LibrarySectionTitle { get; set; }
+        public string LibrarySectionUuid { get; set; }
+        public bool Nocache { get; set; }
+        public string Thumb { get; set; }
+        public string Title2 { get; set; }
+        public string ViewGroup { get; set; }
+        public int ViewMode { get; set; }
+        
         public Metadata[] Metadata { get; set; }
-
+        public List<Directory> Directory { get; set; }
     }
 }

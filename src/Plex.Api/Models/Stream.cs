@@ -1,28 +1,31 @@
-﻿namespace Plex.Api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Plex.Api.Models
 {
     public class Stream
     {
-        public int id { get; set; }
-        public int streamType { get; set; }
-        public bool _default { get; set; }
-        public string codec { get; set; }
-        public int index { get; set; }
-        public int bitrate { get; set; }
-        public int bitDepth { get; set; }
-        public string chromaSubsampling { get; set; }
-        public float frameRate { get; set; }
-        public bool hasScalingMatrix { get; set; }
-        public int height { get; set; }
-        public string level { get; set; }
-        public string profile { get; set; }
-        public int refFrames { get; set; }
-        public string scanType { get; set; }
-        public int width { get; set; }
-        public int channels { get; set; }
-        public string language { get; set; }
-        public string languageCode { get; set; }
-        public string audioChannelLayout { get; set; }
-        public int samplingRate { get; set; }
-        public bool selected { get; set; }
+        public int Id { get; set; }
+        public int StreamType { get; set; }
+        [JsonPropertyName("_default")]
+        public bool Default { get; set; }
+        public string Codec { get; set; }
+        public int Index { get; set; }
+        public int Bitrate { get; set; }
+        public int BitDepth { get; set; }
+        public string ChromaSubsampling { get; set; }
+        public float FrameRate { get; set; }
+        public bool HasScalingMatrix { get; set; }
+        public int Height { get; set; }
+        public string Level { get; set; }
+        public string Profile { get; set; }
+        public int RefFrames { get; set; }
+        public string ScanType { get; set; }
+        public int Width { get; set; }
+        public int Channels { get; set; }
+        public string Language { get; set; }
+        public string LanguageCode { get; set; }
+        public string AudioChannelLayout { get; set; }
+        public int SamplingRate { get; set; }
+        public bool Selected { get; set; }
     }
 }

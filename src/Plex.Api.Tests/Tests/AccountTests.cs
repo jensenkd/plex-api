@@ -10,7 +10,7 @@ namespace Plex.Api.Tests.Tests
     public class AccountTests : TestBase
     {
         [TestMethod]
-        public void TestSignIn()
+        public void Test_SignIn()
         {
             var plexApi = ServiceProvider.GetService<IPlexApi>();
 
@@ -25,7 +25,7 @@ namespace Plex.Api.Tests.Tests
         }
 
         [TestMethod]
-        public void TestGetAccount()
+        public void Test_Get_Account()
         {
             var plexApi = ServiceProvider.GetService<IPlexApi>();
 
@@ -42,7 +42,7 @@ namespace Plex.Api.Tests.Tests
         }
         
         [TestMethod]
-        public void TestGetServer()
+        public void Test_Get_Server()
         {
             var plexApi = ServiceProvider.GetService<IPlexApi>();
 
