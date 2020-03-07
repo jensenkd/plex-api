@@ -31,11 +31,11 @@ using System.Xml.Serialization;
 namespace Plex.Api.Models.Server
 {
     [XmlRoot(ElementName = "MediaContainer")]
-    public class PlexServer
+    public class PlexServers
     {
         [XmlElement(ElementName = "Server")]
         public List<ServerInfo> Server { get; set; }
-        [XmlAttribute(AttributeName = "friendlyName")]
+        [XmlAttribute(AttributeName = "friendlyName")] 
         public string FriendlyName { get; set; }
         [XmlAttribute(AttributeName = "identifier")]
         public string Identifier { get; set; }

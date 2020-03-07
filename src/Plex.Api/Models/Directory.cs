@@ -1,42 +1,69 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Plex.Api.Models
 {
     public class Directory
     {
-        public Directory()
-        {
-            Seasons = new List<Directory>();
-        }
-        
+        [JsonPropertyName("allowSync")]
         public bool AllowSync { get; set; }
-        public string Art { get; set; }
-        public string Composite { get; set; }
-        public bool Filters { get; set; }
-        public bool Refreshing { get; set; }
-        public string Thumb { get; set; }
-        public string Key { get; set; }
-        public string Type { get; set; }
-        public string Title { get; set; }
-        public string Agent { get; set; }
-        public string Scanner { get; set; }
-        public string Language { get; set; }
-        public string Uuid { get; set; }
-        public int UpdatedAt { get; set; }
-        public int CreatedAt { get; set; }
-        public string ProviderId { get; set; }
-        public string Guid { get; set; }
-        public string LibrarySectionId { get; set; }
-        public string LibrarySectionTitle { get; set; }
-        public string LibrarySectionUuid { get; set; }
-        public string Personal { get; set; }
-        public string SourceTitle { get; set; }
-        public string RatingKey { get; set; }
-        public string Studio { get; set; }
         
-        public List<Directory> Seasons { get; set; }
-        public List<Genre> Genre { get; set; }
-        public List<Role> Role { get; set; }
+        [JsonPropertyName("art")]
+        public string Art { get; set; }
+        
+        [JsonPropertyName("composite")]
+        public string Composite { get; set; }
+        
+        [JsonPropertyName("filters")]
+        public bool Filters { get; set; }
+        
+        [JsonPropertyName("refreshing")]
+        public bool Refreshing { get; set; }
+        
+        [JsonPropertyName("thumb")]
+        public string Thumb { get; set; }
+
+        [JsonPropertyName("key")]
+        public string Key { get; set; }
+        
+        [JsonPropertyName("type")] 
+        public string Type { get; set; }
+        
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+        
+        [JsonPropertyName("agent")]
+        public string Agent { get; set; }
+        
+        [JsonPropertyName("scanner")]
+        public string Scanner { get; set; }
+        
+        [JsonPropertyName("language")]
+        public string Language { get; set; }
+        
+        [JsonPropertyName("uuid")]
+        public string Uuid { get; set; }
+        
+        [JsonPropertyName("updatedAt")]
+        public int UpdatedAt { get; set; }
+
+        [JsonPropertyName("cratedAt")]
+        public int CreatedAt { get; set; }
+        
+        [JsonPropertyName("scannedAt")]
+        public int ScannedAt { get; set; }
+        
+        [JsonPropertyName("content")]
+        public bool Content { get; set; }
+        
+        [JsonPropertyName("directory")]
+        public bool IsDirectory { get; set; }
+        
+        [JsonPropertyName("contentChangedAt")]
+        public int ContentChangedAt { get; set; }
+      
+        
+        [JsonPropertyName("Location")]
         public Location[] Location { get; set; }
     }
 }

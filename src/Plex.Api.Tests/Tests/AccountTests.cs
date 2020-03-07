@@ -52,7 +52,7 @@ namespace Plex.Api.Tests.Tests
             PlexAuthentication auth = plexApi
                 .SignIn(new UserRequest{ Login = login, Password = password}).Result;
             
-            PlexServer account = plexApi.GetServer(auth.User.AuthenticationToken).Result;
+            Models.Server.PlexServers account = plexApi.GetServers(auth.User.AuthenticationToken).Result;
             
             Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
             Assert.AreEqual("myPlex", account.FriendlyName);

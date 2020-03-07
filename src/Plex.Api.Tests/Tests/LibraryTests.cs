@@ -1,8 +1,8 @@
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plex.Api.Models;
-using Plex.Api.Models.Server;
 
 namespace Plex.Api.Tests.Tests
 {
@@ -10,7 +10,7 @@ namespace Plex.Api.Tests.Tests
     public class LibraryTests : TestBase
     {
         [TestMethod]
-        public void Test_GetLibraries()
+        public void Test_GetLibrarySections()
         {
             var plexApi = ServiceProvider.GetService<IPlexApi>();
 
@@ -20,16 +20,18 @@ namespace Plex.Api.Tests.Tests
             PlexAuthentication auth = plexApi
                 .SignIn(new UserRequest{ Login = login, Password = password}).Result;
             
-            PlexServer account = plexApi.GetServer(auth.User.AuthenticationToken).Result;
+            Models.Server.PlexServers account = plexApi.GetServers(auth.User.AuthenticationToken).Result;
 
             string fullUri = account.Server[0].FullUri.ToString();
 
-            PlexContainer sections = plexApi.GetLibrarySections(account.Server[0].AccessToken, fullUri).Result;
+            LibrariesWrapper librariesWrapper = plexApi.GetLibrarySections(account.Server[0].AccessToken, fullUri).Result;
 
-            PlexContainer library = plexApi.GetLibrary(account.Server[0].AccessToken, fullUri, sections.MediaContainer.Directory[0].Key).Result;
+            var movieLibrary = librariesWrapper.Libraries.Libraries.First(c => c.Title == "Movies");
 
+            LibraryWrapper library = plexApi.GetLibrary(account.Server[0].AccessToken, fullUri, movieLibrary.Key).Result;
+            
             Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
-            Assert.IsNotNull(sections.MediaContainer, "Error retrieving Libraries");
+            Assert.IsNotNull(librariesWrapper.Libraries, "Error retrieving Libraries");
         }
     }
 }

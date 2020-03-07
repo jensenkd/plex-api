@@ -29,6 +29,6 @@ namespace Plex.Api.Models
 {
     public class PlexMetadata
     {
-        public Mediacontainer MediaContainer { get; set; }
+        public MediaContainer MediaContainer { get; set; }
     }
 }

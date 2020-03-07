@@ -12,11 +12,11 @@ namespace Plex.Api
     public interface IPlexApi
     {
         Task<PlexStatus> GetStatus(string authToken, string uri);
-        Task<PlexLibrariesForMachineId> GetLibrariesForMachineId(string authToken, string machineId);
+        //Task<PlexLibrariesForMachineId> GetLibrariesForMachineId(string authToken, string machineId);
         Task<PlexAuthentication> SignIn(UserRequest user);
-        Task<PlexServer> GetServer(string authToken);
-        Task<PlexContainer> GetLibrarySections(string authToken, string plexFullHost);
-        Task<PlexContainer> GetLibrary(string authToken, string plexFullHost, string libraryId);
+        Task<Models.Server.PlexServers> GetServers(string authToken);
+        Task<LibrariesWrapper> GetLibrarySections(string authToken, string plexFullHost);
+        Task<LibraryWrapper> GetLibrary(string authToken, string plexFullHost, string libraryId);
         Task<PlexMetadata> GetEpisodeMetaData(string authToken, string host, int ratingKey);
         Task<PlexMetadata> GetMetadata(string authToken, string plexFullHost, int itemId);
         Task<PlexMetadata> GetSeasons(string authToken, string plexFullHost, int ratingKey);

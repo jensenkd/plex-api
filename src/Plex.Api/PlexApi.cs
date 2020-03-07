@@ -63,35 +63,54 @@ namespace Plex.Api
             return await Api.Request<PlexAccount>(request);
         }
 
-        public async Task<PlexServer> GetServer(string authToken)
+        /// <summary>
+        /// http://[PMS_IP_Address]:32400/library/sections?X-Plex-Token=YourTokenGoesHere
+        /// Retrieves a list of servers tied to your Plex Account
+        /// </summary>
+        /// <param name="authToken"></param>
+        /// <returns></returns>
+        public async Task<Models.Server.PlexServers> GetServers(string authToken)
         {
             var request = new Request(ServerUri, string.Empty, HttpMethod.Get, ContentType.Xml);
 
             AddHeaders(request, authToken);
             
-            return await Api.Request<PlexServer>(request);
+            return await Api.Request<Models.Server.PlexServers>(request);
         }
 
-        public async Task<PlexContainer> GetLibrarySections(string authToken, string plexFullHost)
+        /// <summary>
+        /// http://[PMS_IP_Address]:32400/library/sections?X-Plex-Token=YourTokenGoesHere
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="plexFullHost">Full Host Uri</param>
+        /// <returns></returns>
+        public async Task<LibrariesWrapper> GetLibrarySections(string authToken, string plexFullHost)
         {
             var request = new Request("library/sections", plexFullHost, HttpMethod.Get);
             AddHeaders(request, authToken);
-            return await Api.Request<PlexContainer>(request);
+            return await Api.Request<LibrariesWrapper>(request);
         }
 
-        public async Task<PlexContainer> GetLibrary(string authToken, string plexFullHost, string libraryId)
+        /// <summary>
+        /// http://[PMS_IP_Address]:32400/library/sections/29/all?X-Plex-Token=YourTokenGoesHere
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="plexFullHost">Full Host Uri</param>
+        /// <param name="libraryId">Id key for the Plex Library Section</param>
+        /// <returns></returns>
+        public async Task<LibraryWrapper> GetLibrary(string authToken, string plexFullHost, string libraryId)
         {
             var request = new Request($"library/sections/{libraryId}/all", plexFullHost, HttpMethod.Get);
             AddHeaders(request, authToken);
-            return await Api.Request<PlexContainer>(request);
+            return await Api.Request<LibraryWrapper>(request);
         }
 
-        public async Task<PlexLibrariesForMachineId> GetLibrariesForMachineId(string authToken, string machineId)
-        {
-            var request = new Request("", $"https://plex.tv/api/servers/{machineId}", HttpMethod.Get, ContentType.Xml);
-            AddHeaders(request, authToken);
-            return await Api.Request<PlexLibrariesForMachineId>(request);
-        }
+        // public async Task<PlexLibrariesForMachineId> GetLibrariesForMachineId(string authToken, string machineId)
+        // {
+        //     var request = new Request("", $"https://plex.tv/api/servers/{machineId}", HttpMethod.Get, ContentType.Xml);
+        //     AddHeaders(request, authToken);
+        //     return await Api.Request<PlexLibrariesForMachineId>(request);
+        // }
 
         /// <summary>
         // 192.168.1.69:32400/library/metadata/3662/allLeaves

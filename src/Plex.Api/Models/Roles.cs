@@ -6,6 +6,6 @@ namespace Plex.Api.Models
     public class Roles
     {
         [JsonPropertyName("roles")]
-        public List<object> Role { get; set; }
+        public List<string> Role { get; set; }
     }
 }

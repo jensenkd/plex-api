@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Plex.Api.Models
 {
-    public class Mediacontainer
+    public class MediaContainer
     {
         [JsonPropertyName("size")]
         public int Size { get; set; }

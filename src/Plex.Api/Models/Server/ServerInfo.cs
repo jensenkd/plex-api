@@ -3,7 +3,9 @@ using System.Xml.Serialization;
 
 namespace Plex.Api.Models.Server
 {
-    [XmlRoot(ElementName = "Server")]
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServerInfo
     {
         [XmlAttribute(AttributeName = "accessToken")]
