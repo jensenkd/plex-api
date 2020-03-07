@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace Plex.Api.Models.Server
 {
@@ -37,5 +38,7 @@ namespace Plex.Api.Models.Server
         public string OwnerId { get; set; }
         [XmlAttribute(AttributeName = "home")]
         public string Home { get; set; }
+
+        public Uri FullUri => this.Host.ReturnUriFromServerInfo(this);
     }
 }

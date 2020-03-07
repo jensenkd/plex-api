@@ -25,10 +25,13 @@
 //  ************************************************************************/
 #endregion
 
+using System.Text.Json.Serialization;
+
 namespace Plex.Api.Models
 {
     public class PlexContainer
     {
+        [JsonPropertyName("MediaContainer")]
         public Mediacontainer MediaContainer { get; set; }
     }
 }
