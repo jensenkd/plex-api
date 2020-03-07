@@ -41,7 +41,7 @@ stages:
       displayName: "Build Solution"
       inputs:
         command: build
-        projects: '**/*.sln'
+        projects: '**/Plex.Api.csproj'
         arguments: '--configuration $(buildConfiguration)'
     
     - task: DotNetCoreCLI@2
