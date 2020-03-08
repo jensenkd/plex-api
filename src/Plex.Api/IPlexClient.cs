@@ -9,7 +9,7 @@ using Plex.Api.Models.Status;
 
 namespace Plex.Api
 {
-    public interface IPlexApi
+    public interface IPlexClient
     {
         Task<PlexStatus> GetStatus(string authToken, string uri);
         //Task<PlexLibrariesForMachineId> GetLibrariesForMachineId(string authToken, string machineId);

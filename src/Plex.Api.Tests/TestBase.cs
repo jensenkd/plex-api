@@ -16,7 +16,7 @@ namespace Plex.Api.Tests
                 .AddUserSecrets<TestBase>()
                 .Build();
             
-            var apiOptions = new ApiOptions
+            var apiOptions = new ClientOptions
             {
                 ApplicationName = "API_UnitTests",
                 DeviceName = "API_UnitTests",
@@ -28,7 +28,7 @@ namespace Plex.Api.Tests
             services.AddSingleton(apiOptions);
             services.AddSingleton<IApi, Helpers.Api>();
             services.AddSingleton<IGenericHttpClient, GenericHttpClient>();
-            services.AddTransient<IPlexApi, PlexApi>();
+            services.AddTransient<IPlexClient, PlexClient>();
             
             ServiceProvider = services.BuildServiceProvider();
         }

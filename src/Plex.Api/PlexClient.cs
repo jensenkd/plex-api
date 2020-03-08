@@ -10,20 +10,20 @@ using Plex.Api.Models.Status;
 
 namespace Plex.Api
 {
-    public class PlexApi : IPlexApi
+    public class PlexClient : IPlexClient
     {
         private IApi Api { get; }
-        private readonly ApiOptions _apiOptions;
+        private readonly ClientOptions _clientOptions;
         
         private const string SignInUri = "https://plex.tv/users/sign_in.json";
         private const string FriendsUri = "https://plex.tv/pms/friends/all";
         private const string GetAccountUri = "https://plex.tv/users/account.json";
         private const string ServerUri = "https://plex.tv/pms/servers.xml";
         
-        public PlexApi(IApi api, ApiOptions apiOptions)
+        public PlexClient(IApi api, ClientOptions clientOptions)
         {
             Api = api;
-            _apiOptions = apiOptions;
+            _clientOptions = clientOptions;
         }
      
         /// <summary>
@@ -201,13 +201,13 @@ namespace Plex.Api
             AddHeaders(request);
             
             request.AddQueryString("code", code);
-            request.AddQueryString("context[device][product]", _apiOptions.ApplicationName);
+            request.AddQueryString("context[device][product]", _clientOptions.ApplicationName);
             request.AddQueryString("context[device][environment]", "bundled");
             request.AddQueryString("context[device][layout]", "desktop");
             request.AddQueryString("context[device][platform]", "Web");
-            request.AddQueryString("context[device][device]", _apiOptions.DeviceName);
+            request.AddQueryString("context[device][device]", _clientOptions.DeviceName);
 
-            request.AddQueryString("clientID", _apiOptions.ClientId.ToString("N"));
+            request.AddQueryString("clientID", _clientOptions.ClientId.ToString("N"));
 
             if (request.FullUri.Fragment.Equals("#"))
             {
@@ -266,10 +266,10 @@ namespace Plex.Api
         /// <param name="request"></param>
         private void AddHeaders(Request request)
         {
-            request.AddHeader("X-Plex-Client-Identifier", _apiOptions.ClientId.ToString("N"));
-            request.AddHeader("X-Plex-Product", _apiOptions.ApplicationName);
+            request.AddHeader("X-Plex-Client-Identifier", _clientOptions.ClientId.ToString("N"));
+            request.AddHeader("X-Plex-Product", _clientOptions.ApplicationName);
             request.AddHeader("X-Plex-Version", "3");
-            request.AddHeader("X-Plex-Device", _apiOptions.DeviceName);
+            request.AddHeader("X-Plex-Device", _clientOptions.DeviceName);
             request.AddHeader("X-Plex-Platform", "Web");
             request.AddContentHeader("Content-Type", request.ContentType == ContentType.Json ? "application/json" : "application/xml");
             request.AddHeader("Accept", "application/json");

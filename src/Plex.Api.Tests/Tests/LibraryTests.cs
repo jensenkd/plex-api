@@ -12,7 +12,7 @@ namespace Plex.Api.Tests.Tests
         [TestMethod]
         public void Test_GetLibrarySections()
         {
-            var plexApi = ServiceProvider.GetService<IPlexApi>();
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
 
             var login = Configuration.GetValue<string>("Plex:Login");
             var password = Configuration.GetValue<string>("Plex:Password");

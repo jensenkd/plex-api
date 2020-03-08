@@ -12,7 +12,7 @@ namespace Plex.Api.Tests.Tests
         [TestMethod]
         public void Test_SignIn()
         {
-            var plexApi = ServiceProvider.GetService<IPlexApi>();
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
 
             var login = Configuration.GetValue<string>("Plex:Login");
             var password = Configuration.GetValue<string>("Plex:Password");
@@ -27,7 +27,7 @@ namespace Plex.Api.Tests.Tests
         [TestMethod]
         public void Test_Get_Account()
         {
-            var plexApi = ServiceProvider.GetService<IPlexApi>();
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
 
             var login = Configuration.GetValue<string>("Plex:Login");
             var password = Configuration.GetValue<string>("Plex:Password");
@@ -44,7 +44,7 @@ namespace Plex.Api.Tests.Tests
         [TestMethod]
         public void Test_Get_Server()
         {
-            var plexApi = ServiceProvider.GetService<IPlexApi>();
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
 
             var login = Configuration.GetValue<string>("Plex:Login");
             var password = Configuration.GetValue<string>("Plex:Password");
