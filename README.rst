@@ -6,7 +6,7 @@ plex-api
 
 Overview
 --------
-Unofficial Python bindings for the Plex API. Our goal is to match all capabilities of the official
+Unofficial c# bindings for the Plex Media Server API. Our goal is to match all capabilities of the official
 Plex Web Client. A few of the many features we currently support are:
 
 * Navigate local or remote shared libraries.
@@ -18,13 +18,13 @@ Plex Web Client. A few of the many features we currently support are:
 Installation & Documentation
 ----------------------------
 
-.. code-block:: python
+.. code-c$:: python
 
     pip install plexapi
 
 Documentation_ can be found at Read the Docs.
 
-.. _Documentation: http://python-plexapi.readthedocs.io/en/latest/
+.. _Documentation: http://jensenkd-plex-api.readthedocs.io/en/latest/
 
 Getting a PlexClient Instance
 -----------------------------
