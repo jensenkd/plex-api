@@ -1,5 +1,5 @@
-# Plex Media Server SDK
-.NET Core SDK for Plex Media Server
+plex-api
+==============
 
 .. image:: https://github.com/jensenkd/plex-api/workflows/.NET%20Core/badge.svg
     :target: https://github.com/jensenkd/plex-api
