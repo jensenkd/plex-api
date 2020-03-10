@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Plex.Api.Models;
-using Plex.Api.Models.Server;
 using Plex.Api.Models.Status;
 
 namespace Plex.Api.Tests.Tests
@@ -30,16 +30,11 @@ namespace Plex.Api.Tests.Tests
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
-            var login = Configuration.GetValue<string>("Plex:Login");
-            var password = Configuration.GetValue<string>("Plex:Password");
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
 
-            PlexAuthentication auth = plexApi
-                .SignIn(new UserRequest{ Login = login, Password = password}).Result;
-
-            PlexAccount account = plexApi.GetAccount(auth.User.AuthenticationToken).Result;
+            PlexAccount account = plexApi.GetAccount(authKey).Result;
             
-            Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
-            Assert.AreEqual(auth.User.Email, account.User.Email);
+            Assert.IsNotNull(account.User.Email);
         }
         
         [TestMethod]
@@ -47,15 +42,10 @@ namespace Plex.Api.Tests.Tests
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
-            var login = Configuration.GetValue<string>("Plex:Login");
-            var password = Configuration.GetValue<string>("Plex:Password");
-
-            PlexAuthentication auth = plexApi
-                .SignIn(new UserRequest{ Login = login, Password = password}).Result;
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
             
-            Models.Server.PlexServers account = plexApi.GetServers(auth.User.AuthenticationToken).Result;
+            Models.Server.PlexServers account = plexApi.GetServers(authKey).Result;
             
-            Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
             Assert.AreEqual("myPlex", account.FriendlyName);
         }
         
@@ -64,19 +54,14 @@ namespace Plex.Api.Tests.Tests
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
-            var login = Configuration.GetValue<string>("Plex:Login");
-            var password = Configuration.GetValue<string>("Plex:Password");
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
 
-            PlexAuthentication auth = plexApi
-                .SignIn(new UserRequest{ Login = login, Password = password}).Result;
-            
-            Models.Server.PlexServers account = plexApi.GetServers(auth.User.AuthenticationToken).Result;
+            Models.Server.PlexServers account = plexApi.GetServers(authKey).Result;
 
             var fullUri = account.Server[0].Host.ReturnUriFromServerInfo(account.Server[0]);
 
-            SessionWrapper sessions = plexApi.GetSessions(auth.User.AuthenticationToken, fullUri.ToString()).Result;
+            SessionWrapper sessions = plexApi.GetSessions(authKey, fullUri.ToString()).Result;
             
-            Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
             Assert.AreEqual("myPlex", account.FriendlyName);
         }
     }

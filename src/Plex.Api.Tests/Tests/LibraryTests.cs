@@ -15,12 +15,9 @@ namespace Plex.Api.Tests.Tests
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
-            if (string.IsNullOrEmpty(AuthenticationToken))
-            {
-                SignIn();
-            }
-            
-            Models.Server.PlexServers account = plexApi.GetServers(AuthenticationToken).Result;
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+
+            Models.Server.PlexServers account = plexApi.GetServers(authKey).Result;
 
             string fullUri = account.Server[0].FullUri.ToString();
 
@@ -40,17 +37,15 @@ namespace Plex.Api.Tests.Tests
 
             const int metadataId = 8576;
             
-            if (string.IsNullOrEmpty(AuthenticationToken))
-            {
-                SignIn();
-            }
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
 
-            Models.Server.PlexServers account = plexApi.GetServers(AuthenticationToken).Result;
+            Models.Server.PlexServers account = plexApi.GetServers(authKey).Result;
 
             string fullUri = account.Server[0].FullUri.ToString();
         
             MetadataWrapper metadataWrapper = plexApi.GetMetadata(account.Server[0].AccessToken, fullUri, metadataId).Result;
             
+            Assert.IsNotNull(metadataWrapper.MetadataSummary);
         }
     }
 }

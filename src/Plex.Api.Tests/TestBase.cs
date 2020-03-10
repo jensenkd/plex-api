@@ -11,9 +11,7 @@ namespace Plex.Api.Tests
     {
         protected readonly ServiceProvider ServiceProvider;
         protected readonly IConfiguration Configuration;
-
-        public string AuthenticationToken;
-
+        
         protected TestBase()
         {
             Configuration = new ConfigurationBuilder()
@@ -35,19 +33,6 @@ namespace Plex.Api.Tests
             services.AddTransient<IPlexClient, PlexClient>();
             
             ServiceProvider = services.BuildServiceProvider();
-        }
-
-        public void SignIn()
-        {
-            var plexApi = ServiceProvider.GetService<IPlexClient>();
-
-            var login = Configuration.GetValue<string>("Plex:Login");
-            var password = Configuration.GetValue<string>("Plex:Password");
-
-            PlexAuthentication auth = plexApi
-                .SignIn(new UserRequest{ Login = login, Password = password}).Result;
-
-            AuthenticationToken = auth.User.AuthenticationToken;
         }
     }
 }
