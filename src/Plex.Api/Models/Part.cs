@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Plex.Api.Helpers;
 
 namespace Plex.Api.Models
 {
@@ -22,18 +23,21 @@ namespace Plex.Api.Models
     public class Part
     {
         [JsonPropertyName("id")]
+        [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
 
         [JsonPropertyName("key")]
         public string Key { get; set; }
         
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        [JsonConverter(typeof(LongValueConverter))]
+        public long Duration { get; set; }
         
         [JsonPropertyName("file")]
         public string File { get; set; }
         
         [JsonPropertyName("size")]
+        [JsonConverter(typeof(LongValueConverter))]
         public long Size { get; set; }
         
         [JsonPropertyName("audioProfile")]

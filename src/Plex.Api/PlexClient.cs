@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Plex.Api.Helpers;
 using Plex.Api.Models;
 using Plex.Api.Models.Friends;
+using Plex.Api.Models.MetaData;
 using Plex.Api.Models.OAuth;
 using Plex.Api.Models.Server;
 using Plex.Api.Models.Status;
@@ -64,10 +65,26 @@ namespace Plex.Api
         }
 
         /// <summary>
+        /// http://[PMS_IP_Address]:32400/status/sessions?X-Plex-Token=YourTokenGoesHere
+        /// Retrieves a list of active sessions on the Plex Media Server instance
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexFullHost">Full Uri of Plex Media Server Instance</param>
+        /// <returns></returns>
+        public async Task<SessionWrapper> GetSessions(string authToken, string plexFullHost)
+        {
+            var request = new Request("status/sessions", plexFullHost, HttpMethod.Get);
+
+            AddHeaders(request, authToken);
+            
+            return await Api.Request<SessionWrapper>(request);
+        }
+
+        /// <summary>
         /// http://[PMS_IP_Address]:32400/library/sections?X-Plex-Token=YourTokenGoesHere
         /// Retrieves a list of servers tied to your Plex Account
         /// </summary>
-        /// <param name="authToken"></param>
+        /// <param name="authToken">Authentication Token</param>
         /// <returns></returns>
         public async Task<Models.Server.PlexServers> GetServers(string authToken)
         {
@@ -81,8 +98,8 @@ namespace Plex.Api
         /// <summary>
         /// http://[PMS_IP_Address]:32400/library/sections?X-Plex-Token=YourTokenGoesHere
         /// </summary>
-        /// <param name="authToken">Plex Auth Token</param>
-        /// <param name="plexFullHost">Full Host Uri</param>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexFullHost">Full Uri of Plex Media Server Instance</param>
         /// <returns></returns>
         public async Task<LibrariesWrapper> GetLibrarySections(string authToken, string plexFullHost)
         {
@@ -130,11 +147,11 @@ namespace Plex.Api
             return await Api.Request<PlexMetadata>(request);
         }
 
-        public async Task<PlexMetadata> GetMetadata(string authToken, string plexFullHost, int itemId)
+        public async Task<MetadataWrapper> GetMetadata(string authToken, string plexFullHost, int itemId)
         {
             var request = new Request($"library/metadata/{itemId}", plexFullHost, HttpMethod.Get);
             AddHeaders(request, authToken);
-            return await Api.Request<PlexMetadata>(request);
+            return await Api.Request<MetadataWrapper>(request);
         }
 
         public async Task<PlexMetadata> GetSeasons(string authToken, string plexFullHost, int ratingKey)

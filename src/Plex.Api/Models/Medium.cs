@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Plex.Api.Helpers;
 
 namespace Plex.Api.Models
 {
@@ -29,20 +30,64 @@ namespace Plex.Api.Models
     /// </summary>
     public class Medium
     {
-        public string VideoResolution { get; set; }
-        public int Id { get; set; }
-        public int Duration { get; set; }
-        public int Bitrate { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public float AspectRatio { get; set; }
-        public int AudioChannels { get; set; }
-        public string AudioCodec { get; set; }
-        public string VideoCodec { get; set; }
-        public string Container { get; set; }
-        public string VideoFrameRate { get; set; }
+        [JsonPropertyName("id")]
+        [JsonConverter(typeof(LongValueConverter))]
+        public long Id { get; set; }
+        
+        [JsonPropertyName("aspectRation")]
+        public string AspectRatio { get; set; }
+        
+        [JsonPropertyName("audioProfile")]
         public string AudioProfile { get; set; }
+      
+        [JsonPropertyName("videoProfile")]
         public string VideoProfile { get; set; }
+
+        [JsonPropertyName("audioChannels")]
+        [JsonConverter(typeof(LongValueConverter))] 
+        public long AudioChannels { get; set; }
+
+        [JsonPropertyName("audioCodec")]
+        public string AudioCodec { get; set; }
+
+        [JsonPropertyName("bitrate")]
+        [JsonConverter(typeof(LongValueConverter))] 
+        public long Bitrate { get; set; }
+
+        [JsonPropertyName("container")]
+        public string Container { get; set; }
+
+        [JsonPropertyName("duration")]
+        [JsonConverter(typeof(LongValueConverter))] 
+        public long Duration { get; set; }
+
+        [JsonPropertyName("height")]
+        [JsonConverter(typeof(IntValueConverter))] 
+        public int Height { get; set; }
+
+        [JsonPropertyName("optimizedForStreaming")]
+        [JsonConverter(typeof(IntValueConverter))] 
+        public int OptimizedForStreaming { get; set; } // TODO Convert to boolean at some point.
+
+        [JsonPropertyName("protocol")]
+        public string Protocol { get; set; }
+
+        [JsonPropertyName("videoCodec")]
+        public string VideoCodec { get; set; }
+
+        [JsonPropertyName("videoFrameRate")]
+        public string VideoFrameRate { get; set; }
+
+        [JsonPropertyName("videoResolution")]
+        public string VideoResolution { get; set; }
+
+        [JsonPropertyName("width")]
+        [JsonConverter(typeof(IntValueConverter))] 
+        public int Width { get; set; }
+
+        [JsonPropertyName("selected")]
+        public bool Selected { get; set; }
+        
         
         [JsonPropertyName("Part")]
         public Part[] Part { get; set; }

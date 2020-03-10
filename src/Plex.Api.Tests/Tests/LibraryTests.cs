@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plex.Api.Models;
+using Plex.Api.Models.MetaData;
 
 namespace Plex.Api.Tests.Tests
 {
@@ -14,13 +15,12 @@ namespace Plex.Api.Tests.Tests
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
-            var login = Configuration.GetValue<string>("Plex:Login");
-            var password = Configuration.GetValue<string>("Plex:Password");
-
-            PlexAuthentication auth = plexApi
-                .SignIn(new UserRequest{ Login = login, Password = password}).Result;
+            if (string.IsNullOrEmpty(AuthenticationToken))
+            {
+                SignIn();
+            }
             
-            Models.Server.PlexServers account = plexApi.GetServers(auth.User.AuthenticationToken).Result;
+            Models.Server.PlexServers account = plexApi.GetServers(AuthenticationToken).Result;
 
             string fullUri = account.Server[0].FullUri.ToString();
 
@@ -30,8 +30,27 @@ namespace Plex.Api.Tests.Tests
 
             LibraryWrapper library = plexApi.GetLibrary(account.Server[0].AccessToken, fullUri, movieLibrary.Key).Result;
             
-            Assert.IsNotNull(auth, $"Authentication Failed for {login}/{password}");
             Assert.IsNotNull(librariesWrapper.Libraries, "Error retrieving Libraries");
+        } //12063
+        
+        [TestMethod]
+        public void Test_GetLibrary_Metadata_Item()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+
+            const int metadataId = 8576;
+            
+            if (string.IsNullOrEmpty(AuthenticationToken))
+            {
+                SignIn();
+            }
+
+            Models.Server.PlexServers account = plexApi.GetServers(AuthenticationToken).Result;
+
+            string fullUri = account.Server[0].FullUri.ToString();
+        
+            MetadataWrapper metadataWrapper = plexApi.GetMetadata(account.Server[0].AccessToken, fullUri, metadataId).Result;
+            
         }
     }
 }

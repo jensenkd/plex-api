@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Plex.Api.Helpers;
 
 namespace Plex.Api.Models
 {
@@ -44,6 +45,7 @@ namespace Plex.Api.Models
     public class User
     {
         [JsonPropertyName("id")]
+        [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
 
         [JsonPropertyName("email")]
