@@ -31,12 +31,13 @@ namespace Plex.Api.Models
     public class Medium
     {
         [JsonPropertyName("id")]
-        [JsonConverter(typeof(LongValueConverter))]
-        public long Id { get; set; }
+        [JsonConverter(typeof(IntValueConverter))]
+        public int Id { get; set; }
         
         [JsonPropertyName("aspectRation")]
-        public string AspectRatio { get; set; }
-        
+        [JsonConverter(typeof(DoubleValueConverter))]
+        public double AspectRatio { get; set; }
+         
         [JsonPropertyName("audioProfile")]
         public string AudioProfile { get; set; }
       
@@ -44,15 +45,15 @@ namespace Plex.Api.Models
         public string VideoProfile { get; set; }
 
         [JsonPropertyName("audioChannels")]
-        [JsonConverter(typeof(LongValueConverter))] 
-        public long AudioChannels { get; set; }
+        [JsonConverter(typeof(IntValueConverter))] 
+        public int AudioChannels { get; set; }
 
         [JsonPropertyName("audioCodec")]
         public string AudioCodec { get; set; }
 
         [JsonPropertyName("bitrate")]
-        [JsonConverter(typeof(LongValueConverter))] 
-        public long Bitrate { get; set; }
+        [JsonConverter(typeof(IntValueConverter))] 
+        public int Bitrate { get; set; }
 
         [JsonPropertyName("container")]
         public string Container { get; set; }
