@@ -1,12 +1,10 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Plex.Api.Helpers
+namespace Plex.Api.Api
 {
-    public interface IGenericHttpClient
+    public interface IPlexRequestsHttpClient
     {
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
-        Task<string> GetStringAsync(Uri requestUri);
     }
 }

@@ -22,34 +22,30 @@ namespace Plex.Api.Models
     /// </summary>
     public class Part
     {
-        [JsonPropertyName("id")]
+        // General 
         [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
 
-        [JsonPropertyName("key")]
         public string Key { get; set; }
-        
-        [JsonPropertyName("duration")]
-        [JsonConverter(typeof(LongValueConverter))]
-        public long Duration { get; set; }
-        
-        [JsonPropertyName("file")]
+
+        [JsonConverter(typeof(IntValueConverter))]
+        public int Duration { get; set; }
+
         public string File { get; set; }
-        
-        [JsonPropertyName("size")]
+
         [JsonConverter(typeof(LongValueConverter))]
         public long Size { get; set; }
-        
-        [JsonPropertyName("audioProfile")]
-        public string AudioProfile { get; set; }
-        
-        [JsonPropertyName("container")]
+
         public string Container { get; set; }
-        
-        [JsonPropertyName("videoProfile")]
         public string VideoProfile { get; set; }
-        
-        [JsonPropertyName("Stream")]
         public Stream[] Stream { get; set; }
+
+        // TV Show Episode
+        public string AudioProfile { get; set; }
+
+        // Movie Section
+        public string HasThumbnail { get; set; }
+        public string Indexes { get; set; }
+        public bool? HasChapterTextStream { get; set; }
     }
 }

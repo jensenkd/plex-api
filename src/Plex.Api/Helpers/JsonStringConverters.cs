@@ -115,6 +115,4 @@ namespace Plex.Api.Helpers
             writer.WriteStringValue(value.ToString());
         }
     }
-    
-    
 }

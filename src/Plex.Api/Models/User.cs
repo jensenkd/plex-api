@@ -44,48 +44,38 @@ namespace Plex.Api.Models
     /// </summary>
     public class User
     {
-        [JsonPropertyName("id")]
         [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
 
-        [JsonPropertyName("email")]
         public string Email { get; set; }
         
-        [JsonPropertyName("uuid")]
         public string Uuid { get; set; }
         
         [JsonPropertyName("joined_at")]
         public DateTime JoinedAt { get; set; }
         
-        [JsonPropertyName("username")]
         public string Username { get; set; }
         
-        [JsonPropertyName("title")]
         public string Title { get; set; }
         
-        [JsonPropertyName("thumb")]
         public string Thumb { get; set; }
         
-        [JsonPropertyName("hasPassword")]
         public bool HasPassword { get; set; }
 
         [JsonPropertyName("authentication_token")]
         public string AuthenticationToken { get; set; }
         
-        [JsonPropertyName("confirmedAt")]
         public DateTime ConfirmedAt { get; set; }
         
-        [JsonPropertyName("forumId")]
         public int? ForumId { get; set; }
         
-        [JsonPropertyName("rememberMe")]
         public bool RememberMe { get; set; }
         
         [JsonPropertyName("subscription")]
         public Subscription Subscription { get; set; }
         
         [JsonPropertyName("roles")]
-        public Roles Roles { get; set; }
+        public UserRole Roles { get; set; }
         
         [JsonPropertyName("entitlements")]
         public List<string> Entitlements { get; set; }

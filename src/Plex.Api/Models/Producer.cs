@@ -1,12 +1,9 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Plex.Api.Helpers;
 
 namespace Plex.Api.Models
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Writer
+    public class Producer
     {
         [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }

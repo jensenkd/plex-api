@@ -38,9 +38,19 @@ namespace Plex.Api.Models
         
         [JsonConverter(typeof(LongValueConverter))]
         public long BitDepth { get; set; }
-        
+
+        public string ChromaLocation { get; set; }
+
         public string ChromaSubsampling { get; set; }
 
+        public string ColorPrimaries { get; set; }
+ 
+        public string ColorRange { get; set; }
+        
+        public string ColorSpace { get; set; }
+        
+        public string ColorTrc { get; set; }
+        
         [JsonConverter(typeof(DoubleValueConverter))]
         public double FrameRate { get; set; }
         
@@ -60,8 +70,15 @@ namespace Plex.Api.Models
         
         public string ScanType { get; set; }
         
-        [JsonConverter(typeof(LongValueConverter))]
-        public long Width { get; set; }
+        public string StreamIdentifier { get; set; }
+
+        [JsonConverter(typeof(IntValueConverter))]
+        public int Width { get; set; }
+
+        public string DisplayTitle { get; set; }
+        
+        [JsonConverter(typeof(BooleanValueConverter))]
+        public bool Selected { get; set; }
         
         [JsonConverter(typeof(LongValueConverter))]
         public long Channels { get; set; }
@@ -70,13 +87,14 @@ namespace Plex.Api.Models
         
         public string LanguageCode { get; set; }
         
-        public string AudioChannelLayout { get; set; }
-        
         [JsonConverter(typeof(LongValueConverter))]
         public long SamplingRate { get; set; }
         
-        [JsonPropertyName("selected")]
-        [JsonConverter(typeof(BooleanValueConverter))]
-        public bool Selected { get; set; }
+        public string AudioChannelLayout { get; set; }
+
+        
+        // Tv Episode
+        public bool Anamorphic { get; set; }
+        public string PixelAspectRatio { get; set; }
     }
 }

@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plex.Api.Models;
-using Plex.Api.Models.MetaData;
+using Plex.Api.Models.Server;
 
 namespace Plex.Api.Tests.Tests
 {
@@ -17,18 +18,28 @@ namespace Plex.Api.Tests.Tests
 
             var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
 
-            Models.Server.PlexServers account = plexApi.GetServers(authKey).Result;
+            List<Server> servers = plexApi.GetServers(authKey).Result;
 
-            string fullUri = account.Server[0].FullUri.ToString();
+            string fullUri = servers[0].FullUri.ToString();
 
-            LibrariesWrapper librariesWrapper = plexApi.GetLibrarySections(account.Server[0].AccessToken, fullUri).Result;
+            var plexMediaContainer = plexApi.GetLibraries(servers[0].AccessToken, fullUri).Result;
 
-            var movieLibrary = librariesWrapper.Libraries.Libraries.First(c => c.Title == "Movies");
-
-            LibraryWrapper library = plexApi.GetLibrary(account.Server[0].AccessToken, fullUri, movieLibrary.Key).Result;
+            var movieLibrary = plexMediaContainer
+                .MediaContainer.Directory
+                .First(c => c.Title == "Movies");
             
-            Assert.IsNotNull(librariesWrapper.Libraries, "Error retrieving Libraries");
-        } //12063
+            var movie = plexApi.GetLibrary(servers[0].AccessToken, fullUri, movieLibrary.Key).Result;
+            
+            var tvLibrary = plexMediaContainer
+                .MediaContainer.Directory
+                .First(c => c.Title == "TV Shows");
+            
+            var tv = plexApi.GetLibrary(servers[0].AccessToken, fullUri, tvLibrary.Key).Result;
+          
+            
+            Assert.IsNotNull(movie.MediaContainer.Metadata, "Error retrieving Libraries");
+            Assert.IsNotNull(tv.MediaContainer.Metadata, "Error retrieving Libraries");
+        }
         
         [TestMethod]
         public void Test_GetLibrary_Metadata_Item()
@@ -39,13 +50,13 @@ namespace Plex.Api.Tests.Tests
             
             var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
 
-            Models.Server.PlexServers account = plexApi.GetServers(authKey).Result;
+            List<Server> servers = plexApi.GetServers(authKey).Result;
 
-            string fullUri = account.Server[0].FullUri.ToString();
+            string fullUri = servers[0].FullUri.ToString();
         
-            MetadataWrapper metadataWrapper = plexApi.GetMetadata(account.Server[0].AccessToken, fullUri, metadataId).Result;
+            PlexMediaContainer metadataWrapper = plexApi.GetMetadata(servers[0].AccessToken, fullUri, metadataId).Result;
             
-            Assert.IsNotNull(metadataWrapper.MetadataSummary);
+            Assert.IsNotNull(metadataWrapper.MediaContainer);
         }
     }
 }

@@ -1,116 +1,38 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Plex.Api.Models
 {
     public class Metadata
     {    
-        [JsonPropertyName("ratingKey")]
+        //Movie
         public string RatingKey { get; set; }
-
-        [JsonPropertyName("key")]
         public string Key { get; set; }
-        
-        [JsonPropertyName("studio")]
-        public string Studio { get; set; }
-        
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-        
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
-        
-        [JsonPropertyName("contentRating")]
-        public string ContentRating { get; set; }
-
-        [JsonPropertyName("summary")]
-        public string Summary { get; set; }
-        
-        [JsonPropertyName("index")]
-        public int Index { get; set; }
-        
-        [JsonPropertyName("rating")]
-        public float Rating { get; set; }
-        
-        [JsonPropertyName("viewCount")]
-        public int ViewCount { get; set; }
-        
-        [JsonPropertyName("lastViewedAt")]
-        public int LastViewedAt { get; set; }
-        
-        [JsonPropertyName("year")]
-        public int Year { get; set; }
-        
-        [JsonPropertyName("thumb")]
-        public string Thumb { get; set; }
-        
-        [JsonPropertyName("art")]
-        public string Art { get; set; }
-        
-        [JsonPropertyName("banner")]
-        public string Banner { get; set; }
-        
-        [JsonPropertyName("theme")]
-        public string Theme { get; set; }
-        
-        [JsonPropertyName("leafCount")]
-        public int LeafCount { get; set; }
-        
-        [JsonPropertyName("viewedLeafCount")]
-        public int ViewedLeafCount { get; set; }
-        
-        [JsonPropertyName("childCount")]
-        public int ChildCount { get; set; }
-        
-        [JsonPropertyName("primaryExtraKey")]
-        public string PrimaryExtraKey { get; set; }
-        
-        [JsonPropertyName("parentRatingKey")]
-        public int ParentRatingKey { get; set; }
-        
-        [JsonPropertyName("grandparentRatingKey")]
-        public int GrandparentRatingKey { get; set; }
-
-        [JsonPropertyName("guid")]
         public string Guid { get; set; }
-        
-        [JsonPropertyName("librarySectionId")]
+        public string LibrarySectionTitle { get; set; }
         public int LibrarySectionId { get; set; }
-        
-        [JsonPropertyName("librarySectionKey")]
         public string LibrarySectionKey { get; set; }
-        
-        [JsonPropertyName("grandparentKey")]
-        public string GrandparentKey { get; set; }
-        
-        [JsonPropertyName("parentKey")]
-        public string ParentKey { get; set; }
-        
-        [JsonPropertyName("grandparentTitle")]
-        public string GrandparentTitle { get; set; }
-        
-        [JsonPropertyName("parentTitle")]
-        public string ParentTitle { get; set; }
-        
-        [JsonPropertyName("parentIndex")]
-        public int ParentIndex { get; set; }
-        
-        [JsonPropertyName("parentThumb")]
-        public string ParentThumb { get; set; }
- 
-        [JsonPropertyName("grandparentThumb")]
-        public string GrandparentThumb { get; set; }
-        
-        [JsonPropertyName("grandparentArt")]
-        public string GrandparentArt { get; set; }
-        
-        [JsonPropertyName("grandparentTheme")]
-        public string GrandparentTheme { get; set; }
-        
-        [JsonPropertyName("chapterSource")]
+        public string Studio { get; set; }
+        public string Type { get; set; }
+        public string Title { get; set; }
+        public string ContentRating { get; set; }
+        public string Summary { get; set; }
+        public float Rating { get; set; }
+        public int ViewCount { get; set; }
+        public int LastViewedAt { get; set; }
+        public int Year { get; set; }
+        public string TagLine { get; set; }
+        public string Thumb { get; set; }
+        public string Art { get; set; }
+        public int Duration { get; set; }
+        public string OriginallyAvailableAt { get; set; }
+        public int AddedAt { get; set; }
+        public int UpdatedAt { get; set; }
         public string ChapterSource { get; set; }
+        public string RatingImage { get; set; }
         
         [JsonPropertyName("Media")]
-        public Medium[] MediaItems { get; set; }
+        public List<Medium> Media { get; set; }
         
         [JsonPropertyName("Genre")]
         public Genre[] Genres { get; set; }
@@ -120,9 +42,55 @@ namespace Plex.Api.Models
         
         [JsonPropertyName("Writer")]
         public Writer[] Writers { get; set; }
+
+        [JsonPropertyName("Producer")]
+        public List<Producer> Producer { get; set; }
         
         [JsonPropertyName("Country")]
         public Country[] Countries { get; set; }
 
+        [JsonPropertyName("Role")]
+        public List<MediaRole> Roles { get; set; }
+        
+        [JsonPropertyName("Similar")]
+        public List<Similar> Similar { get; set; }
+        
+        [JsonPropertyName("Field")]
+        public List<Field> Field { get; set; }
+     
+        
+        //Library Sections
+        public string TitleSort { get; set; }
+        public int Index { get; set; }
+        public string Banner { get; set; }
+        public int LeafCount { get; set; }
+        public int ViewedLeafCount { get; set; }
+        public int ChildCount { get; set; }
+        public string Theme { get; set; }
+
+
+        //TV Show Seasons
+        public string ParentRatingKey { get; set; }
+        public string ParentKey { get; set; }
+        public string ParentTitle { get; set; }
+        public int ParentIndex { get; set; }
+        public string ParentThumb { get; set; }
+        public string ParentTheme { get; set; }
+ 
+      
+        //TV Show Episode
+        public string GrandparentRatingKey { get; set; }
+        public string GrandparentKey { get; set; }
+        public string GrandparentTitle { get; set; }
+        public string GrandparentThumb { get; set; }
+        public string GrandparentArt { get; set; }
+        public string GrandparentTheme { get; set; }
+        
+        
+        //Movie Section
+        public string PrimaryExtraKey { get; set; }
+        public List<Collection> Collection { get; set; }
+        public string OriginalTitle { get; set; }
+        public int? ViewOffset { get; set; }
     }
 }

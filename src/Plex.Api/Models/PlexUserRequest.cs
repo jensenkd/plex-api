@@ -25,13 +25,16 @@
 //  ************************************************************************/
 #endregion
 
-using System.Text.Json.Serialization;
-
 namespace Plex.Api.Models
 {
     public class PlexUserRequest
     {
-        [JsonPropertyName("user")]
         public UserRequest User { get; set; }
+    }
+    
+    public class UserRequest
+    {
+        public string Login { get; set; }
+        public string Password { get; set; }
     }
 }

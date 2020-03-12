@@ -6,7 +6,7 @@ namespace Plex.Api.Models.Server
     /// <summary>
     /// 
     /// </summary>
-    public class ServerInfo
+    public class Server
     {
         [XmlAttribute(AttributeName = "accessToken")]
         public string AccessToken { get; set; }

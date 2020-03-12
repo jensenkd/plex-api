@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Plex.Api.Api;
 using Plex.Api.Helpers;
 using Plex.Api.Models;
 
@@ -28,9 +29,9 @@ namespace Plex.Api.Tests
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton(apiOptions);
-            services.AddSingleton<IApi, Helpers.Api>();
-            services.AddSingleton<IGenericHttpClient, GenericHttpClient>();
             services.AddTransient<IPlexClient, PlexClient>();
+            services.AddTransient<IApiService, ApiService>();
+            services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
             
             ServiceProvider = services.BuildServiceProvider();
         }

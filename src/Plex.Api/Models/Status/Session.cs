@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Plex.Api.Helpers;
@@ -8,16 +7,16 @@ namespace Plex.Api.Models.Status
     public class SessionWrapper
     {
         [JsonPropertyName("MediaContainer")]
-        public Sessions Sessions { get; set; }
+        public SessionContainer SessionContainer { get; set; }
     }
 
-    public class Sessions
+    public class SessionContainer
     {
         [JsonPropertyName("size")]
         public long Size { get; set; }
 
         [JsonPropertyName("Metadata")]
-        public List<Session> Session { get; set; }
+        public List<Session> Sessions { get; set; }
     }
 
     public class Session
@@ -128,6 +127,12 @@ namespace Plex.Api.Models.Status
         [JsonConverter(typeof(IntValueConverter))]
         public int Year { get; set; }
         
+        [JsonPropertyName("Director")]
+        public List<Director> Directors { get; set; }
+
+        [JsonPropertyName("Writer")]
+        public List<Writer> Writers { get; set; }
+
         [JsonPropertyName("Media")]
         public List<Medium> Media { get; set; }
 
