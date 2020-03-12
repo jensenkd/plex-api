@@ -18,9 +18,14 @@ Plex Web Client. A few of the many features we currently support are:
 Installation & Documentation
 ----------------------------
 
-.. code-c$:: python
+From Powershell
+.. code-block:: C#
+    Nuget-Intstall 'Plex.Api'
 
-    pip install plexapi
+Dotnet Cli
+.. code-block:: C#
+    dotnet add package 'Plex.Api'
+
 
 Documentation_ can be found at Read the Docs.
 
@@ -35,22 +40,37 @@ example of this is below. NOTE: Servername below is the name of the server (not
 the hostname and port).  If logged into Plex Web you can see the server name in
 the top left above your available libraries.
 
-.. code-block:: python
+.. code-block:: C#
 
-    from plexapi.myplex import MyPlexAccount
-    account = MyPlexAccount('<USERNAME>', '<PASSWORD>')
-    plex = account.resource('<SERVERNAME>').connect()  # returns a PlexServer instance
+    // Create Client Options
+    var apiOptions = new ClientOptions
+    {
+        ApplicationName = "API_UnitTests",
+        DeviceName = "API_UnitTests",
+        ClientId = Guid.NewGuid()
+    };
+
+    // Create DI Provider
+    var services = new ServiceCollection();
+    services.AddLogging();
+    services.AddSingleton(apiOptions);
+    services.AddTransient<IPlexClient, PlexClient>();
+    services.AddTransient<IApiService, ApiService>();
+    services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
+    ServiceProvider = services.BuildServiceProvider();
+    
 
 If you want to avoid logging into MyPlex and you already know your auth token
 string, you can use the PlexServer object directly as above, but passing in
 the baseurl and auth token directly.
 
-.. code-block:: python
+.. code-block:: C#
 
-    from plexapi.server import PlexServer
-    baseurl = 'http://plexserver:32400'
-    token = '2ffLuB84dqLswk9skLos'
-    plex = PlexServer(baseurl, token)
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    
+    User user = plexApi
+        .SignIn(login, password).Result;
+
     
     
  Usage Examples
