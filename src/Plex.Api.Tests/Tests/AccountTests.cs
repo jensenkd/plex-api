@@ -76,14 +76,13 @@ namespace Plex.Api.Tests.Tests
 
             SessionWrapper sessions = plexApi.GetSessions(authKey, fullUri.ToString()).Result;
 
-            Session session = sessions.Sessions.Session
-                .FirstOrDefault(c => c.Player.MachineIdentifier == "mot82pjdqtmfsy7q2xkgj6hi");
+            if (sessions.Sessions.Session != null)
+            {
+                Session session = sessions.Sessions.Session
+                    .FirstOrDefault(c => c.Player.MachineIdentifier == "mot82pjdqtmfsy7q2xkgj6hi");
             
-            
-            
-            Assert.AreEqual("myPlex", account.FriendlyName);
-            
-            
+                Assert.AreEqual("myPlex", account.FriendlyName);
+            }
         }
     }
 }
