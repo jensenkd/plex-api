@@ -125,8 +125,8 @@ namespace Plex.Api.Models.Status
         public string ViewOffset { get; set; }
 
         [JsonPropertyName("year")]
-        public string Year { get; set; }
-
+        [JsonConverter(typeof(IntValueConverter))]
+        public int Year { get; set; }
         
         [JsonPropertyName("Media")]
         public List<Medium> Media { get; set; }

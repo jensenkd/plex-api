@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Plex.Api.Models;
+using Plex.Api.Models.Friends;
 using Plex.Api.Models.Status;
 
 namespace Plex.Api.Tests.Tests
@@ -50,6 +55,31 @@ namespace Plex.Api.Tests.Tests
         }
         
         [TestMethod]
+        public void Test_Get_Friends()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+            
+            PlexFriends account = plexApi.GetUsers(authKey).Result;
+            
+            Assert.AreEqual("myPlex", account.FriendlyName);
+        }
+
+       
+
+        [TestMethod]
+        public void Test_Get_Session_Info()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+            
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+
+            var session =
+                GetSessionInfo(authKey, "Plex Media Server", "mot82pjdqtmfsy7q2xkgj6hi");
+        }
+        
+        [TestMethod]
         public void Test_Get_Server_Sessions()
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
@@ -61,8 +91,15 @@ namespace Plex.Api.Tests.Tests
             var fullUri = account.Server[0].Host.ReturnUriFromServerInfo(account.Server[0]);
 
             SessionWrapper sessions = plexApi.GetSessions(authKey, fullUri.ToString()).Result;
+
+            Session session = sessions.Sessions.Session
+                .FirstOrDefault(c => c.Player.MachineIdentifier == "mot82pjdqtmfsy7q2xkgj6hi");
+            
+            
             
             Assert.AreEqual("myPlex", account.FriendlyName);
+            
+            
         }
     }
 }
