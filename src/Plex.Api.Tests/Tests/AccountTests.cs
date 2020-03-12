@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -66,19 +63,6 @@ namespace Plex.Api.Tests.Tests
             Assert.AreEqual("myPlex", account.FriendlyName);
         }
 
-       
-
-        [TestMethod]
-        public void Test_Get_Session_Info()
-        {
-            var plexApi = ServiceProvider.GetService<IPlexClient>();
-            
-            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
-
-            var session =
-                GetSessionInfo(authKey, "Plex Media Server", "mot82pjdqtmfsy7q2xkgj6hi");
-        }
-        
         [TestMethod]
         public void Test_Get_Server_Sessions()
         {

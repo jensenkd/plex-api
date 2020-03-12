@@ -221,12 +221,13 @@ namespace Plex.Api.Models.Status
         [JsonPropertyName("complete")]
         public bool Complete { get; set; }
 
+        [JsonConverter(typeof(DoubleValueConverter))]
         [JsonPropertyName("progress")]
-        public string Progress { get; set; }
+        public double Progress { get; set; }
 
-        [JsonConverter(typeof(LongValueConverter))]
+        [JsonConverter(typeof(DoubleValueConverter))]
         [JsonPropertyName("speed")]
-        public long Speed { get; set; }
+        public double Speed { get; set; }
 
         [JsonConverter(typeof(LongValueConverter))]
         [JsonPropertyName("duration")]
