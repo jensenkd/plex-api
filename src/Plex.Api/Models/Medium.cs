@@ -33,6 +33,7 @@ namespace Plex.Api.Models
         [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
         
+        [JsonConverter(typeof(DoubleValueConverter))]
         public double AspectRatio { get; set; }
          
         public string AudioProfile { get; set; }
