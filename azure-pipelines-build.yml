@@ -51,7 +51,6 @@ stages:
         packDirectory: '$(Build.ArtifactStagingDirectory)/packages/releases'
         arguments: '--configuration $(buildConfiguration)'
         versioningScheme: byBuildNumber # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops#yaml-snippet
-
     
     - task: DotNetCoreCLI@2
       displayName: 'Create NuGet Package - Prerelease Version'
