@@ -65,7 +65,7 @@ namespace Plex.Api.Models
         [JsonPropertyName("authentication_token")]
         public string AuthenticationToken { get; set; }
         
-        public DateTime ConfirmedAt { get; set; }
+        public DateTime? ConfirmedAt { get; set; }
         
         public int? ForumId { get; set; }
         
