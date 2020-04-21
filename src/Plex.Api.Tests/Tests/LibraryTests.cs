@@ -28,6 +28,7 @@ namespace Plex.Api.Tests.Tests
                 .MediaContainer.Directory
                 .First(c => c.Title == "Movies");
             
+            
             var movie = plexApi.GetLibrary(servers[0].AccessToken, fullUri, movieLibrary.Key).Result;
             
             var tvLibrary = plexMediaContainer
