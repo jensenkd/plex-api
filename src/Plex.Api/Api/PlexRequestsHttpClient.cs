@@ -9,12 +9,7 @@ namespace Plex.Api.Api
 
         public PlexRequestsHttpClient()
         {
-            // Ignore SSL Cert validation
-            var httpClientHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            };
-            _client = new HttpClient(httpClientHandler);
+         _client = new HttpClient();
         }
 
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
