@@ -20,7 +20,7 @@ Installation & Documentation
 
 From Powershell
 .. code-block:: C#
-    Nuget-Intstall 'Plex.Api'
+    Nuget-Install 'Plex.Api'
 
 Dotnet Cli
 .. code-block:: C#
