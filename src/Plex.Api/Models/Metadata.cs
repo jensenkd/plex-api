@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Plex.Api.Helpers;
 
 namespace Plex.Api.Models
 {
@@ -65,7 +66,8 @@ namespace Plex.Api.Models
         public string Banner { get; set; }
         public int LeafCount { get; set; }
         public int ViewedLeafCount { get; set; }
-        public string ChildCount { get; set; }
+        [JsonConverter(typeof(IntValueConverter))]
+        public int ChildCount { get; set; }
         public string Theme { get; set; }
 
 
