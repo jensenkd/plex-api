@@ -82,5 +82,19 @@ Collections
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
+    // Get Collections for Library
     var collections = plexApi
         .GetCollections(authKey, plexServerUrl, libraryKey).Result;
+    
+    // Delete Collection from Movie
+    plexApi.DeleteCollectionFromMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
+    
+    // Add Collection to Movie
+    plexApi.AddCollectionToMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
+
+    // Update Collection
+    var collection = plexApi.GetCollection(authKey, fullUri, collectionRatingKey).Result;
+    collection.Title = "New Title for Collection";
+    plexApi.UpdateCollection(authKey, plexServerUrl, libraryKey, collection);
+            
+
