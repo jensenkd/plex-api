@@ -64,15 +64,102 @@ If you want to avoid logging into MyPlex and you already know your auth token
 string, you can use the PlexServer object directly as above, but passing in
 the baseurl and auth token directly.
 
+Server
+
 .. code-block:: C#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
-    User user = plexApi
+    var user = plexApi
         .SignIn(login, password).Result;
+        
+    // Get Account
+    var user = plexApi.GetAccount(string authToken).Result;
+        
+    // Get Recently Added for Library
+    var recentlyAdded = plexApi.GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey).Result;
+    
+    // Get Library
+    var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+    
+    // Get Servers
+    var servers = plexApi.GetServers(string authToken).Result;
+    
+    // Get Friends
+    var friends = plexApi.GetFriends(string authToken).Result;
 
+Libraries
+
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
     
+    // Get Recently Added for Library
+    var recentlyAdded = plexApi.GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey).Result;
     
- Usage Examples
---------------
+    // Get Libraries
+    var libraries = plexApi.GetLibraries(string authToken, string plexServerHost).Result;
+    
+    // Get Library
+    var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+
+Metadata
+     
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+         
+    // Get Metadata for Library
+    var metadatas = plexApi.MetadataForLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+  
+    // Get Children for Metadata by Metadata Key
+    var metadatas = plexApi.GetChildrenMetadata(string authToken, string plexServerHost, int metadataKey).Result;
+
+    // Get Metadata by Key
+    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;    
+
+Sessions
+
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    
+    // Get All Sessions on Server
+    var sessions = plexApi.GetSessions(string authToken, string plexServerHost).Result;
+    
+    // Get Session for Player Machine Id
+    var session = plexApl.GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey).Result;
+
+
+
+Collections
+
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    
+    // Get Collections for Library
+    var collections = plexApi
+        .GetCollections(authKey, plexServerUrl, libraryKey).Result;
+        
+    // Get Collection Tags for Movie
+    var collectionTags = plexApi.GetCollectionTagsForMovie(authKey, plexServerUrl, movieKey).Result;
+        
+    // Get Collection
+    var collection = plexApi.GetCollection(authKey, plexServerUrl, collectionKey).Result;    
+    
+    // Get Collection Movies
+    var movies = plexApi.GetCollectionMovies(authKey, plexServerUrl, collectionKey).Result;
+
+    // Delete Collection from Movie
+    plexApi.DeleteCollectionFromMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
+    
+    // Add Collection to Movie
+    plexApi.AddCollectionToMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
+
+    // Update Collection
+    var collection = plexApi.GetCollection(authKey, fullUri, collectionRatingKey).Result;
+    collection.Title = "New Title for Collection";
+    plexApi.UpdateCollection(authKey, plexServerUrl, libraryKey, collection);
+            
 
