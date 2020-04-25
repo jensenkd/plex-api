@@ -71,10 +71,6 @@ the baseurl and auth token directly.
     User user = plexApi
         .SignIn(login, password).Result;
 
-    
-    
- Usage Examples
---------------
 
 Collections
 
