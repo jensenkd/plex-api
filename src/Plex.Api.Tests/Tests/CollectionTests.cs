@@ -27,7 +27,24 @@ namespace Plex.Api.Tests.Tests
 
             Assert.IsNotNull(collections);
             Assert.IsTrue(collections.Count > 0);
+        } 
+        
+        [TestMethod]
+        public void Test_GetCollection()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+          
+            List<Server> servers = plexApi.GetServers(authKey).Result;
+            string fullUri = servers[0].FullUri.ToString();
+
+            var collection = plexApi.GetCollection(authKey, fullUri, "112898").Result;
+
+            Assert.AreEqual(collection.Title, "Poster");
+            
         }
+        
         
         [TestMethod]
         public void Test_AddCollectionToMovie()
@@ -67,13 +84,28 @@ namespace Plex.Api.Tests.Tests
             List<Server> servers = plexApi.GetServers(authKey).Result;
             string fullUri = servers[0].FullUri.ToString();
 
-            // Add Collection to Movie
+            // Delete Collection to Movie
             plexApi.DeleteCollectionFromMovie(authKey, fullUri, libraryKey ,movieKey, collectionName);
 
             // Verify Collection was added
             List<string> collections = plexApi.GetCollectionTagsForMovie(authKey, fullUri, movieKey).Result;
             
             Assert.IsTrue(collections == null || !collections.Contains(collectionName));
+        }
+
+        [TestMethod]
+        public void Test_GetCollectionChildren()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+          
+            List<Server> servers = plexApi.GetServers(authKey).Result;
+            string fullUri = servers[0].FullUri.ToString();
+
+            var movies = plexApi.GetChildrenMetadata(authKey, fullUri, 112898).Result;
+
+            Assert.IsTrue(movies.MediaContainer.Metadata.Count > 0);
         }
         
         [TestMethod]

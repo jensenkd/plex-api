@@ -18,12 +18,13 @@ namespace Plex.Api
         Task<List<Server>> GetServers(string authToken);
         Task<List<Friend>> GetFriends(string authToken);
         Task<PlexMediaContainer> GetLibraries(string authToken, string plexServerHost);
-        Task<PlexMediaContainer> GetLibrary(string authToken, string plexServerHost, string key);
-        Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string key);
+        Task<PlexMediaContainer> GetLibrary(string authToken, string plexServerHost, string libraryKey);
+        Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey);
         Task<PlexMediaContainer> GetMetadata(string authToken, string plexServerHost, int metadataId);
         Task<PlexMediaContainer> GetChildrenMetadata(string authToken, string plexServerHost, int metadataId);
         Task<PlexMediaContainer> GetPlexInfo(string authToken, string plexServerHost);
         Task<List<Session>> GetSessions(string authToken, string plexServerHost);
+        Task<Session> GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey);
         
         // Collections
         Task<List<CollectionModel>> GetCollections(string authToken, string plexServerHost, string libraryKey);

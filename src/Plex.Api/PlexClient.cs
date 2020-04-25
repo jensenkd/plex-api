@@ -168,11 +168,11 @@ namespace Plex.Api
         /// </summary>
         /// <param name="authToken">Authentication Token</param>
         /// <param name="plexServerHost">Plex Host Uri</param>
-        /// <param name="key">Library Key</param>
+        /// <param name="libraryKey">Library Key</param>
         /// <returns></returns>
-        public async Task<PlexMediaContainer> GetLibrary(string authToken, string plexServerHost, string key)
+        public async Task<PlexMediaContainer> GetLibrary(string authToken, string plexServerHost, string libraryKey)
         {
-            var apiRequest = new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/all", HttpMethod.Get)
+            var apiRequest = new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(GetClientIdentifierHeader())
                 .AcceptJson()
@@ -188,12 +188,12 @@ namespace Plex.Api
         /// </summary>
         /// <param name="authToken">Authentication Token</param>
         /// <param name="plexServerHost">Plex Host Uri</param>
-        /// <param name="key"></param>
+        /// <param name="libraryKey">Library Key</param>
         /// <returns></returns>
-        public async Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string key)
+        public async Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey)
         {
             var apiRequest =
-                new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/recentlyAdded", HttpMethod.Get)
+                new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/recentlyAdded", HttpMethod.Get)
                     .AddPlexToken(authToken)
                     .AddRequestHeaders(GetClientIdentifierHeader())
                     .AcceptJson()
@@ -283,6 +283,11 @@ namespace Plex.Api
             var sessionWrapper = await _apiService.InvokeApiAsync<SessionWrapper>(apiRequest);
 
             return sessionWrapper.SessionContainer.Sessions?.ToList();
+        }
+
+        public Task<Session> GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <summary>
