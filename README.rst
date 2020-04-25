@@ -77,6 +77,7 @@ the baseurl and auth token directly.
 --------------
 
 Collections
+
 .. code-block:: C#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
