@@ -64,12 +64,33 @@ If you want to avoid logging into MyPlex and you already know your auth token
 string, you can use the PlexServer object directly as above, but passing in
 the baseurl and auth token directly.
 
+Server
+
 .. code-block:: C#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
     User user = plexApi
         .SignIn(login, password).Result;
+        
+    // Get Recently Added for Library
+    var recentlyAdded = plexApi.GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey).Result;
+    
+    // Get Library
+    var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+
+Sessions
+
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    
+    // Get All Sessions on Server
+    var sessions = plexApi.GetSessions(string authToken, string plexServerHost).Result;
+    
+    // Get Session for Player Machine Id
+    var session = plexApl.GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey).Result;
+
 
 
 Collections
