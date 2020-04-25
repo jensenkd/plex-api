@@ -81,7 +81,16 @@ Collections
     // Get Collections for Library
     var collections = plexApi
         .GetCollections(authKey, plexServerUrl, libraryKey).Result;
+        
+    // Get Collection Tags for Movie
+    var collectionTags = plexApi.GetCollectionTagsForMovie(authKey, plexServerUrl, movieKey).Result;
+        
+    // Get Collection
+    var collection = plexApi.GetCollection(authKey, plexServerUrl, collectionKey).Result;    
     
+    // Get Collection Movies
+    var movies = plexApi.GetCollectionMovies(authKey, plexServerUrl, collectionKey).Result;
+
     // Delete Collection from Movie
     plexApi.DeleteCollectionFromMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
     
