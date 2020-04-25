@@ -79,6 +79,36 @@ Server
     // Get Library
     var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
 
+Libraries
+
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    
+    // Get Recently Added for Library
+    var recentlyAdded = plexApi.GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey).Result;
+    
+    // Get Libraries
+    var libraries = plexApi.GetLibraries(string authToken, string plexServerHost).Result;
+    
+    // Get Library
+    var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+
+Metadata
+     
+ .. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+         
+    // Get Metadata for Library
+    var metadatas = plexApi.MetadataForLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+  
+    // Get Metadata Children by Key
+    var metadatas = plexApi.GetMetadataChildren(string authToken, string plexServerHost, int metadataKey).Result;
+
+    // Get Metadata by Key
+    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;    
+
 Sessions
 
 .. code-block:: C#
