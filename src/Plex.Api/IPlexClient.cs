@@ -5,7 +5,7 @@ using Plex.Api.Models.Friends;
 using Plex.Api.Models.OAuth;
 using Plex.Api.Models.Server;
 using Plex.Api.Models.Status;
-
+using Plex.Api.ResourceModels;
 
 namespace Plex.Api
 {
@@ -24,5 +24,17 @@ namespace Plex.Api
         Task<PlexMediaContainer> GetChildrenMetadata(string authToken, string plexServerHost, int metadataId);
         Task<PlexMediaContainer> GetPlexInfo(string authToken, string plexServerHost);
         Task<List<Session>> GetSessions(string authToken, string plexServerHost);
+        
+        // Collections
+        Task<List<CollectionModel>> GetCollections(string authToken, string plexServerHost, string libraryKey);
+        Task<CollectionModel> GetCollection(string authToken, string plexServerHost, string collectionKey);
+        Task<List<string>> GetCollectionTagsForMovie(string authToken, string plexServerHost, string movieKey);
+        Task AddCollectionToMovie(string authToken, string plexServerHost, string libraryKey, string movieKey, string collectionName);
+        Task DeleteCollectionFromMovie(string authToken, string plexServerHost, string libraryKey, string movieKey,
+            string collectionName);
+        Task UpdateCollection(string authToken, string plexServerHost, string libraryKey,
+            CollectionModel collectionModel);
+        Task<List<Metadata>> GetCollectionMovies(string authToken, string plexServerHost, string collectionKey);
+
     }
 }

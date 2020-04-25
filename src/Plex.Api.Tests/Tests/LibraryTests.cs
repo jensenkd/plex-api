@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +41,32 @@ namespace Plex.Api.Tests.Tests
             
             Assert.IsNotNull(movie.MediaContainer.Metadata, "Error retrieving Libraries");
             Assert.IsNotNull(tv.MediaContainer.Metadata, "Error retrieving Libraries");
+        }
+
+        [TestMethod]
+        
+        public void Test_Get_All_Movies()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+            List<Server> servers = plexApi.GetServers(authKey).Result;
+
+            string fullUri = servers[0].FullUri.ToString();
+            
+            var movieLibraries = new[] {"Movies"};
+
+            var libraries = plexApi.GetLibraries(authKey, fullUri).Result;
+
+            List<Directory> directories = libraries.MediaContainer.Directory.
+                Where(c => movieLibraries.Contains(c.Title, StringComparer.OrdinalIgnoreCase)).ToList();
+
+            List<Metadata> movies = new List<Metadata>();
+            foreach (var directory in directories)
+            {
+                var items = plexApi.GetLibrary(authKey, fullUri, directory.Key).Result.MediaContainer.Metadata;
+                movies.AddRange(items);
+            }
         }
         
         [TestMethod]

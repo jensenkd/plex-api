@@ -65,7 +65,7 @@ namespace Plex.Api.Models
         public string Banner { get; set; }
         public int LeafCount { get; set; }
         public int ViewedLeafCount { get; set; }
-        public int ChildCount { get; set; }
+        public string ChildCount { get; set; }
         public string Theme { get; set; }
 
 
@@ -89,6 +89,7 @@ namespace Plex.Api.Models
         
         //Movie Section
         public string PrimaryExtraKey { get; set; }
+        [JsonPropertyName("Collection")]
         public List<Collection> Collection { get; set; }
         public string OriginalTitle { get; set; }
         public int? ViewOffset { get; set; }
