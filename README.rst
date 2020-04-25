@@ -76,3 +76,10 @@ the baseurl and auth token directly.
  Usage Examples
 --------------
 
+Collections
+.. code-block:: C#
+
+    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    
+    var collections = plexApi
+        .GetCollections(authKey, plexServerUrl, libraryKey).Result;
