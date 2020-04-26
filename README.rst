@@ -75,13 +75,7 @@ Server
         
     // Get Account
     var user = plexApi.GetAccount(string authToken).Result;
-        
-    // Get Recently Added for Library
-    var recentlyAdded = plexApi.GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey).Result;
-    
-    // Get Library
-    var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
-    
+          
     // Get Servers
     var servers = plexApi.GetServers(string authToken).Result;
     
