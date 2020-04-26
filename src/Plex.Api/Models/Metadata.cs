@@ -5,12 +5,13 @@ using Plex.Api.Helpers;
 namespace Plex.Api.Models
 {
     public class Metadata
-    {    
+    {
         //Movie
         public string RatingKey { get; set; }
         public string Key { get; set; }
         public string Guid { get; set; }
         public string LibrarySectionTitle { get; set; }
+        [JsonPropertyName("librarySectionID")] 
         public int LibrarySectionId { get; set; }
         public string LibrarySectionKey { get; set; }
         public string Studio { get; set; }
@@ -31,43 +32,36 @@ namespace Plex.Api.Models
         public int UpdatedAt { get; set; }
         public string ChapterSource { get; set; }
         public string RatingImage { get; set; }
-        
-        [JsonPropertyName("Media")]
-        public List<Medium> Media { get; set; }
-        
-        [JsonPropertyName("Genre")]
-        public Genre[] Genres { get; set; }
-        
-        [JsonPropertyName("Director")]
-        public Director[] Directors { get; set; }
-        
-        [JsonPropertyName("Writer")]
-        public Writer[] Writers { get; set; }
 
-        [JsonPropertyName("Producer")]
-        public List<Producer> Producer { get; set; }
-        
-        [JsonPropertyName("Country")]
-        public Country[] Countries { get; set; }
+        [JsonPropertyName("Media")] public List<Medium> Media { get; set; }
 
-        [JsonPropertyName("Role")]
-        public List<MediaRole> Roles { get; set; }
-        
-        [JsonPropertyName("Similar")]
-        public List<Similar> Similar { get; set; }
-        
-        [JsonPropertyName("Field")]
-        public List<Field> Field { get; set; }
-     
-        
+        [JsonPropertyName("Genre")] public Genre[] Genres { get; set; }
+
+        [JsonPropertyName("Director")] public Director[] Directors { get; set; }
+
+        [JsonPropertyName("Writer")] public Writer[] Writers { get; set; }
+
+        [JsonPropertyName("Producer")] public List<Producer> Producer { get; set; }
+
+        [JsonPropertyName("Country")] public Country[] Countries { get; set; }
+
+        [JsonPropertyName("Role")] public List<MediaRole> Roles { get; set; }
+
+        [JsonPropertyName("Similar")] public List<Similar> Similar { get; set; }
+
+        [JsonPropertyName("Field")] public List<Field> Field { get; set; }
+
+
         //Library Sections
         public string TitleSort { get; set; }
         public int Index { get; set; }
         public string Banner { get; set; }
         public int LeafCount { get; set; }
         public int ViewedLeafCount { get; set; }
+
         [JsonConverter(typeof(IntValueConverter))]
         public int ChildCount { get; set; }
+
         public string Theme { get; set; }
 
 
@@ -78,8 +72,8 @@ namespace Plex.Api.Models
         public int ParentIndex { get; set; }
         public string ParentThumb { get; set; }
         public string ParentTheme { get; set; }
- 
-      
+
+
         //TV Show Episode
         public string GrandparentRatingKey { get; set; }
         public string GrandparentKey { get; set; }
@@ -87,12 +81,11 @@ namespace Plex.Api.Models
         public string GrandparentThumb { get; set; }
         public string GrandparentArt { get; set; }
         public string GrandparentTheme { get; set; }
-        
-        
+
+
         //Movie Section
         public string PrimaryExtraKey { get; set; }
-        [JsonPropertyName("Collection")]
-        public List<Collection> Collection { get; set; }
+        [JsonPropertyName("Collection")] public List<Collection> Collection { get; set; }
         public string OriginalTitle { get; set; }
         public int? ViewOffset { get; set; }
     }
