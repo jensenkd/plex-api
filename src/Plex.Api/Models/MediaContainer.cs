@@ -37,6 +37,7 @@ namespace Plex.Api.Models
         public bool SortAsc { get; set; }
         public string Summary { get; set; }
         public string Theme { get; set; }
+        
         [JsonPropertyName("Directory")]
         public List<Directory> Directory { get; set; }
         

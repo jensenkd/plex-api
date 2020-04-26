@@ -46,7 +46,7 @@ namespace Plex.Api.Models
         [JsonPropertyName("updatedAt")]
         public int UpdatedAt { get; set; }
 
-        [JsonPropertyName("cratedAt")]
+        [JsonPropertyName("createdAt")]
         public int CreatedAt { get; set; }
         
         [JsonPropertyName("scannedAt")]

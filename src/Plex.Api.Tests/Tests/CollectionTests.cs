@@ -1,12 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Plex.Api.Models;
-using Plex.Api.Models.Friends;
 using Plex.Api.Models.Server;
-using Plex.Api.Models.Status;
 
 namespace Plex.Api.Tests.Tests
 {
