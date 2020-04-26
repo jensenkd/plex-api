@@ -183,6 +183,23 @@ namespace Plex.Api
             return plexMediaContainer;
         }
 
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Plex Host Uri</param>
+        /// <param name="libraryKey">Library Key</param>
+        public async Task<PlexMediaContainer> GetMetadataForLibrary(string authToken, string plexServerHost, string libraryKey)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(GetClientIdentifierHeader())
+                    .AcceptJson()
+                    .Build();
+
+            var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+
+            return plexMediaContainer;
+        }
+
         /// <summary>
         /// 
         /// </summary>

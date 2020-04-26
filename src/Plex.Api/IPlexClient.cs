@@ -19,6 +19,8 @@ namespace Plex.Api
         Task<List<Friend>> GetFriends(string authToken);
         Task<PlexMediaContainer> GetLibraries(string authToken, string plexServerHost);
         Task<PlexMediaContainer> GetLibrary(string authToken, string plexServerHost, string libraryKey);
+        Task<PlexMediaContainer> GetMetadataForLibrary(string authToken, string plexServerHost, string libraryKey);
+
         Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey);
         Task<PlexMediaContainer> GetMetadata(string authToken, string plexServerHost, int metadataId);
         Task<PlexMediaContainer> GetChildrenMetadata(string authToken, string plexServerHost, int metadataId);

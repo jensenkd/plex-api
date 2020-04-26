@@ -44,7 +44,21 @@ namespace Plex.Api.Tests.Tests
         }
 
         [TestMethod]
-        
+        public void Test_Get_MetadataForLibrary()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+            List<Server> servers = plexApi.GetServers(authKey).Result;
+
+            string fullUri = servers[0].FullUri.ToString();
+
+            var items = plexApi.GetMetadataForLibrary(authKey, fullUri, "1").Result;
+
+            Assert.IsTrue(items.MediaContainer.Metadata.Any());
+        }
+
+        [TestMethod]
         public void Test_Get_All_Movies()
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
