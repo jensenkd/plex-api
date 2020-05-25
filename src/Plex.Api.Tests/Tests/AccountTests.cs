@@ -17,18 +17,12 @@ namespace Plex.Api.Tests.Tests
         [TestMethod]
         public void Test_CreateOAuthPin()
         {
+            string redirectUrl = "http://test.com";
             var plexApi = ServiceProvider.GetService<IPlexClient>();
-            var result1 = plexApi.CreateOAuthPin().Result;
+            var result1 = plexApi.CreateOAuthPin(redirectUrl).Result;
 
-            string product = "";
-            string platform = "";
-            string device = "";
-            string clientId = "";
-            string redirectUrl = "";
-
-            string url =
-                $"https://app.plex.tv/auth#?context[device][product]={product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={platform}&context[device][device]={device}&clientID={clientId}&forwardUrl={redirectUrl}&code={result1.Code}";
-
+            var url = result1.Url;
+            
             Assert.IsNotNull(result1);
         }
         

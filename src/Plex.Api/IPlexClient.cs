@@ -11,7 +11,7 @@ namespace Plex.Api
 {
     public interface IPlexClient
     {
-        Task<OAuthPin> CreateOAuthPin();
+        Task<OAuthPin> CreateOAuthPin(string redirectUrl);
         Task<OAuthPin> GetAuthTokenFromOAuthPin(string pinId);
         Task<User> SignIn(string username, string password);
         Task<User> GetAccount(string authToken);

@@ -29,7 +29,7 @@ namespace Plex.Api
         /// Create Pin
         /// </summary>
         /// <returns></returns>
-        public async Task<OAuthPin> CreateOAuthPin()
+        public async Task<OAuthPin> CreateOAuthPin(string redirectUrl)
         {
             var apiRequest =
                 new ApiRequestBuilder(_baseUri, "pins", HttpMethod.Post)
@@ -39,9 +39,10 @@ namespace Plex.Api
                     .AddRequestHeaders(GetClientMetaHeaders())
                     .Build();
 
-            var oauthPin = await _apiService.InvokeApiAsync<OAuthPin>(apiRequest);
+            var oAuthPin = await _apiService.InvokeApiAsync<OAuthPin>(apiRequest);
+            oAuthPin.Url = $"https://app.plex.tv/auth#?context[device][product]={_clientOptions.ApplicationName}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={_clientOptions.Platform}&context[device][device]={_clientOptions.DeviceName}&clientID={_clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
 
-            return oauthPin;
+            return oAuthPin;
         }
 
         /// <summary>
@@ -543,7 +544,7 @@ namespace Plex.Api
                 ["X-Plex-Product"] = _clientOptions.ApplicationName,
                 ["X-Plex-Version"] = _clientOptions.Version,
                 ["X-Plex-Device"] = _clientOptions.DeviceName,
-                ["X-Plex-Platform"] = "Web"
+                ["X-Plex-Platform"] = _clientOptions.Platform
             };
 
             return plexHeaders;

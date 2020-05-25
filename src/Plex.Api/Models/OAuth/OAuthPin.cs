@@ -13,6 +13,7 @@ namespace Plex.Api.Models.OAuth
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
         public string AuthToken { get; set; }
+        public string Url { get; set; }
     }
 
     public class Location
