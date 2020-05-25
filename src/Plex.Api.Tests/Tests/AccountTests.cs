@@ -46,6 +46,8 @@ namespace Plex.Api.Tests.Tests
 
             User user = plexApi
                 .SignIn(login, password).Result;
+            
+            List<Server> servers = plexApi.GetServers(user.AuthenticationToken).Result;
 
             Assert.IsNotNull(user, $"Authentication Failed for {login}/{password}");
             Assert.AreEqual(user.Email, login);
