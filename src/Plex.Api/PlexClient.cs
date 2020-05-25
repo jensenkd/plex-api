@@ -40,7 +40,7 @@ namespace Plex.Api
                     .Build();
 
             var oAuthPin = await _apiService.InvokeApiAsync<OAuthPin>(apiRequest);
-            oAuthPin.Url = $"https://app.plex.tv/auth#?context[device][product]={_clientOptions.ApplicationName}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={_clientOptions.Platform}&context[device][device]={_clientOptions.DeviceName}&clientID={_clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
+            oAuthPin.Url = $"https://app.plex.tv/auth#?context[device][product]={_clientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={_clientOptions.Platform}&context[device][device]={_clientOptions.DeviceName}&clientID={_clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
 
             return oAuthPin;
         }
@@ -541,7 +541,7 @@ namespace Plex.Api
         {
             var plexHeaders = new Dictionary<string, string>
             {
-                ["X-Plex-Product"] = _clientOptions.ApplicationName,
+                ["X-Plex-Product"] = _clientOptions.Product,
                 ["X-Plex-Version"] = _clientOptions.Version,
                 ["X-Plex-Device"] = _clientOptions.DeviceName,
                 ["X-Plex-Platform"] = _clientOptions.Platform

@@ -21,7 +21,7 @@ namespace Plex.Api.Tests
             
             var apiOptions = new ClientOptions
             {
-                ApplicationName = "API_UnitTests",
+                Product = "API_UnitTests",
                 DeviceName = "API_UnitTests",
                 ClientId = Guid.NewGuid()
             };
