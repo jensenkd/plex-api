@@ -6,7 +6,7 @@ namespace Plex.Api
     {
         public string Product { get; set; } = "Unknown";
         public string DeviceName { get; set; } = "Unknown";
-        public Guid ClientId { get; set; } = Guid.NewGuid();
+        public string ClientId { get; set; } = "PlexApi";
         public string Version { get; set; } = "v1";
         public string Platform { get; set; } = "Web";
     }

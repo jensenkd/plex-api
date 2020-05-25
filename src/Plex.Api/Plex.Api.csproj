@@ -7,7 +7,7 @@
         <Authors>Kevin Jensen</Authors>
         <RepositoryUrl>https://github.com/jensenkd/plex-api</RepositoryUrl>
         <PackageTags>plex dotnet core api</PackageTags>
-        <PackageVersion></PackageVersion>
+        <PackageVersion>1.0.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -531,7 +531,7 @@ namespace Plex.Api
         {
             var plexHeaders = new Dictionary<string, string>
             {
-                ["X-Plex-Client-Identifier"] = _clientOptions.ClientId.ToString("N")
+                ["X-Plex-Client-Identifier"] = _clientOptions.ClientId
             };
 
             return plexHeaders;
