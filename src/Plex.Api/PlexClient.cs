@@ -29,7 +29,7 @@ namespace Plex.Api
         /// Create Pin
         /// </summary>
         /// <returns></returns>
-        public async Task<OAuthPin> CreatePin()
+        public async Task<OAuthPin> CreateOAuthPin()
         {
             var apiRequest =
                 new ApiRequestBuilder(_baseUri, "pins", HttpMethod.Post)
@@ -49,7 +49,7 @@ namespace Plex.Api
         /// </summary>
         /// <param name="pinId"></param>
         /// <returns></returns>
-        public async Task<OAuthPin> GetPin(int pinId)
+        public async Task<OAuthPin> GetAuthTokenFromOAuthPin(string pinId)
         {
             var apiRequest =
                 new ApiRequestBuilder(_baseUri, $"pins/{pinId}", HttpMethod.Get)
