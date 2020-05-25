@@ -12,6 +12,8 @@ namespace Plex.Api.Tests
     {
         protected readonly ServiceProvider ServiceProvider;
         protected readonly IConfiguration Configuration;
+
+        protected readonly ClientOptions ClientOptions;
         
         protected TestBase()
         {
@@ -19,17 +21,20 @@ namespace Plex.Api.Tests
                 .AddUserSecrets<TestBase>()
                 .Build();
             
-            var apiOptions = new ClientOptions
+            ClientOptions = new ClientOptions
             {
                 Platform = "Web",
                 Product = "API_UnitTests",
                 DeviceName = "API_UnitTests",
-                ClientId = "PlexApi"
+                ClientId = "PlexApi",
+                Version = "v1"
             };
+            
+            
             
             var services = new ServiceCollection();
             services.AddLogging();
-            services.AddSingleton(apiOptions);
+            services.AddSingleton(ClientOptions);
             services.AddTransient<IPlexClient, PlexClient>();
             services.AddTransient<IApiService, ApiService>();
             services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();

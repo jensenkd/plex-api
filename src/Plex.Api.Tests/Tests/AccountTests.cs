@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Plex.Api.Api;
 using Plex.Api.Models;
 using Plex.Api.Models.Friends;
 using Plex.Api.Models.Server;
@@ -19,13 +21,16 @@ namespace Plex.Api.Tests.Tests
         {
             string redirectUrl = "http://test.com";
             var plexApi = ServiceProvider.GetService<IPlexClient>();
-            var result1 = plexApi.CreateOAuthPin(redirectUrl).Result;
 
-            var url = result1.Url;
-            
-            Assert.IsNotNull(result1);
+            var result = plexApi.CreateOAuthPin(redirectUrl).Result;
+
+            Assert.AreEqual(
+                $"https://app.plex.tv/auth#?context[device][product]={this.ClientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={this.ClientOptions.Platform}&context[device][device]={this.ClientOptions.DeviceName}&clientID={this.ClientOptions.ClientId}&forwardUrl={redirectUrl}&code={result.Code}",
+                result.Url);
+
+            Assert.IsNotNull(result);
         }
-        
+
         [TestMethod]
         public void Test_GetAccessTokenFromOAuthPin()
         {
@@ -46,7 +51,7 @@ namespace Plex.Api.Tests.Tests
 
             User user = plexApi
                 .SignIn(login, password).Result;
-            
+
             List<Server> servers = plexApi.GetServers(user.AuthenticationToken).Result;
 
             Assert.IsNotNull(user, $"Authentication Failed for {login}/{password}");
@@ -61,30 +66,29 @@ namespace Plex.Api.Tests.Tests
             var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
 
             User user = plexApi.GetAccount(authKey).Result;
-            
+
             Assert.IsNotNull(user.Email);
         }
-        
+
         [TestMethod]
         public void Test_Get_Server()
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
             var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
-            
+
             List<Server> servers = plexApi.GetServers(authKey).Result;
-            
         }
-        
+
         [TestMethod]
         public void Test_Get_Friends()
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
 
             var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
-            
+
             List<Friend> friends = plexApi.GetFriends(authKey).Result;
-            
+
             Assert.IsNotNull(friends);
         }
 
@@ -99,7 +103,7 @@ namespace Plex.Api.Tests.Tests
 
             var fullUri = servers[0].Host.ReturnUriFromServerInfo(servers[0]);
 
-            
+
             var info = plexApi.GetPlexInfo(authKey, fullUri.ToString()).Result;
 
             Assert.IsNotNull(info);
@@ -122,7 +126,7 @@ namespace Plex.Api.Tests.Tests
             {
                 Session session = sessions
                     .FirstOrDefault(c => c.Player.MachineIdentifier == "mot82pjdqtmfsy7q2xkgj6hi");
-            
+
                 Assert.IsNotNull(session);
             }
         }
