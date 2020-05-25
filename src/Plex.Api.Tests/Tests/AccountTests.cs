@@ -15,6 +15,24 @@ namespace Plex.Api.Tests.Tests
     public class AccountTests : TestBase
     {
         [TestMethod]
+        public void Test_CreateAndGetOAuthPin()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+            var result1 = plexApi.CreatePin().Result;
+
+            string product = "";
+            string platform = "";
+            string device = "";
+            string clientId = "";
+            string redirectUrl = "";
+
+            string url =
+                $"https://app.plex.tv/auth#?context[device][product]={product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={platform}&context[device][device]={device}&clientID={clientId}&forwardUrl={redirectUrl}&code={result1.Code}";
+
+            Assert.IsNotNull(result1);
+        }
+
+        [TestMethod]
         public void Test_SignIn()
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
