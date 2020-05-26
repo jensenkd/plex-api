@@ -19,17 +19,18 @@ Installation & Documentation
 ----------------------------
 
 From Powershell
-.. code-block:: C#
+```c#
     Nuget-Install 'Plex.Api'
+```
 
 Dotnet Cli
-.. code-block:: C#
+```c#
     dotnet add package 'Plex.Api'
+```
 
+Documentation can be found at Read the Docs.
 
-Documentation_ can be found at Read the Docs.
-
-.. _Documentation: http://jensenkd-plex-api.readthedocs.io/en/latest/
+<coming soon>
 
 Getting a PlexClient Instance
 -----------------------------
@@ -40,14 +41,16 @@ example of this is below. NOTE: Servername below is the name of the server (not
 the hostname and port).  If logged into Plex Web you can see the server name in
 the top left above your available libraries.
 
-.. code-block:: C#
+```c#
 
     // Create Client Options
     var apiOptions = new ClientOptions
     {
-        ApplicationName = "API_UnitTests",
+        Product = "API_UnitTests",
         DeviceName = "API_UnitTests",
-        ClientId = Guid.NewGuid()
+        ClientId = "MyClientId",
+        Platform = "Web,
+        Version = "v1"
     };
 
     // Create DI Provider
@@ -58,7 +61,7 @@ the top left above your available libraries.
     services.AddTransient<IApiService, ApiService>();
     services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
     ServiceProvider = services.BuildServiceProvider();
-    
+```    
 
 If you want to avoid logging into MyPlex and you already know your auth token
 string, you can use the PlexServer object directly as above, but passing in
@@ -66,7 +69,7 @@ the baseurl and auth token directly.
 
 Server
 
-.. code-block:: C#
+```c#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
@@ -81,10 +84,11 @@ Server
     
     // Get Friends
     var friends = plexApi.GetFriends(string authToken).Result;
+```
 
 Libraries
 
-.. code-block:: C#
+```c#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
@@ -97,9 +101,9 @@ Libraries
     // Get Library
     var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
 
-Metadata
+```
      
-.. code-block:: C#
+```c#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
          
@@ -111,10 +115,11 @@ Metadata
 
     // Get Metadata by Key
     var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;    
+```
 
 Sessions
 
-.. code-block:: C#
+```c#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
@@ -123,12 +128,12 @@ Sessions
     
     // Get Session for Player Machine Id
     var session = plexApl.GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey).Result;
-
+```
 
 
 Collections
 
-.. code-block:: C#
+```c#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
@@ -155,11 +160,11 @@ Collections
     var collection = plexApi.GetCollection(authKey, fullUri, collectionRatingKey).Result;
     collection.Title = "New Title for Collection";
     plexApi.UpdateCollection(authKey, plexServerUrl, libraryKey, collection);
-
+```
 
 OAuth Implementation Example
 
-.. code-block:: C#
+```c#
 
     public class PlexLoginController : Controller
     {
@@ -194,3 +199,4 @@ OAuth Implementation Example
             return Redirect("/plex");
         }
     }
+    ```
