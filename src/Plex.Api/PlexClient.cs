@@ -128,6 +128,18 @@ namespace Plex.Api
             return serverContainer?.Servers;
         }
 
+        public async Task<List<Resource>> GetResources(string authToken)
+        {
+            var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/resources.xml", "", HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(GetClientIdentifierHeader())
+                .Build();
+
+            ResourceContainer resourceContainer = await _apiService.InvokeApiAsync<ResourceContainer>(apiRequest);
+
+            return resourceContainer?.Devices;
+        }
+
         /// <summary>
         /// Retuns all the Plex friends for this account
         /// </summary>

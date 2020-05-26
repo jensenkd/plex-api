@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Plex.Api.Api;
 using Plex.Api.Models;
 using Plex.Api.Models.Friends;
 using Plex.Api.Models.Server;
@@ -68,6 +65,15 @@ namespace Plex.Api.Tests.Tests
             User user = plexApi.GetAccount(authKey).Result;
 
             Assert.IsNotNull(user.Email);
+        }
+        
+        [TestMethod]
+        public void Test_Get_Resources()
+        {
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+            var resources = plexApi.GetResources(authKey).Result;
+            Assert.IsNotNull(resources);
         }
 
         [TestMethod]

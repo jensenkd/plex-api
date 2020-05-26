@@ -15,6 +15,7 @@ namespace Plex.Api
         Task<OAuthPin> GetAuthTokenFromOAuthPin(string pinId);
         Task<User> SignIn(string username, string password);
         Task<User> GetAccount(string authToken);
+        Task<List<Resource>> GetResources(string authToken);
         Task<List<Server>> GetServers(string authToken);
         Task<List<Friend>> GetFriends(string authToken);
         Task<PlexMediaContainer> GetLibraries(string authToken, string plexServerHost);
