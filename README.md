@@ -2,7 +2,6 @@ plex-api
 ==============
 
 ![.NET Core](https://github.com/jensenkd/plex-api/workflows/.NET%20Core/badge.svg)
-    :target: https://github.com/jensenkd/plex-api
 
 Overview
 --------
@@ -49,7 +48,7 @@ the top left above your available libraries.
         Product = "API_UnitTests",
         DeviceName = "API_UnitTests",
         ClientId = "MyClientId",
-        Platform = "Web,
+        Platform = "Web",
         Version = "v1"
     };
 
@@ -102,7 +101,9 @@ Libraries
     var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
 
 ```
-     
+
+Metadata
+
 ```c#
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
@@ -160,6 +161,7 @@ Collections
     var collection = plexApi.GetCollection(authKey, fullUri, collectionRatingKey).Result;
     collection.Title = "New Title for Collection";
     plexApi.UpdateCollection(authKey, plexServerUrl, libraryKey, collection);
+
 ```
 
 OAuth Implementation Example
@@ -199,4 +201,4 @@ OAuth Implementation Example
             return Redirect("/plex");
         }
     }
-    ```
+```
