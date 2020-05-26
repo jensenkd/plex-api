@@ -83,6 +83,10 @@ Server
     
     // Get Friends
     var friends = plexApi.GetFriends(string authToken).Result;
+    
+    // Get Resources
+    var resources = plexApi.GetResources(string authToken).Result;
+    
 ```
 
 Libraries
