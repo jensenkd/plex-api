@@ -155,5 +155,42 @@ Collections
     var collection = plexApi.GetCollection(authKey, fullUri, collectionRatingKey).Result;
     collection.Title = "New Title for Collection";
     plexApi.UpdateCollection(authKey, plexServerUrl, libraryKey, collection);
-            
 
+
+OAuth Implementation Example
+
+.. code-block:: C#
+
+    public class PlexLoginController : Controller
+    {
+        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly PlexOAuthClient _plexOAuthClient;
+        private readonly IPlexClient _plexClient;
+
+        public PlexLoginController(PlexOAuthClient plexOAuthClient, IPlexClient plexClient)
+        {
+            _plexOAuthClient = plexOAuthClient;
+            _plexClient = plexClient;
+        }
+
+        public async Task<IActionResult> IndexAsync()
+        {
+            var redirectUrl = Url.Action("PlexReturn", "PlexLogin", null, Request.Scheme);
+            var oauthUrl = await _plexClient.CreateOAuthPin(redirectUrl);
+            HttpContext.Session.SetString("PlexOauthId", oauthUrl.Id.ToString());
+            return Redirect(oauthUrl.Url);
+        }
+
+        public async Task<IActionResult> PlexReturn()
+        {
+            var oauthId = HttpContext.Session.GetString("PlexOauthId");
+            var oAuthPin = await _plexClient.GetAuthTokenFromOAuthPin(oauthId);
+
+            if (string.IsNullOrEmpty(oAuthPin.AuthToken))
+                throw new Exception("Plex auth failed.");
+            HttpContext.Session.Remove("PlexOauthId");
+            HttpContext.Session.SetString("PlexKey", oAuthPin.AuthToken);
+
+            return Redirect("/plex");
+        }
+    }
