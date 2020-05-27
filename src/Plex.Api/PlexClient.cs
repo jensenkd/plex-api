@@ -40,7 +40,8 @@ namespace Plex.Api
                     .Build();
 
             var oAuthPin = await _apiService.InvokeApiAsync<OAuthPin>(apiRequest);
-            oAuthPin.Url = $"https://app.plex.tv/auth#?context[device][product]={_clientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={_clientOptions.Platform}&context[device][device]={_clientOptions.DeviceName}&clientID={_clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
+            oAuthPin.Url =
+                $"https://app.plex.tv/auth#?context[device][product]={_clientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={_clientOptions.Platform}&context[device][device]={_clientOptions.DeviceName}&clientID={_clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
 
             return oAuthPin;
         }
@@ -199,7 +200,8 @@ namespace Plex.Api
         /// <param name="authToken">Authentication Token</param>
         /// <param name="plexServerHost">Plex Host Uri</param>
         /// <param name="libraryKey">Library Key</param>
-        public async Task<PlexMediaContainer> GetMetadataForLibrary(string authToken, string plexServerHost, string libraryKey)
+        public async Task<PlexMediaContainer> GetMetadataForLibrary(string authToken, string plexServerHost,
+            string libraryKey)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
@@ -220,7 +222,8 @@ namespace Plex.Api
         /// <param name="plexServerHost">Plex Host Uri</param>
         /// <param name="libraryKey">Library Key</param>
         /// <returns></returns>
-        public async Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey)
+        public async Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost,
+            string libraryKey)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/recentlyAdded", HttpMethod.Get)
@@ -321,6 +324,45 @@ namespace Plex.Api
         }
 
         /// <summary>
+        /// Marks the Item in plex as 'Played'
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance</param>
+        /// <param name="ratingKey">Rating Key of the item</param>
+        /// <returns></returns>
+        public async Task UnScrobbleItem(string authToken, string plexServerHost, string ratingKey)
+        {
+            var apiRequest = new ApiRequestBuilder(plexServerHost,
+                    ":/unscrobble?identifier=com.plexapp.plugins.library&key=" + ratingKey,
+                    HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(GetClientIdentifierHeader())
+                .AcceptJson()
+                .Build();
+
+            await _apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance</param>
+        /// <param name="ratingKey">Rating Key of the item</param>
+        public async Task ScrobbleItem(string authToken, string plexServerHost, string ratingKey)
+        {
+            var apiRequest = new ApiRequestBuilder(plexServerHost,
+                    ":/scrobble?identifier=com.plexapp.plugins.library&key=" + ratingKey,
+                    HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(GetClientIdentifierHeader())
+                .AcceptJson()
+                .Build();
+
+            await _apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <summary>
         /// Get All Collections for a Given Library
         /// </summary>
         /// <param name="authToken">Authentication Token</param>
@@ -372,7 +414,7 @@ namespace Plex.Api
         public async Task UpdateCollection(string authToken, string plexServerHost, string libraryKey,
             CollectionModel collectionModel)
         {
-           var apiRequest =
+            var apiRequest =
                 new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
                     .AddPlexToken(authToken)
                     .AddRequestHeaders(GetClientIdentifierHeader())
@@ -425,7 +467,8 @@ namespace Plex.Api
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance</param>
         /// <param name="movieKey">Movie Key</param>
         /// <returns></returns>
-        public async Task<List<string>> GetCollectionTagsForMovie(string authToken, string plexServerHost, string movieKey)
+        public async Task<List<string>> GetCollectionTagsForMovie(string authToken, string plexServerHost,
+            string movieKey)
         {
             var movieContainer = await GetMetadata(authToken, plexServerHost, int.Parse(movieKey));
             var movie = movieContainer.MediaContainer.Metadata.FirstOrDefault();
@@ -450,7 +493,8 @@ namespace Plex.Api
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance</param>
         /// <param name="collectionKey">Rating Key for the Collection</param>
         /// <returns>List of Movies</returns>
-        public async Task<List<Metadata>> GetCollectionMovies(string authToken, string plexServerHost, string collectionKey)
+        public async Task<List<Metadata>> GetCollectionMovies(string authToken, string plexServerHost,
+            string collectionKey)
         {
             var apiRequest = new ApiRequestBuilder(plexServerHost, "library/metadata/" + collectionKey + "/children",
                     HttpMethod.Get)

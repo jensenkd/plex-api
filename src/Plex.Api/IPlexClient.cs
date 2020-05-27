@@ -27,6 +27,8 @@ namespace Plex.Api
         Task<PlexMediaContainer> GetPlexInfo(string authToken, string plexServerHost);
         Task<List<Session>> GetSessions(string authToken, string plexServerHost);
         Task<Session> GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey);
+        Task UnScrobbleItem(string authToken, string plexServerHost, string ratingKey);
+        Task ScrobbleItem(string authToken, string plexServerHost, string ratingKey);
         
         // Collections
         Task<List<CollectionModel>> GetCollections(string authToken, string plexServerHost, string libraryKey);

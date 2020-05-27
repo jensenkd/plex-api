@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,6 +57,38 @@ namespace Plex.Api.Tests.Tests
             var items = plexApi.GetMetadataForLibrary(authKey, fullUri, "1").Result;
 
             Assert.IsTrue(items.MediaContainer.Metadata.Any());
+        }
+
+        [TestMethod]
+        public void Test_UnscrobbleItem()
+        {
+            const string ratingKey = "92712";
+            
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+            List<Server> servers = plexApi.GetServers(authKey).Result;
+            string fullUri = servers[0].FullUri.ToString();
+            plexApi.UnScrobbleItem(authKey, fullUri, ratingKey);
+            PlexMediaContainer after = plexApi.GetMetadata(authKey, fullUri, int.Parse(ratingKey)).Result;
+
+            Assert.AreEqual(after.MediaContainer.Metadata[0].ViewCount, 0);
+        }
+        
+        [TestMethod]
+        public void Test_ScrobbleItem()
+        {
+            const string ratingKey = "92712";
+            
+            var plexApi = ServiceProvider.GetService<IPlexClient>();
+            var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
+            List<Server> servers = plexApi.GetServers(authKey).Result;
+            string fullUri = servers[0].FullUri.ToString();
+            PlexMediaContainer before = plexApi.GetMetadata(authKey, fullUri, int.Parse(ratingKey)).Result;
+            plexApi.ScrobbleItem(authKey, fullUri, ratingKey);
+            PlexMediaContainer after = plexApi.GetMetadata(authKey, fullUri, int.Parse(ratingKey)).Result;
+
+            Assert.AreEqual(after.MediaContainer.Metadata[0].ViewCount, before.MediaContainer.Metadata[0].ViewCount + 1);
+            
         }
 
         [TestMethod]
