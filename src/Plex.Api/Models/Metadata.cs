@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Plex.Api.Helpers;
 
 namespace Plex.Api.Models
@@ -9,7 +10,6 @@ namespace Plex.Api.Models
         //Movie
         public string RatingKey { get; set; }
         public string Key { get; set; }
-        public string Guid { get; set; }
         public string LibrarySectionTitle { get; set; }
         [JsonPropertyName("librarySectionID")] 
         public int LibrarySectionId { get; set; }
@@ -32,6 +32,23 @@ namespace Plex.Api.Models
         public int UpdatedAt { get; set; }
         public string ChapterSource { get; set; }
         public string RatingImage { get; set; }
+        public string ExternalProvider { get; set; }
+        public string ExternalProviderId { get; set; }
+        
+        [JsonIgnore]
+        public string Guid { get; set; }
+        [JsonPropertyName("guid")]
+        public string ExternalProviderInfo
+        {
+            get => null;
+            set
+            {
+                var match = Regex.Match(value, @"\.(?<provider>[a-z]+)://(?<id>[^\?]+)");
+                Guid = value;
+                ExternalProvider = match.Groups["provider"].Value;
+                ExternalProviderId = match.Groups["id"].Value;
+            }
+        }
 
         [JsonPropertyName("Media")] public List<Medium> Media { get; set; }
 

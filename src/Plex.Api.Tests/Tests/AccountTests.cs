@@ -59,11 +59,8 @@ namespace Plex.Api.Tests.Tests
         public void Test_Get_Account()
         {
             var plexApi = ServiceProvider.GetService<IPlexClient>();
-
             var authKey = Configuration.GetValue<string>("Plex:AuthenticationKey");
-
             User user = plexApi.GetAccount(authKey).Result;
-
             Assert.IsNotNull(user.Email);
         }
         
