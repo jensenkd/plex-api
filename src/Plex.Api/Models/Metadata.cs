@@ -40,7 +40,6 @@ namespace Plex.Api.Models
         [JsonPropertyName("guid")]
         public string ExternalProviderInfo
         {
-            get => null;
             set
             {
                 var match = Regex.Match(value, @"\.(?<provider>[a-z]+)://(?<id>[^\?]+)");
