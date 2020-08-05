@@ -92,6 +92,7 @@ namespace Plex.Api.Models
         public string TranscoderVideoQualities { get; set; }
         public string TranscoderVideoResolutions { get; set; }
         public int UpdatedAt { get; set; }
+        public int CreatedAt { get; set; }
         public bool Updater { get; set; }
         public string Version { get; set; }
         public bool VoiceSearch { get; set; }
