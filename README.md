@@ -27,10 +27,6 @@ Dotnet Cli
     dotnet add package 'Plex.Api'
 ```
 
-Documentation can be found at Read the Docs.
-
-<coming soon>
-
 Getting a PlexClient Instance
 -----------------------------
 
