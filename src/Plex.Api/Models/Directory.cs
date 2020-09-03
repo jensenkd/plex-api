@@ -59,7 +59,7 @@ namespace Plex.Api.Models
         public bool IsDirectory { get; set; }
         
         [JsonPropertyName("contentChangedAt")]
-        public int ContentChangedAt { get; set; }
+        public long ContentChangedAt { get; set; }
       
         
         [JsonPropertyName("Location")]
