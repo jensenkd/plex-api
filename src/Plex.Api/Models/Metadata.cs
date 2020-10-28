@@ -35,19 +35,20 @@ namespace Plex.Api.Models
         public string ExternalProvider { get; set; }
         public string ExternalProviderId { get; set; }
         
-        [JsonIgnore]
         public string Guid { get; set; }
-        [JsonPropertyName("guid")]
-        public string ExternalProviderInfo
-        {
-            set
-            {
-                var match = Regex.Match(value, @"\.(?<provider>[a-z]+)://(?<id>[^\?]+)");
-                Guid = value;
-                ExternalProvider = match.Groups["provider"].Value;
-                ExternalProviderId = match.Groups["id"].Value;
-            }
-        }
+        [JsonPropertyName("Guid")]
+        public PlexGuid[] PlexGuid { get; set; }
+        //[JsonPropertyName("guid")]
+        // public string ExternalProviderInfo
+        // {
+        //     set
+        //     {
+        //         var match = Regex.Match(value, @"\.(?<provider>[a-z]+)://(?<id>[^\?]+)");
+        //         Guid = value;
+        //         ExternalProvider = match.Groups["provider"].Value;
+        //         ExternalProviderId = match.Groups["id"].Value;
+        //     }
+        // }
 
         [JsonPropertyName("Media")] public List<Medium> Media { get; set; }
 

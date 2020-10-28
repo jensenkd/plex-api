@@ -46,7 +46,7 @@ namespace Plex.Api.Models.Server
         [XmlAttribute(AttributeName = "presence")]
         public string Presence { get; set; }
         [XmlAttribute(AttributeName = "createdAt")]
-        public string CreatedAt { get; set; }
+        public long CreatedAt { get; set; }
 
         [XmlElement(ElementName = "Connection")]
         public List<Connection> Connections { get; set; }

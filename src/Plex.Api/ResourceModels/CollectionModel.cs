@@ -15,8 +15,8 @@ namespace Plex.Api.ResourceModels
         public string Summary { get; set; }
         public int Index { get; set; }
         public string Thumb { get; set; }
-        public int AddedAt { get; set; }
-        public int UpdatedAt { get; set; }
+        public long AddedAt { get; set; }
+        public long UpdatedAt { get; set; }
         public int ChildCount { get; set; }
         public int MaxYear { get; set; }
         public int MinYear { get; set; }

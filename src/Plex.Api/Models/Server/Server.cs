@@ -27,9 +27,9 @@ namespace Plex.Api.Models.Server
         [XmlAttribute(AttributeName = "machineIdentifier")]
         public string MachineIdentifier { get; set; }
         [XmlAttribute(AttributeName = "createdAt")]
-        public string CreatedAt { get; set; }
+        public long CreatedAt { get; set; }
         [XmlAttribute(AttributeName = "updatedAt")]
-        public string UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
         [XmlAttribute(AttributeName = "owned")]
         public string Owned { get; set; }
         [XmlAttribute(AttributeName = "synced")]

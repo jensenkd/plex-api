@@ -44,10 +44,10 @@ namespace Plex.Api.Models
         public string Uuid { get; set; }
         
         [JsonPropertyName("updatedAt")]
-        public int UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         [JsonPropertyName("createdAt")]
-        public int CreatedAt { get; set; }
+        public long CreatedAt { get; set; }
         
         [JsonPropertyName("scannedAt")]
         public int ScannedAt { get; set; }

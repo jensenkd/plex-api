@@ -195,6 +195,16 @@ namespace Plex.Api
 
             var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
 
+            if (plexMediaContainer.MediaContainer.Identifier == "com.plexapp.plugins.library")
+            {
+                foreach (var item in plexMediaContainer.MediaContainer.Metadata)
+                {
+                    var directItem = await GetMetadata(authToken, plexServerHost, int.Parse(item.RatingKey));
+                    item.PlexGuid = directItem.MediaContainer.Metadata.First().PlexGuid;
+                }
+
+            }
+
             return plexMediaContainer;
         }
 
@@ -212,6 +222,16 @@ namespace Plex.Api
                     .Build();
 
             var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+
+            if (plexMediaContainer.MediaContainer.Identifier == "com.plexapp.plugins.library")
+            {
+                foreach (var item in plexMediaContainer.MediaContainer.Metadata)
+                {
+                    var directItem = await GetMetadata(authToken, plexServerHost, int.Parse(item.RatingKey));
+                    item.PlexGuid = directItem.MediaContainer.Metadata.First().PlexGuid;
+                }
+
+            }
 
             return plexMediaContainer;
         }
