@@ -384,6 +384,28 @@ namespace Plex.Api
         }
 
         /// <summary>
+        /// Search the Plex Media Server
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Plex Host Uri</param>
+        /// <param name="query">Search Query</param>
+        /// <returns></returns>
+        public async Task<PlexMediaContainer> Search(string authToken, string plexServerHost, string query)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "search", HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddQueryParams(GetClientIdentifierHeader())
+                .AddQueryParam("query", query)
+                .AcceptJson()
+                .Build();
+
+            var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+
+            return plexMediaContainer;
+        }
+
+        /// <summary>
         /// Get All Collections for a Given Library
         /// </summary>
         /// <param name="authToken">Authentication Token</param>
