@@ -115,7 +115,10 @@ Metadata
     var metadatas = plexApi.GetChildrenMetadata(string authToken, string plexServerHost, int metadataKey).Result;
 
     // Get Metadata by Key
-    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;    
+    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;
+
+    // Search
+    var metadatas = plexApi.Search(string authToken, string plexServerHost, string query).Result;   
 ```
 
 Sessions
