@@ -263,6 +263,28 @@ namespace Plex.Api
         /// </summary>
         /// <param name="authToken">Authentication Token</param>
         /// <param name="plexServerHost">Plex Host Uri</param>
+        /// <returns></returns>
+        public async Task<PlexMediaContainer> GetOnDeck(string authToken, string plexServerHost)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/onDeck", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(GetClientIdentifierHeader())
+                    .AcceptJson()
+                    .Build();
+
+            var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+
+            return plexMediaContainer;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Plex Host Uri</param>
         /// <param name="metadataId">Metadata Unique Identifier</param>
         /// <returns></returns>
         public async Task<PlexMediaContainer> GetMetadata(string authToken, string plexServerHost, int metadataId)
