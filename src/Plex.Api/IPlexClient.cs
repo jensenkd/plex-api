@@ -42,6 +42,7 @@ namespace Plex.Api
         Task UpdateCollection(string authToken, string plexServerHost, string libraryKey,
             CollectionModel collectionModel);
         Task<List<Metadata>> GetCollectionMovies(string authToken, string plexServerHost, string collectionKey);
+        Task ScanLibrary(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false);
 
     }
 }
