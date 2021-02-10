@@ -264,6 +264,28 @@ namespace Plex.Api
         /// </summary>
         /// <param name="authToken">Authentication Token</param>
         /// <param name="plexServerHost">Plex Host Uri</param>
+        /// <returns></returns>
+        public async Task<PlexMediaContainer> GetOnDeck(string authToken, string plexServerHost)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/onDeck", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(GetClientIdentifierHeader())
+                    .AcceptJson()
+                    .Build();
+
+            var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+
+            return plexMediaContainer;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Plex Host Uri</param>
         /// <param name="metadataId">Metadata Unique Identifier</param>
         /// <returns></returns>
         public async Task<PlexMediaContainer> GetMetadata(string authToken, string plexServerHost, int metadataId)
@@ -382,6 +404,28 @@ namespace Plex.Api
                 .Build();
 
             await _apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <summary>
+        /// Search the Plex Media Server
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Plex Host Uri</param>
+        /// <param name="query">Search Query</param>
+        /// <returns></returns>
+        public async Task<PlexMediaContainer> Search(string authToken, string plexServerHost, string query)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "search", HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddQueryParams(GetClientIdentifierHeader())
+                .AddQueryParam("query", query)
+                .AcceptJson()
+                .Build();
+
+            var plexMediaContainer = await _apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+
+            return plexMediaContainer;
         }
 
         /// <summary>
@@ -590,6 +634,27 @@ namespace Plex.Api
                         {"collection[0].tag.tag-", collectionName}
                     })
                     .Build();
+
+            await _apiService.InvokeApiAsync(apiRequest);
+        }
+
+        public async Task ScanLibrary(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false)
+        {
+            // From https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
+            // http://[PMS_IP_ADDRESS]:32400/library/sections/29/refresh?X-Plex-Token=YourTokenGoesHere
+            // http://[PMS_IP_ADDRESS]:32400/library/sections/29/refresh?force=1&X-Plex-Token=YourTokenGoesHere
+            var apiRequestBuilder =
+                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/refresh", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(GetClientIdentifierHeader())
+                    .AcceptJson();
+            
+            if (forceMetadataRefresh)
+            {
+                apiRequestBuilder = apiRequestBuilder.AddQueryParam("force", "1");
+            }
+
+            var apiRequest = apiRequestBuilder.Build();
 
             await _apiService.InvokeApiAsync(apiRequest);
         }

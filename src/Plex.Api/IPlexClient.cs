@@ -22,6 +22,7 @@ namespace Plex.Api
         Task<PlexMediaContainer> GetLibrary(string authToken, string plexServerHost, string libraryKey);
         Task<PlexMediaContainer> GetMetadataForLibrary(string authToken, string plexServerHost, string libraryKey);
         Task<PlexMediaContainer> GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey);
+        Task<PlexMediaContainer> GetOnDeck(string authToken, string plexServerHost);
         Task<PlexMediaContainer> GetMetadata(string authToken, string plexServerHost, int metadataId);
         Task<PlexMediaContainer> GetChildrenMetadata(string authToken, string plexServerHost, int metadataId);
         Task<PlexMediaContainer> GetPlexInfo(string authToken, string plexServerHost);
@@ -29,7 +30,8 @@ namespace Plex.Api
         Task<Session> GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey);
         Task UnScrobbleItem(string authToken, string plexServerHost, string ratingKey);
         Task ScrobbleItem(string authToken, string plexServerHost, string ratingKey);
-        
+        Task<PlexMediaContainer> Search(string authToken, string plexServerHost, string query);
+
         // Collections
         Task<List<CollectionModel>> GetCollections(string authToken, string plexServerHost, string libraryKey);
         Task<CollectionModel> GetCollection(string authToken, string plexServerHost, string collectionKey);
@@ -40,6 +42,7 @@ namespace Plex.Api
         Task UpdateCollection(string authToken, string plexServerHost, string libraryKey,
             CollectionModel collectionModel);
         Task<List<Metadata>> GetCollectionMovies(string authToken, string plexServerHost, string collectionKey);
+        Task ScanLibrary(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false);
 
     }
 }

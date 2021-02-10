@@ -1,7 +1,9 @@
 plex-api
 ==============
 
-![.NET Core](https://github.com/jensenkd/plex-api/workflows/.NET%20Core/badge.svg)
+[![.NET Core](https://github.com/jensenkd/plex-api/workflows/.NET%20Core/badge.svg)](https://github.com/jensenkd/plex-api/actions?query=branch%3Amaster)
+[![nuGet](https://badgen.net/nuget/v/Plex.Api)](https://www.nuget.org/packages/Plex.Api)
+
 
 Overview
 --------
@@ -115,7 +117,10 @@ Metadata
     var metadatas = plexApi.GetChildrenMetadata(string authToken, string plexServerHost, int metadataKey).Result;
 
     // Get Metadata by Key
-    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;    
+    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;
+
+    // Search
+    var metadatas = plexApi.Search(string authToken, string plexServerHost, string query).Result;   
 ```
 
 Sessions
