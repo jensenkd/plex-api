@@ -105,5 +105,6 @@ namespace Plex.Api.Models
         [JsonPropertyName("Collection")] public List<Collection> Collection { get; set; }
         public string OriginalTitle { get; set; }
         public int? ViewOffset { get; set; }
+        public float PlexRating { get; set; }
     }
 }

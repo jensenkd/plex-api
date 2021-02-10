@@ -229,6 +229,7 @@ namespace Plex.Api
                 {
                     var directItem = await GetMetadata(authToken, plexServerHost, int.Parse(item.RatingKey));
                     item.PlexGuid = directItem.MediaContainer.Metadata.First().PlexGuid;
+                    item.PlexRating = directItem.MediaContainer.Metadata.First().Rating;
                 }
 
             }
