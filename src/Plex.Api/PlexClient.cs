@@ -637,6 +637,27 @@ namespace Plex.Api
             await _apiService.InvokeApiAsync(apiRequest);
         }
 
+        public async Task ScanLibrary(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false)
+        {
+            // From https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
+            // http://[PMS_IP_ADDRESS]:32400/library/sections/29/refresh?X-Plex-Token=YourTokenGoesHere
+            // http://[PMS_IP_ADDRESS]:32400/library/sections/29/refresh?force=1&X-Plex-Token=YourTokenGoesHere
+            var apiRequestBuilder =
+                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/refresh", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(GetClientIdentifierHeader())
+                    .AcceptJson();
+            
+            if (forceMetadataRefresh)
+            {
+                apiRequestBuilder = apiRequestBuilder.AddQueryParam("force", "1");
+            }
+
+            var apiRequest = apiRequestBuilder.Build();
+
+            await _apiService.InvokeApiAsync(apiRequest);
+        }
+
         private Dictionary<string, string> GetClientLimitHeaders(int from, int to)
         {
             var plexHeaders = new Dictionary<string, string>
