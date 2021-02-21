@@ -74,16 +74,16 @@ Server
         .SignIn(login, password).Result;
         
     // Get Account
-    var user = plexApi.GetAccount(string authToken).Result;
+    var user = plexApi.GetAccountAsync(string authToken).Result;
           
     // Get Servers
-    var servers = plexApi.GetServers(string authToken).Result;
+    var servers = plexApi.GetServersAsync(string authToken).Result;
     
     // Get Friends
-    var friends = plexApi.GetFriends(string authToken).Result;
+    var friends = plexApi.GetFriendsAsync(string authToken).Result;
     
     // Get Resources
-    var resources = plexApi.GetResources(string authToken).Result;
+    var resources = plexApi.GetResourcesAsync(string authToken).Result;
     
 ```
 
@@ -94,13 +94,13 @@ Libraries
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
     // Get Recently Added for Library
-    var recentlyAdded = plexApi.GetRecentlyAdded(string authToken, string plexServerHost, string libraryKey).Result;
+    var recentlyAdded = plexApi.GetRecentlyAddedAsync(string authToken, string plexServerHost, string libraryKey).Result;
     
     // Get Libraries
-    var libraries = plexApi.GetLibraries(string authToken, string plexServerHost).Result;
+    var libraries = plexApi.GetLibrariesAsync(string authToken, string plexServerHost).Result;
     
     // Get Library
-    var library = plexApi.GetLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+    var library = plexApi.GetLibraryAsync(string authToken, string plexServerHost, string libraryKey).Result;
 
 ```
 
@@ -111,16 +111,16 @@ Metadata
     var plexApi = ServiceProvider.GetService<IPlexClient>();
          
     // Get Metadata for Library
-    var metadatas = plexApi.MetadataForLibrary(string authToken, string plexServerHost, string libraryKey).Result;
+    var metadatas = plexApi.MetadataForLibraryAsync(string authToken, string plexServerHost, string libraryKey).Result;
   
     // Get Children for Metadata by Metadata Key
-    var metadatas = plexApi.GetChildrenMetadata(string authToken, string plexServerHost, int metadataKey).Result;
+    var metadatas = plexApi.GetChildrenMetadataAsync(string authToken, string plexServerHost, int metadataKey).Result;
 
     // Get Metadata by Key
-    var metadata = plexApi.GetMetadata(string authToken, string plexServerHost, int metadataKey).Result;
+    var metadata = plexApi.GetMetadataAsync(string authToken, string plexServerHost, int metadataKey).Result;
 
     // Search
-    var metadatas = plexApi.Search(string authToken, string plexServerHost, string query).Result;   
+    var metadatas = plexApi.SearchAsync(string authToken, string plexServerHost, string query).Result;   
 ```
 
 Sessions
@@ -130,10 +130,10 @@ Sessions
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
     // Get All Sessions on Server
-    var sessions = plexApi.GetSessions(string authToken, string plexServerHost).Result;
+    var sessions = plexApi.GetSessionsAsync(string authToken, string plexServerHost).Result;
     
     // Get Session for Player Machine Id
-    var session = plexApl.GetSessionByPlayerId(string authToken, string plexServerHost, string playerKey).Result;
+    var session = plexApl.GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey).Result;
 ```
 
 
@@ -148,22 +148,22 @@ Collections
         .GetCollections(authKey, plexServerUrl, libraryKey).Result;
         
     // Get Collection Tags for Movie
-    var collectionTags = plexApi.GetCollectionTagsForMovie(authKey, plexServerUrl, movieKey).Result;
+    var collectionTags = plexApi.GetCollectionTagsForMovieAsync(authKey, plexServerUrl, movieKey).Result;
         
     // Get Collection
-    var collection = plexApi.GetCollection(authKey, plexServerUrl, collectionKey).Result;    
+    var collection = plexApi.GetCollectionAsync(authKey, plexServerUrl, collectionKey).Result;    
     
     // Get Collection Movies
-    var movies = plexApi.GetCollectionMovies(authKey, plexServerUrl, collectionKey).Result;
+    var movies = plexApi.GetCollectionMoviesAsync(authKey, plexServerUrl, collectionKey).Result;
 
     // Delete Collection from Movie
-    plexApi.DeleteCollectionFromMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
+    plexApi.DeleteCollectionFromMovieAsync(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
     
     // Add Collection to Movie
-    plexApi.AddCollectionToMovie(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
+    plexApi.AddCollectionToMovieAsync(authKey, plexServerUrl, libraryKey, movieKey, collectionName);
 
     // Update Collection
-    var collection = plexApi.GetCollection(authKey, fullUri, collectionRatingKey).Result;
+    var collection = plexApi.GetCollectionAsync(authKey, fullUri, collectionRatingKey).Result;
     collection.Title = "New Title for Collection";
     plexApi.UpdateCollection(authKey, plexServerUrl, libraryKey, collection);
 
@@ -188,7 +188,7 @@ OAuth Implementation Example
         public async Task<IActionResult> IndexAsync()
         {
             var redirectUrl = Url.Action("PlexReturn", "PlexLogin", null, Request.Scheme);
-            var oauthUrl = await _plexClient.CreateOAuthPin(redirectUrl);
+            var oauthUrl = await _plexClient.CreateOAuthPinAsync(redirectUrl);
             HttpContext.Session.SetString("PlexOauthId", oauthUrl.Id.ToString());
             return Redirect(oauthUrl.Url);
         }
@@ -196,7 +196,7 @@ OAuth Implementation Example
         public async Task<IActionResult> PlexReturn()
         {
             var oauthId = HttpContext.Session.GetString("PlexOauthId");
-            var oAuthPin = await _plexClient.GetAuthTokenFromOAuthPin(oauthId);
+            var oAuthPin = await _plexClient.GetAuthTokenFromOAuthPinAsync(oauthId);
 
             if (string.IsNullOrEmpty(oAuthPin.AuthToken))
                 throw new Exception("Plex auth failed.");
