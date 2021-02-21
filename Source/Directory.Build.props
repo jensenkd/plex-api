@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup Label="Files">
-    <None Include="..\..\Images\Icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
