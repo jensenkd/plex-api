@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using System.Net.Http;
-
 namespace Plex.Api.Api
 {
-   /// <summary>
-   /// Api Request Builder.
-   /// </summary>
-   public class ApiRequestBuilder
+    using System.Collections.Generic;
+    using System.Net.Http;
+
+    /// <summary>
+    /// Api Request Builder.
+    /// </summary>
+    public class ApiRequestBuilder
     {
         private readonly string _baseUri;
         private readonly string _endpoint;
@@ -14,14 +14,15 @@ namespace Plex.Api.Api
         private readonly Dictionary<string, string> _requestHeaders;
         private readonly Dictionary<string, string> _contentHeaders;
         private readonly Dictionary<string, string> _queryParams;
+
         private object Body { get; set; }
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="ApiRequestBuilder"/> class.
         /// </summary>
-        /// <param name="baseUri"></param>
-        /// <param name="endpoint"></param>
-        /// <param name="httpMethod"></param>
+        /// <param name="baseUri">Base Api Uri.</param>
+        /// <param name="endpoint">Api Endpoint.</param>
+        /// <param name="httpMethod">Api Http Method.</param>
         public ApiRequestBuilder(string baseUri, string endpoint, HttpMethod httpMethod)
         {
             _baseUri = baseUri;
@@ -33,9 +34,9 @@ namespace Plex.Api.Api
         }
 
         /// <summary>
-        ///
+        /// Add Request Headers.
         /// </summary>
-        /// <param name="headers"></param>
+        /// <param name="headers">Headers Dictionary.</param>
         /// <returns></returns>
         public ApiRequestBuilder AddRequestHeaders(Dictionary<string, string> headers)
         {
@@ -146,7 +147,8 @@ namespace Plex.Api.Api
         /// <returns></returns>
         public ApiRequest Build()
         {
-            return new ApiRequest(_endpoint, _baseUri, _httpMethod, _requestHeaders, _contentHeaders, Body, _queryParams);
+            return new ApiRequest(_endpoint, _baseUri, _httpMethod, _requestHeaders, _contentHeaders, Body,
+                _queryParams);
         }
     }
 }
