@@ -2,6 +2,7 @@ plex-api
 ==============
 
 [![.NET](https://github.com/jensenkd/plex-api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/jensenkd/plex-api/actions/workflows/dotnet.yml)
+[![CodeQL](https://github.com/jensenkd/plex-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jensenkd/plex-api/actions/workflows/codeql-analysis.yml)
 [![nuGet](https://badgen.net/nuget/v/Plex.Api)](https://www.nuget.org/packages/Plex.Api)
 
 
@@ -71,7 +72,7 @@ Server
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
     var user = plexApi
-        .SignIn(login, password).Result;
+        .SignInAsync(login, password).Result;
         
     // Get Account
     var user = plexApi.GetAccountAsync(string authToken).Result;
