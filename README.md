@@ -1,7 +1,7 @@
 plex-api
 ==============
 
-[![.NET Core](https://github.com/jensenkd/plex-api/workflows/.NET%20Core/badge.svg)](https://github.com/jensenkd/plex-api/actions?query=branch%3Amaster)
+[![.NET](https://github.com/jensenkd/plex-api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/jensenkd/plex-api/actions/workflows/dotnet.yml)
 [![nuGet](https://badgen.net/nuget/v/Plex.Api)](https://www.nuget.org/packages/Plex.Api)
 
 
