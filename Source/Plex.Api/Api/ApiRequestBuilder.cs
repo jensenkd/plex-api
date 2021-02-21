@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace Plex.Api.Api
 {
    /// <summary>
-   ///
+   /// Api Request Builder.
    /// </summary>
    public class ApiRequestBuilder
     {
