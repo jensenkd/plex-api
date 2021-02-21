@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Build">
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <Description>.net core sdk for Plex  </Description>
+    <Authors>Kevin Jensen</Authors>
+    <RepositoryUrl>https://github.com/jensenkd/plex-api</RepositoryUrl>
+    <PackageTags>plex dotnet core api</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Polly" Version="7.2.1" />
+  </ItemGroup>
+
+</Project>
