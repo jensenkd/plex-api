@@ -1,31 +1,21 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-
 namespace Plex.Api.Api
 {
-    /// <summary>
-    ///
-    /// </summary>
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
+
+    /// <inheritdoc />
     public class PlexRequestsHttpClient : IPlexRequestsHttpClient
     {
         private readonly HttpClient _client;
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="PlexRequestsHttpClient"/> class.
         /// </summary>
-        public PlexRequestsHttpClient()
-        {
-         _client = new HttpClient();
-        }
+        public PlexRequestsHttpClient() => this._client = new HttpClient();
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
-        {
-            return await _client.SendAsync(request);
-        }
+        /// <inheritdoc/>
+        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request) =>
+            await this._client.SendAsync(request);
     }
 }

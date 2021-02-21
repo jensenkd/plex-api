@@ -18,25 +18,25 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
 
                 var fullUri = servers[0].FullUri.ToString();
 
-                var plexMediaContainer = await plexApi.GetLibraries(servers[0].AccessToken, fullUri);
+                var plexMediaContainer = await plexApi.GetLibrariesAsync(servers[0].AccessToken, fullUri);
 
                 var movieLibrary = plexMediaContainer
                     .MediaContainer.Directory
                     .First(c => c.Title == "Movies");
 
                 var movie = await
-                    plexApi.GetLibrary(servers[0].AccessToken, fullUri, movieLibrary.Key);
+                    plexApi.GetLibraryAsync(servers[0].AccessToken, fullUri, movieLibrary.Key);
 
                 var tvLibrary = plexMediaContainer
                     .MediaContainer.Directory
                     .First(c => c.Title == "TV Shows");
 
                 var tv = await
-                    plexApi.GetLibrary(servers[0].AccessToken, fullUri, tvLibrary.Key);
+                    plexApi.GetLibraryAsync(servers[0].AccessToken, fullUri, tvLibrary.Key);
 
                 Assert.NotNull(movie.MediaContainer.Metadata);
                 Assert.NotNull(tv.MediaContainer.Metadata);
@@ -51,11 +51,11 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
 
                 var fullUri = servers[0].FullUri.ToString();
 
-                var items = await plexApi.GetMetadataForLibrary(authKey, fullUri, "1");
+                var items = await plexApi.GetMetadataForLibraryAsync(authKey, fullUri, "1");
 
                 Assert.True(items.MediaContainer.Metadata.Any());
             }
@@ -70,10 +70,10 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
                 var fullUri = servers[0].FullUri.ToString();
-                await plexApi.UnScrobbleItem(authKey, fullUri, ratingKey);
-                var after = await plexApi.GetMetadata(authKey, fullUri, int.Parse(ratingKey));
+                await plexApi.UnScrobbleItemAsync(authKey, fullUri, ratingKey);
+                var after = await plexApi.GetMetadataAsync(authKey, fullUri, int.Parse(ratingKey));
 
                 Assert.Equal(0, after.MediaContainer.Metadata[0].ViewCount);
             }
@@ -88,13 +88,13 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
                 var fullUri = servers[0].FullUri.ToString();
-                var before = await plexApi.GetMetadata(authKey, fullUri, int.Parse(ratingKey));
+                var before = await plexApi.GetMetadataAsync(authKey, fullUri, int.Parse(ratingKey));
 
-                await plexApi.ScrobbleItem(authKey, fullUri, ratingKey);
+                await plexApi.ScrobbleItemAsync(authKey, fullUri, ratingKey);
 
-                var after = await plexApi.GetMetadata(authKey, fullUri, int.Parse(ratingKey));
+                var after = await plexApi.GetMetadataAsync(authKey, fullUri, int.Parse(ratingKey));
 
                 Assert.Equal(after.MediaContainer.Metadata[0].ViewCount, before.MediaContainer.Metadata[0].ViewCount + 1);
             }
@@ -108,13 +108,13 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
 
                 var fullUri = servers[0].FullUri.ToString();
 
                 var movieLibraries = new[] { "Movies" };
 
-                var libraries = await plexApi.GetLibraries(authKey, fullUri);
+                var libraries = await plexApi.GetLibrariesAsync(authKey, fullUri);
 
                 var directories = libraries.MediaContainer.Directory.
                     Where(c => movieLibraries.Contains(c.Title, StringComparer.OrdinalIgnoreCase)).ToList();
@@ -122,7 +122,7 @@ namespace Plex.Api.Test
                 var movies = new List<Metadata>();
                 foreach (var directory in directories)
                 {
-                    var items = (await plexApi.GetLibrary(authKey, fullUri, directory.Key)).MediaContainer.Metadata;
+                    var items = (await plexApi.GetLibraryAsync(authKey, fullUri, directory.Key)).MediaContainer.Metadata;
                     movies.AddRange(items);
                 }
             }
@@ -139,11 +139,11 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
 
                 var fullUri = servers[0].FullUri.ToString();
 
-                var metadataWrapper = await plexApi.GetMetadata(servers[0].AccessToken, fullUri, metadataId);
+                var metadataWrapper = await plexApi.GetMetadataAsync(servers[0].AccessToken, fullUri, metadataId);
 
                 Assert.NotNull(metadataWrapper.MediaContainer);
             }

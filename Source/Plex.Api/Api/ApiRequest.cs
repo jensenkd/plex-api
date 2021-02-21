@@ -1,12 +1,13 @@
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Linq;
-
 namespace Plex.Api.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text;
+
     /// <summary>
-    /// Class for issuing Api Requests to Plex Server
+    /// Class for issuing Api Requests to Plex Server.
     /// </summary>
     public class ApiRequest
     {
@@ -20,21 +21,20 @@ namespace Plex.Api.Api
         /// <param name="contentHeaders">Content Headers for api request.</param>
         /// <param name="body">Body of api request.</param>
         /// <param name="queryParams">Query parameters for api request.</param>
-        public ApiRequest(string endpoint, string baseUri, HttpMethod httpMethod,
-            Dictionary<string, string> requestHeaders, Dictionary<string, string> contentHeaders, object body,
-            Dictionary<string, string> queryParams)
+        public ApiRequest(string endpoint, string baseUri, HttpMethod httpMethod, Dictionary<string, string> requestHeaders,
+            Dictionary<string, string> contentHeaders, object body, Dictionary<string, string> queryParams)
         {
             this.Endpoint = endpoint;
             this.BaseUri = baseUri;
             this.HttpMethod = httpMethod;
             this.RequestHeaders = requestHeaders;
-            this.ContentHeaders = contentHeaders;
+            this.ContentHeaders = contentHeaders ?? throw new ArgumentNullException(nameof(contentHeaders));
             this.Body = body;
             this.QueryParams = queryParams;
         }
 
         /// <summary>
-        /// Endpoint of api request
+        /// Gets endpoint of api request.
         /// </summary>
         private string Endpoint { get; }
 
@@ -44,10 +44,12 @@ namespace Plex.Api.Api
         ///
         /// </summary>
         public HttpMethod HttpMethod { get; }
+
         /// <summary>
         ///
         /// </summary>
         public Dictionary<string, string> RequestHeaders { get; }
+
         /// <summary>
         ///
         /// </summary>
@@ -64,7 +66,7 @@ namespace Plex.Api.Api
         public object Body { get; }
 
         /// <summary>
-        ///
+        /// Get Full Uri of Endpoint.
         /// </summary>
         public string FullUri
         {
@@ -72,17 +74,17 @@ namespace Plex.Api.Api
             {
                 var uriBuilder = new StringBuilder();
 
-                if (!string.IsNullOrEmpty(BaseUri))
+                if (!string.IsNullOrEmpty(this.BaseUri))
                 {
-                    uriBuilder.Append(BaseUri.EndsWith("/") ? BaseUri : $"{BaseUri}/");
+                    uriBuilder.Append(this.BaseUri.EndsWith("/") ? this.BaseUri : $"{this.BaseUri}/");
                 }
 
-                if (!string.IsNullOrEmpty(Endpoint))
+                if (!string.IsNullOrEmpty(this.Endpoint))
                 {
-                    uriBuilder.Append(Endpoint.StartsWith("/") ? Endpoint.Skip(1) : Endpoint);
+                    uriBuilder.Append(this.Endpoint.StartsWith("/") ? this.Endpoint.Skip(1) : this.Endpoint);
                 }
 
-                AddQueryParams(uriBuilder);
+                this.AddQueryParams(uriBuilder);
 
                 return uriBuilder.ToString();
             }
@@ -90,7 +92,7 @@ namespace Plex.Api.Api
 
         private void AddQueryParams(StringBuilder uriBuilder)
         {
-            if (!QueryParams.Any())
+            if (!this.QueryParams.Any())
             {
                 return;
             }

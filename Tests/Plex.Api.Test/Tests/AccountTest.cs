@@ -15,7 +15,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var result = await plexApi.CreateOAuthPin(redirectUrl);
+                var result = await plexApi.CreateOAuthPinAsync(redirectUrl);
 
                 Assert.Equal(
                     $"https://app.plex.tv/auth#?context[device][product]={this.ClientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={this.ClientOptions.Platform}&context[device][device]={this.ClientOptions.DeviceName}&clientID={this.ClientOptions.ClientId}&forwardUrl={redirectUrl}&code={result.Code}",
@@ -32,7 +32,7 @@ namespace Plex.Api.Test
             var pin = "XXX";
             if (plexApi != null)
             {
-                var result1 = await plexApi.GetAuthTokenFromOAuthPin(pin);
+                var result1 = await plexApi.GetAuthTokenFromOAuthPinAsync(pin);
                 Assert.NotNull(result1);
             }
         }
@@ -48,7 +48,7 @@ namespace Plex.Api.Test
             if (plexApi != null)
             {
                 var user = await plexApi
-                    .SignIn(login, password);
+                    .SignInAsync(login, password);
 
                 Assert.NotNull(user);
                 Assert.Equal(user.Email, login);
@@ -62,7 +62,7 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var user = await plexApi.GetAccount(authKey);
+                var user = await plexApi.GetAccountAsync(authKey);
                 Assert.NotNull(user.Email);
             }
         }
@@ -74,7 +74,7 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var resources = await plexApi.GetResources(authKey);
+                var resources = await plexApi.GetResourcesAsync(authKey);
                 Assert.NotNull(resources);
             }
         }
@@ -87,7 +87,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var friends = await plexApi.GetFriends(authKey);
+                var friends = await plexApi.GetFriendsAsync(authKey);
 
                 Assert.NotNull(friends);
             }
@@ -113,11 +113,11 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
 
                 var fullUri = servers[0].Host.ReturnUriFromServerInfo(servers[0]);
 
-                var info = await plexApi.GetPlexInfo(authKey, fullUri.ToString());
+                var info = await plexApi.GetPlexInfoAsync(authKey, fullUri.ToString());
 
                 Assert.NotNull(info);
             }
@@ -131,11 +131,11 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServers(authKey);
+                var servers = await plexApi.GetServersAsync(authKey);
 
                 var fullUri = servers[0].Host.ReturnUriFromServerInfo(servers[0]);
 
-                var sessions = await plexApi.GetSessions(authKey, fullUri.ToString());
+                var sessions = await plexApi.GetSessionsAsync(authKey, fullUri.ToString());
 
                 if (sessions != null && sessions.Any())
                 {

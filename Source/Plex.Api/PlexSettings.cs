@@ -4,7 +4,7 @@ namespace Plex.Api
     using System.Collections.Generic;
 
     /// <summary>
-    ///
+    /// Plex Settings Object.
     /// </summary>
     public sealed class PlexSettings
     {
@@ -14,12 +14,12 @@ namespace Plex.Api
         public bool Enable { get; set; }
 
         /// <summary>
-        /// This is the ClientId for OAuth
+        /// This is the ClientId for OAuth.
         /// </summary>
         public Guid InstallId { get; set; }
 
         /// <summary>
-        ///
+        /// List of Servers.
         /// </summary>
         public List<PlexServers> Servers { get; set; }
     }
@@ -33,10 +33,12 @@ namespace Plex.Api
         ///
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         ///
         /// </summary>
         public string PlexAuthToken { get; set; }
+
         /// <summary>
         ///
         /// </summary>
@@ -52,6 +54,7 @@ namespace Plex.Api
         /// </summary>
         public List<PlexSelectedLibraries> PlexSelectedLibraries { get; set; } = new List<PlexSelectedLibraries>();
     }
+
     /// <summary>
     ///
     /// </summary>
@@ -61,10 +64,12 @@ namespace Plex.Api
         ///
         /// </summary>
         public int Key { get; set; }
+
         /// <summary>
         ///
         /// </summary>
         public string Title { get; set; } // Name is for display purposes
+
         /// <summary>
         ///
         /// </summary>
