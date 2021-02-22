@@ -53,14 +53,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.Api.Test", "Tests\Plex.Api.Test\Plex.Api.Test.csproj", "{528E66EB-2232-4534-A20D-9BC8A240BF2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{EFE1E5ED-D337-4874-82EC-D9FA0BC7D3AB}"
-	ProjectSection(SolutionItems) = preProject
-		.github\release-drafter.yml = .github\release-drafter.yml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{841C67EF-BBB2-4730-8E29-22FF3FD54306}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build.yml = .github\workflows\build.yml
-		.github\workflows\release-drafter.yml = .github\workflows\release-drafter.yml
+		.github\workflows\build.yml = .github\workflows\dotnet.yml
+		.github\workflows\release-drafter.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Global

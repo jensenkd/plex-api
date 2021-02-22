@@ -41,27 +41,27 @@ namespace Plex.Api.Api
         private string BaseUri { get; }
 
         /// <summary>
-        ///
+        /// Http Method for Api Request.
         /// </summary>
         public HttpMethod HttpMethod { get; }
 
         /// <summary>
-        ///
+        /// Request Headers of Api Request.
         /// </summary>
         public Dictionary<string, string> RequestHeaders { get; }
 
         /// <summary>
-        ///
+        /// Content Headers of Api Reqeuest.
         /// </summary>
         public Dictionary<string, string> ContentHeaders { get; }
 
         /// <summary>
-        ///
+        /// Query Parameters of Api Request.
         /// </summary>
         public Dictionary<string, string> QueryParams { get; }
 
         /// <summary>
-        ///
+        /// Body of Api Request.
         /// </summary>
         public object Body { get; }
 

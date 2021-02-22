@@ -3,6 +3,7 @@ namespace Plex.Api.Test
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Plex.Api.Models;
     using Xunit;
@@ -10,10 +11,26 @@ namespace Plex.Api.Test
     public class LibraryTest : TestBase
     {
         [Fact]
+        public async System.Threading.Tasks.Task Test_SearchLibraryByName()
+        {
+            var plexApi = this.ServiceProvider.GetService<IPlexClient>();
+            var authKey = this.Configuration["Plex:AuthenticationKey"];
+
+            if (plexApi != null)
+            {
+                var servers = await plexApi.GetServersAsync(authKey);
+                var fullUri = servers[0].FullUri.ToString();
+
+                var movies = await plexApi.SearchAsync(authKey, fullUri, "Harry Potter");
+
+                Assert.NotNull(movies);
+            }
+        }
+
+        [Fact]
         public async System.Threading.Tasks.Task Test_GetLibrarySectionsAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
-
             var authKey = this.Configuration["Plex:AuthenticationKey"];
 
             if (plexApi != null)
