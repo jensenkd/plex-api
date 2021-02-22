@@ -8,16 +8,15 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <Authors>Project Author</Authors>
-    <Company>Project Author</Company>
-    <Copyright>Copyright © Project Author. All rights Reserved</Copyright>
+    <Authors>Kevin Jensen</Authors>
+    <Company>Kinetic Media, Inc.</Company>
+    <Copyright>Copyright © Kevin Jensen. All rights Reserved</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Username/Project</PackageProjectUrl>
-    <PackageIcon>Icon.png</PackageIcon>
-    <RepositoryUrl>https://github.com/Username/Project.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/jensenkd/plex-api</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jensenkd/plex-api.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>https://github.com/Username/Project/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/jensenkd/plex-api/releases</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup Label="Package References">
