@@ -22,6 +22,6 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: Push
-      run: dotnet nuget push Plex.Api.${VERSION}.nupkg --source https://nuget.pkg.github.com/Plex.Api/index.json --api-key ${NUGET_KEY}
+      run: dotnet nuget push Plex.Api.${VERSION}.nupkg --source https://nuget.pkg.github.com/jensenkd/index.json --api-key ${NUGET_KEY}
       env:
         GITHUB_TOKEN: ${{ secrets.NUGET_KEY }}
