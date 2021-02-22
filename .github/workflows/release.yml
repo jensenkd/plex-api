@@ -1,4 +1,4 @@
-name: "NugetRelease"
+name: "Nuget Release"
 
 on:
   push:

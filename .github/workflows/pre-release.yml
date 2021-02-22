@@ -1,3 +1,4 @@
+name: "Nuget Pre-Release"
 on:
   push:
     tags:
