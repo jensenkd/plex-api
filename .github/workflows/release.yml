@@ -1,3 +1,5 @@
+name: "NugetRelease"
+
 on:
   push:
     tags:
