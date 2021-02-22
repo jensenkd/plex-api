@@ -15,21 +15,13 @@ jobs:
       run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
         git branch --remote --contains | grep origin/master
-    - name: Test Variation 1
-      run: echo "VERSION=${GITHUB_REF:10}"
-    - name: Test Variation 2
-      run: echo "VERSION=${GITHUB_REF}"
-    - name: Test Variation 3
-      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}"
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
-    - name: Test Variation 4
-      run: echo ${VERSION}
     - name: Build
       run: dotnet build --configuration Release /p:Version=${VERSION}
     - name: Pack
       run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
-    #- name: Push
-    #  run: dotnet nuget push NuGet.Workflow.${VERSION}.nupkg --source https://nuget.pkg.github.com/Plex.Api/index.json --api-key ${NUGET_KEY}
+    - name: Push
+      run: dotnet nuget push Plex.Api.${VERSION}.nupkg --source https://nuget.pkg.github.com/Plex.Api/index.json --api-key ${NUGET_KEY}
       env:
         GITHUB_TOKEN: ${{ secrets.NUGET_KEY }}

@@ -51,7 +51,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\build.yml = .github\workflows\dotnet.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
 		.github\workflows\pre-release.yml = .github\workflows\pre-release.yml
-		.github\workflows\pre-release2.yml = .github\workflows\pre-release2.yml
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 	EndProjectSection
 EndProject
