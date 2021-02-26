@@ -2,12 +2,12 @@ namespace Plex.Api
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Plex.Api.Models;
-    using Plex.Api.Models.Friends;
-    using Plex.Api.Models.OAuth;
-    using Plex.Api.Models.Server;
-    using Plex.Api.Models.Status;
-    using Plex.Api.ResourceModels;
+    using Models;
+    using Models.Friends;
+    using Models.OAuth;
+    using Models.Server;
+    using Models.Status;
+    using ResourceModels;
 
     /// <summary>
     /// Inteface for Plex Client.
