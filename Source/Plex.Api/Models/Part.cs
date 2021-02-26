@@ -26,73 +26,70 @@ namespace Plex.Api.Models
         /// Initializes a new instance of the <see cref="Part"/> class.
         /// </summary>
         /// <param name="stream"></param>
-        public Part(Stream[] stream)
-        {
-            this.Stream = stream;
-        }
+        public Part(Stream[] stream) => this.Stream = stream;
 
         /// <summary>
-        ///
+        /// Id
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
 
         /// <summary>
-        ///
+        /// Key
         /// </summary>
         public string Key { get; set; }
 
         /// <summary>
-        ///
+        /// Duration
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int Duration { get; set; }
 
         /// <summary>
-        ///
+        /// File
         /// </summary>
         public string File { get; set; }
 
         /// <summary>
-        ///
+        /// Size
         /// </summary>
         [JsonConverter(typeof(LongValueConverter))]
         public long Size { get; set; }
 
         /// <summary>
-        ///
+        /// Container
         /// </summary>
         public string Container { get; set; }
 
         /// <summary>
-        ///
+        /// Video Profile
         /// </summary>
         public string VideoProfile { get; set; }
 
         /// <summary>
-        ///
+        /// Stream
         /// </summary>
         public Stream[] Stream { get; set; }
 
         // TV Show Episode
         /// <summary>
-        ///
+        /// Audio Profile
         /// </summary>
         public string AudioProfile { get; set; }
 
         // Movie Section
         /// <summary>
-        ///
+        /// Has Thumbnail
         /// </summary>
         public string HasThumbnail { get; set; }
 
         /// <summary>
-        ///
+        /// Indexes
         /// </summary>
         public string Indexes { get; set; }
 
         /// <summary>
-        ///
+        /// Has Chapter Text Stream?
         /// </summary>
         public bool? HasChapterTextStream { get; set; }
     }

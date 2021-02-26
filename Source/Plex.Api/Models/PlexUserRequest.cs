@@ -28,28 +28,28 @@
 namespace Plex.Api.Models
 {
     /// <summary>
-    ///
+    /// Plex User Request Object
     /// </summary>
     public class PlexUserRequest
     {
         /// <summary>
-        ///
+        /// User Request Object
         /// </summary>
         public UserRequest User { get; set; }
     }
 
     /// <summary>
-    ///
+    /// User Request Object
     /// </summary>
     public class UserRequest
     {
         /// <summary>
-        ///
+        /// Login
         /// </summary>
         public string Login { get; set; }
 
         /// <summary>
-        ///
+        /// Password
         /// </summary>
         public string Password { get; set; }
     }
