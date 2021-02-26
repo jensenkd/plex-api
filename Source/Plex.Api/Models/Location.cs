@@ -6,12 +6,12 @@
     public class Location
     {
         /// <summary>
-        ///
+        /// Id
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///
+        /// Path
         /// </summary>
         public string Path { get; set; }
     }

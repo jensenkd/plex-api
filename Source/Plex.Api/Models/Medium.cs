@@ -31,100 +31,100 @@ namespace Plex.Api.Models
     public class Medium
     {
         /// <summary>
-        ///
+        /// Id
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int Id { get; set; }
 
         /// <summary>
-        ///
+        /// Aspect Ratio
         /// </summary>
         [JsonConverter(typeof(DoubleValueConverter))]
         public double AspectRatio { get; set; }
 
         /// <summary>
-        ///
+        /// Audio Profile
         /// </summary>
         public string AudioProfile { get; set; }
 
         /// <summary>
-        ///
+        /// Video Profile
         /// </summary>
         public string VideoProfile { get; set; }
 
         /// <summary>
-        ///
+        /// Audio Channels
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int AudioChannels { get; set; }
 
         /// <summary>
-        ///
+        /// Audio Codec
         /// </summary>
         public string AudioCodec { get; set; }
 
         /// <summary>
-        ///
+        /// Bitrate
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int Bitrate { get; set; }
 
         /// <summary>
-        ///
+        /// Container
         /// </summary>
         public string Container { get; set; }
 
         /// <summary>
-        ///
+        /// Duration
         /// </summary>
         [JsonConverter(typeof(LongValueConverter))]
         public long Duration { get; set; }
 
         /// <summary>
-        ///
+        /// Height
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int Height { get; set; }
 
         /// <summary>
-        ///
+        /// Optimized For Streaming
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int OptimizedForStreaming { get; set; } // TODO Convert to boolean at some point.
 
         /// <summary>
-        ///
+        /// Protocol
         /// </summary>
         public string Protocol { get; set; }
 
         /// <summary>
-        ///
+        /// Video Codec
         /// </summary>
         public string VideoCodec { get; set; }
 
         /// <summary>
-        ///
+        /// Video Frame Rate
         /// </summary>
         public string VideoFrameRate { get; set; }
 
         /// <summary>
-        ///
+        /// Video Resolution
         /// </summary>
         public string VideoResolution { get; set; }
 
         /// <summary>
-        ///
+        /// Width
         /// </summary>
         [JsonConverter(typeof(IntValueConverter))]
         public int Width { get; set; }
 
         /// <summary>
-        ///
+        /// Selected?
         /// </summary>
         public bool Selected { get; set; }
 
         /// <summary>
-        ///
+        /// Part Items
         /// </summary>
         [JsonPropertyName("Part")]
         public Part[] Part { get; set; }
