@@ -1,6 +1,7 @@
 namespace Plex.Api.Test
 {
     using System.Linq;
+    using Helpers;
     using Microsoft.Extensions.DependencyInjection;
     using Plex.Api;
     using Xunit;

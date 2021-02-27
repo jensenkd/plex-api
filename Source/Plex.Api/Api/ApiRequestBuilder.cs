@@ -8,12 +8,12 @@ namespace Plex.Api.Api
     /// </summary>
     public class ApiRequestBuilder
     {
-        private readonly string _baseUri;
-        private readonly string _endpoint;
-        private readonly HttpMethod _httpMethod;
-        private readonly Dictionary<string, string> _requestHeaders;
-        private readonly Dictionary<string, string> _contentHeaders;
-        private readonly Dictionary<string, string> _queryParams;
+        private readonly string baseUri;
+        private readonly string endpoint;
+        private readonly HttpMethod httpMethod;
+        private readonly Dictionary<string, string> requestHeaders;
+        private readonly Dictionary<string, string> contentHeaders;
+        private readonly Dictionary<string, string> queryParams;
 
         private object Body { get; set; }
 
@@ -25,12 +25,12 @@ namespace Plex.Api.Api
         /// <param name="httpMethod">Api Http Method.</param>
         public ApiRequestBuilder(string baseUri, string endpoint, HttpMethod httpMethod)
         {
-            _baseUri = baseUri;
-            _endpoint = endpoint;
-            _httpMethod = httpMethod;
-            _requestHeaders = new Dictionary<string, string>();
-            _contentHeaders = new Dictionary<string, string>();
-            _queryParams = new Dictionary<string, string>();
+            this.baseUri = baseUri;
+            this.endpoint = endpoint;
+            this.httpMethod = httpMethod;
+            this.requestHeaders = new Dictionary<string, string>();
+            this.contentHeaders = new Dictionary<string, string>();
+            this.queryParams = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Plex.Api.Api
         /// <returns></returns>
         public ApiRequestBuilder AddRequestHeaders(Dictionary<string, string> headers)
         {
-            AddMultipleHeaders(headers);
+            this.AddMultipleHeaders(headers);
             return this;
         }
 
@@ -52,7 +52,7 @@ namespace Plex.Api.Api
         /// <returns></returns>
         public ApiRequestBuilder AddHeader(string key, string value)
         {
-            AddSingleHeader(key, value);
+            this.AddSingleHeader(key, value);
             return this;
         }
 
@@ -63,57 +63,57 @@ namespace Plex.Api.Api
         /// <returns></returns>
         public ApiRequestBuilder AddPlexToken(string authToken)
         {
-            AddSingleHeader("X-Plex-Token", authToken);
+            this.AddSingleHeader("X-Plex-Token", authToken);
             return this;
         }
 
         /// <summary>
-        ///
+        /// Add Query Parameters
         /// </summary>
-        /// <param name="queryParams"></param>
+        /// <param name="queryParameters">Query Parameters</param>
         /// <returns></returns>
-        public ApiRequestBuilder AddQueryParams(Dictionary<string, string> queryParams)
+        public ApiRequestBuilder AddQueryParams(Dictionary<string, string> queryParameters)
         {
-            AddMultipleQueryParams(queryParams);
+            this.AddMultipleQueryParams(queryParameters);
             return this;
         }
 
         /// <summary>
-        ///
+        /// Add Query Parameter
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="key">key</param>
+        /// <param name="value">value</param>
         /// <returns></returns>
         public ApiRequestBuilder AddQueryParam(string key, string value)
         {
-            AddSingleQueryParam(key, value);
+            this.AddSingleQueryParam(key, value);
             return this;
         }
 
         /// <summary>
-        ///
+        /// Accept Json
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Api Request Builder Object</returns>
         public ApiRequestBuilder AcceptJson()
         {
-            AddHeader("Accept", "application/json");
+            this.AddHeader("Accept", "application/json");
             return this;
         }
 
         /// <summary>
-        ///
+        /// Add Json Body
         /// </summary>
-        /// <param name="body"></param>
-        /// <returns></returns>
+        /// <param name="body">Body</param>
+        /// <returns>Api Request Builder Oject</returns>
         public ApiRequestBuilder AddJsonBody(object body)
         {
-            Body = body;
+            this.Body = body;
             return this;
         }
 
         private void AddSingleHeader(string key, string value)
         {
-            var headers = _requestHeaders ?? new Dictionary<string, string>();
+            var headers = this.requestHeaders ?? new Dictionary<string, string>();
 
             headers.Add(key, value);
         }
@@ -122,33 +122,31 @@ namespace Plex.Api.Api
         {
             foreach (var (key, value) in headers)
             {
-                AddSingleHeader(key, value);
+                this.AddSingleHeader(key, value);
             }
         }
 
-        private void AddMultipleQueryParams(Dictionary<string, string> queryParams)
+        private void AddMultipleQueryParams(Dictionary<string, string> queryParameters)
         {
-            foreach (var (key, value) in queryParams)
+            foreach (var (key, value) in queryParameters)
             {
-                AddSingleQueryParam(key, value);
+                this.AddSingleQueryParam(key, value);
             }
         }
 
         private void AddSingleQueryParam(string key, string value)
         {
-            var queryParams = _queryParams ?? new Dictionary<string, string>();
+            var queryParameters = this.queryParams ?? new Dictionary<string, string>();
 
-            queryParams.Add(key, value);
+            queryParameters.Add(key, value);
         }
 
         /// <summary>
-        ///
+        /// Build Api Request
         /// </summary>
-        /// <returns></returns>
-        public ApiRequest Build()
-        {
-            return new ApiRequest(_endpoint, _baseUri, _httpMethod, _requestHeaders, _contentHeaders, Body,
-                _queryParams);
-        }
+        /// <returns>Api Request Object</returns>
+        public ApiRequest Build() =>
+            new ApiRequest(this.endpoint, this.baseUri, this.httpMethod, this.requestHeaders, this.contentHeaders, this.Body,
+                this.queryParams);
     }
 }

@@ -7,15 +7,15 @@ namespace Plex.Api.Api
     /// <inheritdoc />
     public class PlexRequestsHttpClient : IPlexRequestsHttpClient
     {
-        private readonly HttpClient _client;
+        private readonly HttpClient client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlexRequestsHttpClient"/> class.
         /// </summary>
-        public PlexRequestsHttpClient() => this._client = new HttpClient();
+        public PlexRequestsHttpClient() => this.client = new HttpClient();
 
         /// <inheritdoc/>
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request) =>
-            await this._client.SendAsync(request);
+            await this.client.SendAsync(request);
     }
 }

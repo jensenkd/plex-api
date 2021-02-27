@@ -5,6 +5,7 @@ namespace Plex.Api.Test
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
+    using Models.Metadata;
     using Plex.Api.Models;
     using Xunit;
 

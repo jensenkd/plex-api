@@ -102,13 +102,13 @@ namespace Plex.Api.Api
                 uriBuilder.Append("?");
             }
 
-            for (var i = 0; i < QueryParams.Count; i++)
+            for (var i = 0; i < this.QueryParams.Count; i++)
             {
-                var (key, value) = QueryParams.ElementAt(i);
+                var (key, value) = this.QueryParams.ElementAt(i);
 
                 uriBuilder.Append($"{key}={value}");
 
-                var isLast = i == QueryParams.Count - 1;
+                var isLast = i == this.QueryParams.Count - 1;
 
                 if (!isLast)
                 {

@@ -10,15 +10,13 @@ namespace Plex.Api.Api
     using System.Xml.Serialization;
     using Microsoft.Extensions.Logging;
 
-    /// <summary>
-    ///
-    /// </summary>
+    /// <inheritdoc />
     public class ApiService : IApiService
     {
-        private readonly IPlexRequestsHttpClient _httpClient;
-        private readonly ILogger<ApiService> _logger;
+        private readonly IPlexRequestsHttpClient httpClient;
+        private readonly ILogger<ApiService> logger;
 
-        private static readonly JsonSerializerOptions JsonSerializationSettings = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions JsonSerializationSettings = new()
         {
             IgnoreNullValues = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -33,8 +31,8 @@ namespace Plex.Api.Api
             IPlexRequestsHttpClient httpClient,
             ILogger<ApiService> logger)
         {
-            _httpClient = httpClient;
-            _logger = logger;
+            this.httpClient = httpClient;
+            this.logger = logger;
         }
 
         /// <inheritdoc />
@@ -45,9 +43,9 @@ namespace Plex.Api.Api
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            this._logger.LogDebug($"Calling External Api: {httpRequestMessage.RequestUri}");
-            var httpResponse = await this._httpClient.SendAsync(httpRequestMessage);
-            this._logger.LogDebug($"Finishing called External Api. Total time: {stopWatch.Elapsed.Milliseconds}ms");
+            this.logger.LogDebug($"Calling External Api: {httpRequestMessage.RequestUri}");
+            var httpResponse = await this.httpClient.SendAsync(httpRequestMessage);
+            this.logger.LogDebug($"Finishing called External Api. Total time: {stopWatch.Elapsed.Milliseconds}ms");
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -63,9 +61,9 @@ namespace Plex.Api.Api
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            this._logger.LogDebug($"Calling External Api: {httpRequestMessage.RequestUri}");
-            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
-            this._logger.LogDebug($"Finishing called External Api. Total time: {stopWatch.Elapsed.Milliseconds}ms");
+            this.logger.LogDebug($"Calling External Api: {httpRequestMessage.RequestUri}");
+            var httpResponse = await this.httpClient.SendAsync(httpRequestMessage);
+            this.logger.LogDebug($"Finishing called External Api. Total time: {stopWatch.Elapsed.Milliseconds}ms");
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -127,13 +125,13 @@ namespace Plex.Api.Api
 
         private async Task LogApiUnsuccessfulAsync(ApiRequest request, HttpResponseMessage httpResponse)
         {
-            this._logger.LogInformation($"StatusCode: {httpResponse.StatusCode}. Request Uri: {request.FullUri}");
+            this.logger.LogInformation($"StatusCode: {httpResponse.StatusCode}. Request Uri: {request.FullUri}");
 
             var rawResponse = await httpResponse.Content.ReadAsStringAsync();
 
-            if (this._logger.IsEnabled(LogLevel.Debug))
+            if (this.logger.IsEnabled(LogLevel.Debug))
             {
-                this._logger.LogDebug(rawResponse);
+                this.logger.LogDebug(rawResponse);
             }
 
             //TODO Enable retries and handle different response status codes accordingly

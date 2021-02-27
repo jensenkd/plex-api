@@ -1,10 +1,10 @@
-namespace Plex.Api
+namespace Plex.Api.Helpers
 {
     using System;
-    using Plex.Api.Models.Server;
+    using Models.Server;
 
     /// <summary>
-    ///
+    /// Uri Helper Object
     /// </summary>
     public static class UriHelper
     {
@@ -12,13 +12,13 @@ namespace Plex.Api
         private const string Http = "Http";
 
         /// <summary>
-        ///
+        /// Get Url from Server Info
         /// </summary>
         /// <param name="val"></param>
-        /// <param name="server"></param>
-        /// <returns></returns>
-        /// <exception cref="ApplicationException"></exception>
-        /// <exception cref="Exception"></exception>
+        /// <param name="server">Server Object</param>
+        /// <returns>Uri of Server</returns>
+        /// <exception cref="ApplicationException">Application Exception</exception>
+        /// <exception cref="Exception">Exception</exception>
         public static Uri ReturnUriFromServerInfo(this string val, Server server)
         {
             if (val == null)
@@ -30,7 +30,7 @@ namespace Plex.Api
                 UriBuilder uri;
 
                 var port = int.Parse(server.Port);
-                bool ssl = string.Equals(server.Scheme, Https, StringComparison.OrdinalIgnoreCase);
+                var ssl = string.Equals(server.Scheme, Https, StringComparison.OrdinalIgnoreCase);
 
                 if (val.StartsWith("http://", StringComparison.Ordinal))
                 {

@@ -4,9 +4,11 @@ namespace Plex.Api
     using System.Threading.Tasks;
     using Models;
     using Models.Friends;
+    using Models.Metadata;
     using Models.OAuth;
     using Models.Server;
-    using Models.Status;
+    using Models.Server.Resources;
+    using Models.Session;
     using ResourceModels;
 
     /// <summary>

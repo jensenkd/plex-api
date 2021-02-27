@@ -1,19 +1,18 @@
-﻿namespace Plex.Api.Models.Server
+﻿namespace Plex.Api.Models.PlexAdd
 {
-    using System.Collections.Generic;
     using System.Xml.Serialization;
 
     /// <summary>
-    /// Server Container Object
+    /// Plex Add Object
     /// </summary>
     [XmlRoot(ElementName = "MediaContainer")]
-    public class ServerContainer
+    public class PlexAdd
     {
         /// <summary>
-        /// Server Items
+        /// Shared Server
         /// </summary>
-        [XmlElement(ElementName = "Server")]
-        public List<Server> Servers { get; set; }
+        [XmlElement(ElementName = "SharedServer")]
+        public SharedServer SharedServer { get; set; }
 
         /// <summary>
         /// Friendly Name

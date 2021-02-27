@@ -1,6 +1,7 @@
 namespace Plex.Api.Automapper
 {
     using AutoMapper;
+    using Models.Metadata;
     using Plex.Api.Models;
     using Plex.Api.ResourceModels;
 

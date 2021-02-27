@@ -63,7 +63,7 @@ namespace Plex.Api.Models
         /// Metadata Items
         /// </summary>
         [JsonPropertyName("Metadata")]
-        public List<Metadata> Metadata { get; set; }
+        public List<Metadata.Metadata> Metadata { get; set; }
 
         /// <summary>
         /// Art
