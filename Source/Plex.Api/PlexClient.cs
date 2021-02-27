@@ -8,6 +8,7 @@
     using Api;
     using Automapper;
     using Models;
+    using Models.Announcements;
     using Models.Friends;
     using Models.Metadata;
     using Models.OAuth;
@@ -133,6 +134,18 @@
             var plexMediaContainer = await this.apiService.InvokeApiAsync<ProviderWrapper>(apiRequest);
 
             return plexMediaContainer;
+        }
+
+        public async Task<AnnouncementWrapper> GetPlexAnnouncementsAsync(string authToken)
+        {
+            var apiRequest = new ApiRequestBuilder("https://plex.tv/api/announcements.xml", string.Empty, HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(this.GetClientIdentifierHeader())
+                .Build();
+
+            var announcementContainer = await this.apiService.InvokeApiAsync<AnnouncementWrapper>(apiRequest);
+
+            return announcementContainer;
         }
 
         /// <inheritdoc/>

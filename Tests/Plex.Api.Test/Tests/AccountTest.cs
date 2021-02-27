@@ -144,6 +144,20 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async Task Test_Get_Plex_Announcements()
+        {
+            var plexApi = this.ServiceProvider.GetService<IPlexClient>();
+            var authKey = this.Configuration["Plex:AuthenticationKey"];
+
+            if (plexApi != null)
+            {
+                var announcements = await plexApi.GetPlexAnnouncementsAsync(authKey);
+
+                Assert.NotNull(announcements);
+            }
+        }
+
+        [Fact]
         public async Task Test_Get_Server_SessionsAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();

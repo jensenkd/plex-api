@@ -3,6 +3,7 @@ namespace Plex.Api
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Models;
+    using Models.Announcements;
     using Models.Friends;
     using Models.Metadata;
     using Models.OAuth;
@@ -71,6 +72,13 @@ namespace Plex.Api
         /// <param name="plexServerHost">Plex Server Host</param>
         /// <returns>Provider Wrapper</returns>
         Task<ProviderWrapper> GetServerProvidersAsync(string authToken, string plexServerHost);
+
+        /// <summary>
+        /// Get Plex Announcements
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <returns>Announcement Wrapper</returns>
+        Task<AnnouncementWrapper> GetPlexAnnouncementsAsync(string authToken);
 
         /// <summary>
         /// Retuns all the Plex friends for this account.

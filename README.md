@@ -78,6 +78,9 @@ Server
         
     // Get Account
     var user = plexApi.GetAccountAsync(string authToken).Result;
+    
+    // Get Plex Announcements
+    var announcements = plexApi.GetPlexAnnouncementsAsync(string authToken).Result;
           
     // Get Servers
     var servers = plexApi.GetServersAsync(string authToken).Result;
