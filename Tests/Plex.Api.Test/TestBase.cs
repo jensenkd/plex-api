@@ -1,8 +1,14 @@
 namespace Plex.Api.Test
 {
+    using System;
+    using System.Linq;
+    using Account;
+    using Factories;
+    using Helpers;
     using Plex.Api.Api;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Xunit;
 
     public class TestBase
     {
@@ -10,6 +16,9 @@ namespace Plex.Api.Test
         protected readonly IConfiguration Configuration;
 
         protected readonly ClientOptions ClientOptions;
+
+        public Account Account { get; }
+        public Server Server { get; }
 
         protected TestBase()
         {
@@ -31,9 +40,32 @@ namespace Plex.Api.Test
             services.AddSingleton(this.ClientOptions);
             services.AddTransient<IPlexClient, PlexClient>();
             services.AddTransient<IApiService, ApiService>();
+            services.AddTransient<IPlexFactory, PlexFactory>();
             services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
 
             this.ServiceProvider = services.BuildServiceProvider();
+
+            var login = this.Configuration["Plex:Login"];
+            var password = this.Configuration["Plex:Password"];
+
+            var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
+
+            this.Account = plexFactory.GetPlexAccount(login, password);
+            if (this.Account == null)
+            {
+                throw new ApplicationException("Invalid Login Credentials");
+            }
+
+            // Get First Owned Server
+            var servers = this.Account.GetAccountServersAsync().Result;
+            var ownedServer = servers.First(c => c.Owned == 1);
+            var fullUri = ownedServer.Host.ReturnUriFromServerInfo(ownedServer.Port, ownedServer.Scheme);
+
+            this.Server = plexFactory.GetPlexServer(fullUri.ToString(), ownedServer.AccessToken);
+            if (this.Server == null)
+            {
+                throw new ApplicationException("No Valid Server Found");
+            }
         }
     }
 }

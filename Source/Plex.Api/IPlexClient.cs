@@ -4,13 +4,15 @@ namespace Plex.Api
     using System.Threading.Tasks;
     using Models;
     using Models.Announcements;
-    using Models.Friends;
     using Models.Metadata;
     using Models.OAuth;
     using Models.Providers;
-    using Models.Server;
-    using Models.Server.Resources;
     using Models.Session;
+    using PlexModels;
+    using PlexModels.Account;
+    using PlexModels.Library;
+    using PlexModels.Resources;
+    using PlexModels.Server;
     using ResourceModels;
 
     /// <summary>
@@ -45,9 +47,17 @@ namespace Plex.Api
         /// <summary>
         /// Get Plex Account.
         /// </summary>
+        /// <param name="username">Username.</param>
+        /// <param name="password">Password.</param>
+        /// /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string username, string password);
+
+        /// <summary>
+        /// Get Plex Account.
+        /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<User> GetAccountAsync(string authToken);
+        Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string authToken);
 
         /// <summary>
         /// Get Plex Resources.
@@ -63,7 +73,7 @@ namespace Plex.Api
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="showActiveOnly">Show only active Servers</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<Server>> GetServersAsync(string authToken, bool showActiveOnly);
+        Task<List<AccountServer>> GetAccountServersAsync(string authToken, bool showActiveOnly);
 
         /// <summary>
         /// Get Server Providers
@@ -93,7 +103,7 @@ namespace Plex.Api
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Server Host.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexMediaContainer> GetLibrariesAsync(string authToken, string plexServerHost);
+        Task<List<LibrarySection>> GetLibrarySectionsAsync(string authToken, string plexServerHost);
 
         /// <summary>
         /// Returns a Plex Library.
@@ -154,7 +164,7 @@ namespace Plex.Api
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Host Uri.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexMediaContainer> GetPlexInfoAsync(string authToken, string plexServerHost);
+        Task<PlexServer> GetPlexServerInfo(string authToken, string plexServerHost);
 
         /// <summary>
         /// http://[PMS_IP_Address]:32400/status/sessions?X-Plex-Token=YourTokenGoesHere

@@ -1,7 +1,7 @@
 namespace Plex.Api.Helpers
 {
     using System;
-    using Models.Server;
+    using PlexModels.Server;
 
     /// <summary>
     /// Uri Helper Object
@@ -14,43 +14,44 @@ namespace Plex.Api.Helpers
         /// <summary>
         /// Get Url from Server Info
         /// </summary>
-        /// <param name="val"></param>
-        /// <param name="server">Server Object</param>
+        /// <param name="host">Server Host</param>
+        /// <param name="port">Server Port</param>
+        /// <param name="scheme">Url Scheme</param>
         /// <returns>Uri of Server</returns>
         /// <exception cref="ApplicationException">Application Exception</exception>
         /// <exception cref="Exception">Exception</exception>
-        public static Uri ReturnUriFromServerInfo(this string val, Server server)
+        public static Uri ReturnUriFromServerInfo(this string host, int port, string scheme)
         {
-            if (val == null)
+            if (host == null)
             {
                 throw new ApplicationException("The URI is null, please check your settings to make sure you have configured the applications correctly.");
             }
+
             try
             {
                 UriBuilder uri;
 
-                var port = int.Parse(server.Port);
-                var ssl = string.Equals(server.Scheme, Https, StringComparison.OrdinalIgnoreCase);
+                var ssl = string.Equals(scheme, Https, StringComparison.OrdinalIgnoreCase);
 
-                if (val.StartsWith("http://", StringComparison.Ordinal))
+                if (host.StartsWith("http://", StringComparison.Ordinal))
                 {
-                    var split = val.Split('/');
-                    uri = split.Length >= 4 ? new UriBuilder(Http, split[2], port, "/" + split[3]) : new UriBuilder(new Uri($"{val}:{port}"));
+                    var split = host.Split('/');
+                    uri = split.Length >= 4 ? new UriBuilder(Http, split[2], port, "/" + split[3]) : new UriBuilder(new Uri($"{host}:{port}"));
                 }
-                else if (val.StartsWith("https://", StringComparison.Ordinal))
+                else if (host.StartsWith("https://", StringComparison.Ordinal))
                 {
-                    var split = val.Split('/');
+                    var split = host.Split('/');
                     uri = split.Length >= 4
                         ? new UriBuilder(Https, split[2], port, "/" + split[3])
                         : new UriBuilder(Https, split[2], port);
                 }
                 else if (ssl)
                 {
-                    uri = new UriBuilder(Https, val, port);
+                    uri = new UriBuilder(Https, host, port);
                 }
                 else
                 {
-                    uri = new UriBuilder(Http, val, port);
+                    uri = new UriBuilder(Http, host, port);
                 }
 
                 return uri.Uri;

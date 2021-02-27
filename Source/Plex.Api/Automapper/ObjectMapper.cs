@@ -15,6 +15,8 @@ namespace Plex.Api.Automapper
                 // This line ensures that internal properties are also mapped over.
                 cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
                 cfg.AddProfile<CollectionModelMapper>();
+                cfg.AddProfile<PlexAccountModelMapper>();
+                cfg.AddProfile<PlexServerModelMapper>();
             });
             var mapper = config.CreateMapper();
             return mapper;

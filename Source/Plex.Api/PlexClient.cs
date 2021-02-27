@@ -9,22 +9,21 @@
     using Automapper;
     using Models;
     using Models.Announcements;
-    using Models.Friends;
     using Models.Metadata;
     using Models.OAuth;
     using Models.Providers;
-    using Models.Server;
-    using Models.Server.Resources;
     using Models.Session;
+    using PlexModels;
+    using PlexModels.Account;
+    using PlexModels.Server;
     using ResourceModels;
-    using Provider = Models.Provider;
+    using PlexAccount = Models.PlexAccount;
 
     /// <inheritdoc/>
     public class PlexClient : IPlexClient
     {
         private readonly IApiService apiService;
         private readonly ClientOptions clientOptions;
-        private IPlexClient plexClientImplementation;
         private const string BaseUri = "https://plex.tv/api/v2/";
 
         /// <summary>
@@ -93,28 +92,40 @@
             return account?.User;
         }
 
-        /// <inheritdoc/>
-        public async Task<User> GetAccountAsync(string authToken)
+        public async Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string username, string password)
         {
-            var apiRequest = new ApiRequestBuilder("https://plex.tv/users/account.json", string.Empty, HttpMethod.Get)
+            var user = await this.SignInAsync(username, password);
+
+            if (user == null)
+            {
+                throw new ApplicationException("User login failed.");
+            }
+
+            return await this.GetPlexAccountAsync(user.AuthenticationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string authToken)
+        {
+            var apiRequest = new ApiRequestBuilder(BaseUri + "user.json", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(this.GetClientIdentifierHeader())
                 .Build();
 
-            var account = await this.apiService.InvokeApiAsync<PlexAccount>(apiRequest);
+            var account = await this.apiService.InvokeApiAsync<PlexModels.Account.PlexAccount>(apiRequest);
 
-            return account?.User;
+            return account;
         }
 
         /// <inheritdoc/>
-        public async Task<List<Server>> GetServersAsync(string authToken, bool showActiveOnly)
+        public async Task<List<AccountServer>> GetAccountServersAsync(string authToken, bool showActiveOnly)
         {
             var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/servers.xml", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(this.GetClientIdentifierHeader())
                 .Build();
 
-            var serverContainer = await this.apiService.InvokeApiAsync<ServerContainer>(apiRequest);
+            var serverContainer = await this.apiService.InvokeApiAsync<AccountServerContainer>(apiRequest);
 
             // if (showActiveOnly)
             // {
@@ -150,33 +161,31 @@
         }
 
         /// <inheritdoc/>
-        public async Task<List<Resource>> GetResourcesAsync(string authToken)
+        public async Task<List<PlexModels.Resources.Resource>> GetResourcesAsync(string authToken)
         {
-            var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/resources.xml", string.Empty, HttpMethod.Get)
+            var apiRequest = new ApiRequestBuilder(BaseUri + "resources.json", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(this.GetClientIdentifierHeader())
                 .Build();
 
-            var resourceContainer = await this.apiService.InvokeApiAsync<ResourceContainer>(apiRequest);
-
-            return resourceContainer?.Devices;
+            var resources = await this.apiService.InvokeApiAsync<List<PlexModels.Resources.Resource>>(apiRequest);
+            return resources;
         }
 
         /// <inheritdoc/>
         public async Task<List<Friend>> GetFriendsAsync(string authToken)
         {
-            var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/friends/all", string.Empty, HttpMethod.Get)
+            var apiRequest = new ApiRequestBuilder(BaseUri + "friends.json", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(this.GetClientIdentifierHeader())
                 .Build();
 
-            var friendContainer = await this.apiService.InvokeApiAsync<FriendContainer>(apiRequest);
-
-            return friendContainer?.Friends.ToList();
+            var friends = await this.apiService.InvokeApiAsync<List<Friend>>(apiRequest);
+            return friends;
         }
 
         /// <inheritdoc/>
-        public async Task<PlexMediaContainer> GetLibrariesAsync(string authToken, string plexServerHost)
+        public async Task<PlexMediaContainer> GetLibrarySectionsAsync(string authToken, string plexServerHost)
         {
             var apiRequest = new ApiRequestBuilder(plexServerHost, "library/sections", HttpMethod.Get)
                 .AddPlexToken(authToken)
@@ -302,7 +311,7 @@
         }
 
         /// <inheritdoc/>
-        public async Task<PlexMediaContainer> GetPlexInfoAsync(string authToken, string plexServerHost)
+        public async Task<PlexServer> GetPlexServerInfo(string authToken, string plexServerHost)
         {
             var apiRequest = new ApiRequestBuilder(plexServerHost, string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
@@ -310,9 +319,9 @@
                 .AcceptJson()
                 .Build();
 
-            var plexMediaContainer = await this.apiService.InvokeApiAsync<PlexMediaContainer>(apiRequest);
+            var plexMediaContainer = await this.apiService.InvokeApiAsync<PlexServerContainer>(apiRequest);
 
-            return plexMediaContainer;
+            return plexMediaContainer.PlexServer;
         }
 
         /// <inheritdoc/>
