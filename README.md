@@ -88,6 +88,9 @@ Server
     // Get Resources
     var resources = plexApi.GetResourcesAsync(string authToken).Result;
     
+    // Get Providers
+    var providers = plexApi.GetServerProvidersAsync(string authToken, string plexServerHost).Result;
+    
 ```
 
 Libraries

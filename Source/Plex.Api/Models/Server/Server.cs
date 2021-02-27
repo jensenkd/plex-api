@@ -35,7 +35,7 @@ namespace Plex.Api.Models.Server
         public string Port { get; set; }
 
         /// <summary>
-        /// Version
+        /// Current Plex Version
         /// </summary>
         [XmlAttribute(AttributeName = "version")]
         public string Version { get; set; }

@@ -6,6 +6,7 @@ namespace Plex.Api
     using Models.Friends;
     using Models.Metadata;
     using Models.OAuth;
+    using Models.Providers;
     using Models.Server;
     using Models.Server.Resources;
     using Models.Session;
@@ -59,8 +60,17 @@ namespace Plex.Api
         /// Retrieves a list of servers tied to your Plex Account.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
+        /// <param name="showActiveOnly">Show only active Servers</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<Server>> GetServersAsync(string authToken);
+        Task<List<Server>> GetServersAsync(string authToken, bool showActiveOnly);
+
+        /// <summary>
+        /// Get Server Providers
+        /// </summary>
+        /// <param name="authToken">Authentication Token</param>
+        /// <param name="plexServerHost">Plex Server Host</param>
+        /// <returns>Provider Wrapper</returns>
+        Task<ProviderWrapper> GetServerProvidersAsync(string authToken, string plexServerHost);
 
         /// <summary>
         /// Retuns all the Plex friends for this account.

@@ -11,10 +11,12 @@
     using Models.Friends;
     using Models.Metadata;
     using Models.OAuth;
+    using Models.Providers;
     using Models.Server;
     using Models.Server.Resources;
     using Models.Session;
     using ResourceModels;
+    using Provider = Models.Provider;
 
     /// <inheritdoc/>
     public class PlexClient : IPlexClient
@@ -103,7 +105,7 @@
         }
 
         /// <inheritdoc/>
-        public async Task<List<Server>> GetServersAsync(string authToken)
+        public async Task<List<Server>> GetServersAsync(string authToken, bool showActiveOnly)
         {
             var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/servers.xml", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
@@ -112,7 +114,25 @@
 
             var serverContainer = await this.apiService.InvokeApiAsync<ServerContainer>(apiRequest);
 
+            // if (showActiveOnly)
+            // {
+            //     return serverContainer?.Servers.Where(c=>c);
+            // }
             return serverContainer?.Servers;
+        }
+
+        /// <inheritdoc/>
+        public async Task<ProviderWrapper> GetServerProvidersAsync(string authToken, string plexServerHost)
+        {
+            var apiRequest = new ApiRequestBuilder(plexServerHost, "media/providers", HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(this.GetClientIdentifierHeader())
+                .AcceptJson()
+                .Build();
+
+            var plexMediaContainer = await this.apiService.InvokeApiAsync<ProviderWrapper>(apiRequest);
+
+            return plexMediaContainer;
         }
 
         /// <inheritdoc/>

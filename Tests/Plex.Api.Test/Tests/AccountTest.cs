@@ -1,6 +1,7 @@
-namespace Plex.Api.Test
+namespace Plex.Api.Test.Tests
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Helpers;
     using Microsoft.Extensions.DependencyInjection;
     using Plex.Api;
@@ -9,7 +10,7 @@ namespace Plex.Api.Test
     public class AccountTest : TestBase
     {
         [Fact]
-        public async System.Threading.Tasks.Task Test_CreateOAuthPinAsync()
+        public async Task Test_CreateOAuthPinAsync()
         {
             var redirectUrl = "http://test.com";
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
@@ -27,7 +28,7 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_GetAccessTokenFromOAuthPinAsync()
+        public async Task Test_GetAccessTokenFromOAuthPinAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var pin = "XXX";
@@ -39,7 +40,7 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_SignInAsync()
+        public async Task Test_SignInAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
 
@@ -57,7 +58,7 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_Get_AccountAsync()
+        public async Task Test_Get_AccountAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var authKey = this.Configuration["Plex:AuthenticationKey"];
@@ -69,7 +70,7 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_Get_ResourcesAsync()
+        public async Task Test_Get_ResourcesAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var authKey = this.Configuration["Plex:AuthenticationKey"];
@@ -81,19 +82,19 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_Get_ServerAsync()
+        public async Task Test_Get_ServerAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var authKey = this.Configuration["Plex:AuthenticationKey"];
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
             }
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_Get_FriendsAsync()
+        public async Task Test_Get_FriendsAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var authKey = this.Configuration["Plex:AuthenticationKey"];
@@ -107,14 +108,14 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_Plex_InfoAsync()
+        public async Task Test_Plex_InfoAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var authKey = this.Configuration["Plex:AuthenticationKey"];
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
 
                 var fullUri = servers[0].Host.ReturnUriFromServerInfo(servers[0]);
 
@@ -125,14 +126,32 @@ namespace Plex.Api.Test
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_Get_Server_SessionsAsync()
+        public async Task Text_Plex_Server_Providers()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var authKey = this.Configuration["Plex:AuthenticationKey"];
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
+
+                var fullUri = servers[0].Host.ReturnUriFromServerInfo(servers[0]);
+
+                var providers = await plexApi.GetServerProvidersAsync(authKey, fullUri.ToString());
+
+                Assert.NotNull(providers);
+            }
+        }
+
+        [Fact]
+        public async Task Test_Get_Server_SessionsAsync()
+        {
+            var plexApi = this.ServiceProvider.GetService<IPlexClient>();
+            var authKey = this.Configuration["Plex:AuthenticationKey"];
+
+            if (plexApi != null)
+            {
+                var servers = await plexApi.GetServersAsync(authKey, false);
 
                 var fullUri = servers[0].Host.ReturnUriFromServerInfo(servers[0]);
 

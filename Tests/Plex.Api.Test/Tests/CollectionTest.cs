@@ -13,7 +13,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 var collections = await plexApi.GetCollectionsAsync(authKey, fullUri, "1");
@@ -31,7 +31,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 var collection = await plexApi.GetCollectionAsync(authKey, fullUri, "112898");
@@ -52,7 +52,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 // Add Collection to Movie
@@ -78,7 +78,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 // Delete Collection to Movie
@@ -99,7 +99,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 var movies = await plexApi.GetChildrenMetadataAsync(authKey, fullUri, 112898);
@@ -116,7 +116,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 const string libraryKey = "1";

@@ -1,12 +1,10 @@
-namespace Plex.Api.Test
+namespace Plex.Api.Test.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Models.Metadata;
-    using Plex.Api.Models;
     using Xunit;
 
     public class LibraryTest : TestBase
@@ -19,7 +17,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
 
                 var movies = await plexApi.SearchAsync(authKey, fullUri, "Harry Potter");
@@ -36,7 +34,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey,false);
 
                 var fullUri = servers[0].FullUri.ToString();
 
@@ -69,7 +67,7 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
 
                 var fullUri = servers[0].FullUri.ToString();
 
@@ -88,7 +86,7 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
                 await plexApi.UnScrobbleItemAsync(authKey, fullUri, ratingKey);
                 var after = await plexApi.GetMetadataAsync(authKey, fullUri, int.Parse(ratingKey));
@@ -106,7 +104,7 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
                 var fullUri = servers[0].FullUri.ToString();
                 var before = await plexApi.GetMetadataAsync(authKey, fullUri, int.Parse(ratingKey));
 
@@ -126,7 +124,7 @@ namespace Plex.Api.Test
             var authKey = this.Configuration["Plex:AuthenticationKey"];
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
 
                 var fullUri = servers[0].FullUri.ToString();
 
@@ -157,7 +155,7 @@ namespace Plex.Api.Test
 
             if (plexApi != null)
             {
-                var servers = await plexApi.GetServersAsync(authKey);
+                var servers = await plexApi.GetServersAsync(authKey, false);
 
                 var fullUri = servers[0].FullUri.ToString();
 
