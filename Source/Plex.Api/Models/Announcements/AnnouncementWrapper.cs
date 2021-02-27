@@ -9,28 +9,28 @@ namespace Plex.Api.Models.Announcements
     [XmlRoot(ElementName = "MediaContainer")]
     public class AnnouncementWrapper
     {
-        [XmlElement(ElementName = "freindlyName")]
+        [XmlAttribute(AttributeName = "freindlyName")]
         public string FriendlyName { get; set; }
 
-        [XmlElement(ElementName = "identifier")]
+        [XmlAttribute(AttributeName = "identifier")]
         public string Identifier { get; set; }
 
-        [XmlElement(ElementName = "machineIdentifier")]
+        [XmlAttribute(AttributeName = "machineIdentifier")]
         public string MachineIdentifier { get; set; }
 
-        [XmlElement(ElementName = "totalSize")]
+        [XmlAttribute(AttributeName = "totalSize")]
         public int TotalSize { get; set; }
 
-        [XmlElement(ElementName = "size")]
+        [XmlAttribute(AttributeName = "size")]
         public int Size { get; set; }
 
-        [XmlElement(ElementName = "title1")]
+        [XmlAttribute(AttributeName = "title1")]
         public string Title1 { get; set; }
 
-        [XmlElement(ElementName = "viewGroup")]
+        [XmlAttribute(AttributeName = "viewGroup")]
         public string ViewGroup { get; set; }
 
-        [XmlElement(ElementName = "content")]
+        [XmlAttribute(AttributeName = "content")]
         public string Content { get; set; }
 
         [XmlElement(ElementName = "Announcement")]

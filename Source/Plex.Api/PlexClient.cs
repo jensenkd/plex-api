@@ -24,6 +24,7 @@
     {
         private readonly IApiService apiService;
         private readonly ClientOptions clientOptions;
+        private IPlexClient plexClientImplementation;
         private const string BaseUri = "https://plex.tv/api/v2/";
 
         /// <summary>
