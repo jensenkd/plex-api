@@ -3,6 +3,7 @@ plex-api
 
 [![.NET](https://github.com/jensenkd/plex-api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/jensenkd/plex-api/actions/workflows/dotnet.yml)
 [![CodeQL](https://github.com/jensenkd/plex-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jensenkd/plex-api/actions/workflows/codeql-analysis.yml)
+[![Nuget Pre-Release](https://github.com/jensenkd/plex-api/actions/workflows/pre-release.yml/badge.svg)](https://github.com/jensenkd/plex-api/actions/workflows/pre-release.yml)
 [![nuGet](https://badgen.net/nuget/v/Plex.Api)](https://www.nuget.org/packages/Plex.Api)
 
 
