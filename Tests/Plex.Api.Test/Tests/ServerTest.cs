@@ -69,5 +69,36 @@ namespace Plex.Api.Test.Tests
                 Assert.Equal(title, libraries[0].Title);
             }
         }
+
+        [Fact]
+        public async void Test_GetPlexServer_HubOnDeck()
+        {
+            const int start = 0;
+            const int count = 3;
+            var items = await this.Server.GetHomeOnDeck(start, count);
+
+            Assert.Equal(items.Media.Count, count);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServer_HubContinueWatching()
+        {
+            const int start = 0;
+            const int count = 3;
+            var items = await this.Server.GetHubContinueWatching(start, count);
+
+            Assert.Equal(items.Media.Count, count);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServer_HubRecentlyAdded()
+        {
+            const int start = 0;
+            const int count = 3;
+            const string libraryKey = "1";
+            var items = await this.Server.GetHubRecentlyAdded(start, count);
+
+            Assert.Equal(items.Media.Count, count);
+        }
     }
 }

@@ -4,8 +4,8 @@ namespace Plex.Api
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Api;
     using Automapper;
+    using PlexModels.Hubs;
     using PlexModels.Library;
     using PlexModels.Media;
     using PlexModels.Server;
@@ -13,10 +13,9 @@ namespace Plex.Api
 
     public class Server
     {
-        private readonly IApiService apiService;
         private readonly IPlexClient plexClient;
 
-        public Server(IApiService apiService, IPlexClient plexClient, string authToken, string serverUrl)
+        public Server(IPlexClient plexClient, string authToken, string serverUrl)
         {
             if (string.IsNullOrEmpty(authToken))
             {
@@ -28,7 +27,6 @@ namespace Plex.Api
                 throw new ArgumentNullException(nameof(serverUrl));
             }
 
-            this.apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
             this.plexClient = plexClient ?? throw new ArgumentNullException(nameof(plexClient));
 
             //Connect to server and populate
@@ -364,7 +362,6 @@ namespace Plex.Api
         }
 
         // GetAllMedia() //Get All Media From All Sections
-        // GetOnDeck()
         // GetRecentlyAdded()
 
         // SearchLibrary(string title, string libraryType)
@@ -397,5 +394,63 @@ namespace Plex.Api
         /// <param name="collectionModel">Collection Model</param>
         public async void UpdateCollection(string libraryKey, CollectionModel collectionModel) =>
             await this.plexClient.UpdateCollectionAsync(this.AccessToken, this.HostUrl, libraryKey, collectionModel);
+
+        // Hubs
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> GetHomeOnDeck(int start = 0, int count = 10)
+        {
+            return await this.plexClient.GetHomeOnDeckAsync(this.AccessToken, this.HostUrl, start, count);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> GetHubRecentlyAdded(int start = 0, int count = 10)
+        {
+            return await this.plexClient.GetHomeRecentlyAddedAsync(this.AccessToken, this.HostUrl, start, count);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> GetHubContinueWatching(int start = 0, int count = 10)
+        {
+            return await this.plexClient.GetHomeContinueWatchingAsync(this.AccessToken, this.HostUrl, start, count);
+        }
+
+        /// <summary>
+        /// Return list of Hubs on a given library along with their Metadata items
+        /// </summary>
+        /// <param name="libraryKey">Library Key</param>
+        /// <param name="count">Max count of items on each hub</param>
+        /// <returns></returns>
+        public async Task<HubMediaContainer> GetLibraryHub(string libraryKey, int count = 10)
+        {
+            return await this.plexClient.GetLibraryHubAsync(this.AccessToken, this.HostUrl, libraryKey, count);
+        }
+
+        /// <summary>
+        /// Returns recently added items to given Library
+        /// </summary>
+        /// <param name="libraryKey">Key of Library</param>
+        /// <param name="start">Offset number to start with (0 is first record)</param>
+        /// <param name="count">Max number of items to return</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> GetLibraryRecentlyAdded(string libraryKey, int start, int count)
+        {
+            return await this.plexClient.GetLibraryRecentlyAddedAsync(this.AccessToken,  this.HostUrl, libraryKey, start, count);
+        }
     }
 }

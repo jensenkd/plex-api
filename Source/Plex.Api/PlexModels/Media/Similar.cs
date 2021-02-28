@@ -2,7 +2,8 @@ namespace Plex.Api.PlexModels.Media
 {
     using System.Text.Json.Serialization;
 
-    public class Similar    {
+    public class Similar
+    {
         [JsonPropertyName("id")]
         public int Id { get; set; }
 

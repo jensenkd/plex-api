@@ -9,18 +9,15 @@ namespace Plex.Api.Account
     using PlexModels;
     using PlexModels.Account;
     using PlexModels.Resources;
-    using PlexModels.Server;
-    using PlexAccount = Models.PlexAccount;
     using Subscription = PlexModels.Account.Subscription;
 
     public class Account
     {
-        private readonly IApiService apiService;
         private readonly IPlexClient plexClient;
 
         private readonly string plexHost;
 
-        public Account(IApiService apiService, IPlexClient plexClient, string username, string password)
+        public Account(IPlexClient plexClient, string username, string password)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -32,21 +29,19 @@ namespace Plex.Api.Account
                 throw new ArgumentNullException(nameof(password));
             }
 
-            this.apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
             this.plexClient = plexClient ?? throw new ArgumentNullException(nameof(plexClient));
 
             var account = plexClient.GetPlexAccountAsync(username, password).Result;
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        public Account(IApiService apiService, IPlexClient plexClient, string authToken)
+        public Account(IPlexClient plexClient, string authToken)
         {
             if (string.IsNullOrEmpty(authToken))
             {
                 throw new ArgumentNullException(nameof(authToken));
             }
 
-            this.apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
             this.plexClient = plexClient ?? throw new ArgumentNullException(nameof(plexClient));
 
             var account = plexClient.GetPlexAccountAsync(authToken).Result;

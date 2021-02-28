@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using Helpers;
+    using PlexModels.Account;
 
     /// <summary>
     /// Plex Account Object

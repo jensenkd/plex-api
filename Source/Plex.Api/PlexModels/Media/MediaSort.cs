@@ -2,7 +2,8 @@ namespace Plex.Api.PlexModels.Media
 {
     using System.Text.Json.Serialization;
 
-    public class MediaSort    {
+    public class MediaSort
+    {
         [JsonPropertyName("active")]
         public bool Active { get; set; }
 

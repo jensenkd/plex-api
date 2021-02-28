@@ -3,6 +3,7 @@ namespace Plex.Api.Models.Session
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using Helpers;
+    using PlexModels.Media;
 
     /// <summary>
     /// Session Object

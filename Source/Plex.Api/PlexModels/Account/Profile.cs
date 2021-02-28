@@ -2,7 +2,8 @@ namespace Plex.Api.PlexModels.Account
 {
     using System.Text.Json.Serialization;
 
-    public class Profile    {
+    public class Profile
+    {
         [JsonPropertyName("autoSelectAudio")]
         public bool AutoSelectAudio { get; set; }
 

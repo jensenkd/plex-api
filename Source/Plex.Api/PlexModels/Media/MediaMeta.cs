@@ -3,7 +3,8 @@ namespace Plex.Api.PlexModels.Media
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
-    public class MediaMeta    {
+    public class MediaMeta
+    {
         [JsonPropertyName("Type")]
         public List<MediaType> Type { get; set; }
 

@@ -4,7 +4,8 @@ namespace Plex.Api.PlexModels.Account
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
-    public class Subscription    {
+    public class Subscription
+    {
         [JsonPropertyName("active")]
         public bool Active { get; set; }
 

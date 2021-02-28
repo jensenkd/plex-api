@@ -22,13 +22,13 @@ namespace Plex.Api.Factories
 
         // Plex Account
         public Account GetPlexAccount(string username, string password) =>
-            new Account(this.apiService, this.plexClient, username, password);
+            new Account(this.plexClient, username, password);
 
         public Account GetPlexAccount(string authToken) =>
-            new Account(this.apiService, this.plexClient, authToken);
+            new Account(this.plexClient, authToken);
 
         // Plex Server
         public Server GetPlexServer(string plexHostUrl, string authToken) =>
-            new Server(this.apiService, this.plexClient, authToken, plexHostUrl);
+            new Server(this.plexClient, authToken, plexHostUrl);
     }
 }

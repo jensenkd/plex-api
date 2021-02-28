@@ -27,6 +27,38 @@ namespace Plex.Api.PlexModels.Media
         [JsonPropertyName("titleSort")]
         public string TitleSort { get; set; }
 
+        // TV Shows Only
+        [JsonPropertyName("parentGuid")]
+        public string ParentGuid { get; set; }
+
+        [JsonPropertyName("parentIndex")]
+        public int ParentIndex { get; set; }
+
+        [JsonPropertyName("parentThumb")]
+        public string ParentThumb { get; set; }
+
+        [JsonPropertyName("parentTitle")]
+        public string ParentTitle { get; set; }
+
+        [JsonPropertyName("grandparentArt")]
+        public string GrandparentArt { get; set; }
+
+        [JsonPropertyName("grandparentGuid")]
+        public string GrandparentGuid { get; set; }
+
+        [JsonPropertyName("grandparentKey")]
+        public string GrandparentKey { get; set; }
+
+        [JsonPropertyName("grandparentRatingKey")]
+        public string GrandparentRatingKey { get; set; }
+
+        [JsonPropertyName("grandparentThumb")]
+        public string GrandparentThumb { get; set; }
+
+        [JsonPropertyName("grandparentTitle")]
+        public string GrandparentTitle { get; set; }
+
+
         [JsonPropertyName("librarySectionTitle")]
         public string LibrarySectionTitle { get; set; }
 
@@ -68,6 +100,9 @@ namespace Plex.Api.PlexModels.Media
 
         [JsonPropertyName("originallyAvailableAt")]
         public string OriginallyAvailableAt { get; set; }
+
+        [JsonPropertyName("index")]
+        public int Index { get; set; }
 
         [JsonPropertyName("addedAt")]
         public int AddedAt { get; set; }

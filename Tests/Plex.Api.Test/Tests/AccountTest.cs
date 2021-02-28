@@ -11,7 +11,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public void Test_GetPlexAccountByAuthToken()
         {
-           var authToken = this.Configuration["Plex:AuthenticationKey"];
+            var authToken = this.Configuration["Plex:AuthenticationKey"];
             var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
             if (plexFactory != null)
             {

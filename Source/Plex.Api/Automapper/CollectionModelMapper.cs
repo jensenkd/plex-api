@@ -1,9 +1,8 @@
 namespace Plex.Api.Automapper
 {
     using AutoMapper;
-    using Models.Metadata;
-    using Plex.Api.Models;
-    using Plex.Api.ResourceModels;
+    using ResourceModels;
+    using PlexModels.Media;
 
     /// <summary>
     ///
@@ -15,7 +14,7 @@ namespace Plex.Api.Automapper
         /// </summary>
         public CollectionModelMapper()
         {
-            CreateMap<Metadata, CollectionModel>();
+            CreateMap<MediaContainer, CollectionModel>();
         }
     }
 }

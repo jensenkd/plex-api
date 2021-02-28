@@ -1,4 +1,4 @@
-namespace Plex.Api.Models.Announcements
+namespace Plex.Api.PlexModels.Account
 {
     using System.Xml.Serialization;
 

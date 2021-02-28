@@ -2,7 +2,8 @@ namespace Plex.Api.PlexModels.Media
 {
     using System.Text.Json.Serialization;
 
-    public class MediaFilter    {
+    public class MediaFilter
+    {
         [JsonPropertyName("filter")]
         public string Filter { get; set; }
 
