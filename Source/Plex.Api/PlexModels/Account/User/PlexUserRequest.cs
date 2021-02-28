@@ -25,7 +25,7 @@
 //  ************************************************************************/
 #endregion
 
-namespace Plex.Api.Models
+namespace Plex.Api.PlexModels.Account.User
 {
     /// <summary>
     /// Plex User Request Object

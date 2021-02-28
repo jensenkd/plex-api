@@ -1,4 +1,4 @@
-namespace Plex.Api.PlexModels
+namespace Plex.Api.PlexModels.Account
 {
     public class Friend
     {

@@ -3,32 +3,41 @@ namespace Plex.Api.Factories
     using System;
     using Account;
     using Api;
+    using Clients;
+    using IPlexServerClient = Clients.IPlexServerClient;
 
     public class PlexFactory : IPlexFactory
     {
         private readonly IApiService apiService;
-        private readonly IPlexClient plexClient;
+        private readonly IPlexServerClient plexServerClient;
+        private readonly IPlexAccountClient plexAccountClient;
+        private readonly IPlexLibraryClient plexLibraryClient;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlexClient"/> class.
+        /// Initializes a new instance of our Client classes.
         /// </summary>
         /// <param name="apiService">Api Service.</param>
-        /// <param name="plexClient"></param>
-        public PlexFactory(IApiService apiService, IPlexClient plexClient)
+        /// <param name="plexServerClient"></param>
+        /// <param name="plexAccountClient"></param>
+        /// <param name="plexLibraryClient"></param>
+        public PlexFactory(IApiService apiService, IPlexServerClient plexServerClient, IPlexAccountClient plexAccountClient,
+            IPlexLibraryClient plexLibraryClient)
         {
             this.apiService = apiService;
-            this.plexClient = plexClient;
+            this.plexServerClient = plexServerClient;
+            this.plexAccountClient = plexAccountClient;
+            this.plexLibraryClient = plexLibraryClient;
         }
 
         // Plex Account
         public Account GetPlexAccount(string username, string password) =>
-            new Account(this.plexClient, username, password);
+            new Account(this.plexServerClient, this.plexAccountClient, username, password);
 
         public Account GetPlexAccount(string authToken) =>
-            new Account(this.plexClient, authToken);
+            new Account(this.plexServerClient, this.plexAccountClient, authToken);
 
         // Plex Server
         public Server GetPlexServer(string plexHostUrl, string authToken) =>
-            new Server(this.plexClient, authToken, plexHostUrl);
+            new Server(this.plexServerClient, this.plexLibraryClient, authToken, plexHostUrl);
     }
 }

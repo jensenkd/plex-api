@@ -1,4 +1,4 @@
-namespace Plex.Api.Models.Providers
+namespace Plex.Api.PlexModels.Providers
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;

@@ -1,4 +1,4 @@
-﻿namespace Plex.Api.Models.OAuth
+﻿namespace Plex.Api.PlexModels.OAuth
 {
     using System;
 

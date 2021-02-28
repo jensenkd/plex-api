@@ -1,11 +1,14 @@
 namespace Plex.Api.Test.Tests
 {
-    using System.Collections.Generic;
-    using PlexModels.Library;
     using Xunit;
+    using Xunit.Abstractions;
 
     public class MediaTest : TestBase
     {
+        private readonly ITestOutputHelper output;
+        public MediaTest(ITestOutputHelper output) =>
+            this.output = output;
+
         [Fact]
         public async void Test_GetPlexServerLibraryMetadata()
         {

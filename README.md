@@ -73,6 +73,7 @@ Server
 
     var plexApi = ServiceProvider.GetService<IPlexClient>();
     
+    // Signin
     var user = plexApi
         .SignInAsync(login, password).Result;
         

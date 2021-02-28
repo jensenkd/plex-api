@@ -1,4 +1,4 @@
-namespace Plex.Api.Models.Providers
+namespace Plex.Api.PlexModels.Providers
 {
     /// <summary>
     /// Pivot Object

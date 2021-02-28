@@ -4,6 +4,12 @@ namespace Plex.Api.PlexModels.Resources
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
+    /// <summary>
+    /// This object represents resources connected to your Plex server that can provide
+    /// content such as Plex Media Servers, iPhone or Android clients, etc. The raw xml
+    /// for the data presented here can be found at:
+    /// https://plex.tv/api/resources?includeHttps=1&includeRelay=1
+    /// </summary>
     public class Resource
     {
         [JsonPropertyName("name")]

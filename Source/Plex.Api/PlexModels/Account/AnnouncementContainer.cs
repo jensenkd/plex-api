@@ -7,7 +7,7 @@ namespace Plex.Api.PlexModels.Account
     /// Announcement Container
     /// </summary>
     [XmlRoot(ElementName = "MediaContainer")]
-    public class AnnouncementWrapper
+    public class AnnouncementContainer
     {
         [XmlAttribute(AttributeName = "freindlyName")]
         public string FriendlyName { get; set; }

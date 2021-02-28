@@ -19,8 +19,4 @@
     <PackageReference Include="Polly" Version="7.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Server" />
-  </ItemGroup>
-
 </Project>

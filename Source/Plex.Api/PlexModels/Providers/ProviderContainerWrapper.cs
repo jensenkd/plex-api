@@ -1,16 +1,16 @@
-namespace Plex.Api.Models.Providers
+namespace Plex.Api.PlexModels.Providers
 {
     using System.Text.Json.Serialization;
 
     /// <summary>
     /// Provider Wrapper
     /// </summary>
-    public class ProviderWrapper
+    public class ProviderContainerWrapper
     {
         /// <summary>
         /// Provider Summary
         /// </summary>
         [JsonPropertyName("MediaContainer")]
-        public ProviderSummary ProviderSummary { get; set; }
+        public ProviderContainer ProviderContainer { get; set; }
     }
 }

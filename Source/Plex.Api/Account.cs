@@ -6,18 +6,23 @@ namespace Plex.Api.Account
     using System.Threading.Tasks;
     using Api;
     using Automapper;
+    using Clients;
+    using Models;
     using PlexModels;
     using PlexModels.Account;
+    using PlexModels.Account.User;
+    using PlexModels.OAuth;
+    using PlexModels.Providers;
     using PlexModels.Resources;
+    using IPlexServerClient = Clients.IPlexServerClient;
     using Subscription = PlexModels.Account.Subscription;
 
     public class Account
     {
-        private readonly IPlexClient plexClient;
+        private readonly IPlexServerClient plexServerClient;
+        private readonly IPlexAccountClient plexAccountClient;
 
-        private readonly string plexHost;
-
-        public Account(IPlexClient plexClient, string username, string password)
+        public Account(IPlexServerClient plexServerClient, IPlexAccountClient plexAccountClient, string username, string password)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -29,144 +34,117 @@ namespace Plex.Api.Account
                 throw new ArgumentNullException(nameof(password));
             }
 
-            this.plexClient = plexClient ?? throw new ArgumentNullException(nameof(plexClient));
+            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
+            this.plexAccountClient = plexAccountClient ?? throw new ArgumentNullException(nameof(plexAccountClient));
 
-            var account = plexClient.GetPlexAccountAsync(username, password).Result;
+            var account = plexAccountClient.GetPlexAccountAsync(username, password).Result;
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        public Account(IPlexClient plexClient, string authToken)
+        public Account(IPlexServerClient plexServerClient,IPlexAccountClient plexAccountClient, string authToken)
         {
             if (string.IsNullOrEmpty(authToken))
             {
                 throw new ArgumentNullException(nameof(authToken));
             }
 
-            this.plexClient = plexClient ?? throw new ArgumentNullException(nameof(plexClient));
+            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
+            this.plexAccountClient = plexAccountClient ?? throw new ArgumentNullException(nameof(plexAccountClient));
 
-            var account = plexClient.GetPlexAccountAsync(authToken).Result;
+            var account = plexAccountClient.GetPlexAccountAsync(authToken).Result;
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        [JsonPropertyName("id")]
         public int Id { get; }
-
-        [JsonPropertyName("uuid")]
         public string Uuid { get; }
-
-        [JsonPropertyName("username")]
         public string Username { get; set; }
-
-        [JsonPropertyName("title")]
         public string Title { get; set; }
-
-        [JsonPropertyName("email")]
         public string Email { get; set; }
-
-        [JsonPropertyName("locale")]
         public string Locale { get; set; }
-
-        [JsonPropertyName("confirmed")]
         public bool Confirmed { get; set; }
-
-        [JsonPropertyName("emailOnlyAuth")]
         public bool EmailOnlyAuth { get; set; }
-
-        [JsonPropertyName("hasPassword")]
         public bool HasPassword { get; set; }
-
-        [JsonPropertyName("protected")]
         public bool Protected { get; set; }
-
-        [JsonPropertyName("thumb")]
         public string Thumb { get; set; }
-
-        [JsonPropertyName("authToken")]
         public string AuthToken { get; set; }
-
-        [JsonPropertyName("mailingListStatus")]
         public string MailingListStatus { get; set; }
-
-        [JsonPropertyName("mailingListActive")]
         public bool MailingListActive { get; set; }
-
-        [JsonPropertyName("scrobbleTypes")]
         public string ScrobbleTypes { get; set; }
-
-        [JsonPropertyName("country")]
         public string Country { get; set; }
-
-        [JsonPropertyName("subscription")]
-        public Subscription Subscription { get; set; }
-
-        [JsonPropertyName("subscriptionDescription")]
         public string SubscriptionDescription { get; set; }
-
-        [JsonPropertyName("restricted")]
         public bool Restricted { get; set; }
-
-        [JsonPropertyName("anonymous")]
         public object Anonymous { get; set; }
-
-        [JsonPropertyName("home")]
         public bool Home { get; set; }
-
-        [JsonPropertyName("guest")]
         public bool Guest { get; set; }
-
-        [JsonPropertyName("homeSize")]
         public int HomeSize { get; set; }
-
-        [JsonPropertyName("homeAdmin")]
         public bool HomeAdmin { get; set; }
-
-        [JsonPropertyName("maxHomeSize")]
         public int MaxHomeSize { get; set; }
-
-        [JsonPropertyName("certificateVersion")]
         public int CertificateVersion { get; set; }
-
-        [JsonPropertyName("rememberExpiresAt")]
         public int RememberExpiresAt { get; set; }
-
-        [JsonPropertyName("adsConsent")]
         public object AdsConsent { get; set; }
-
-        [JsonPropertyName("adsConsentSetAt")]
         public object AdsConsentSetAt { get; set; }
-
-        [JsonPropertyName("adsConsentReminderAt")]
         public object AdsConsentReminderAt { get; set; }
-
-        [JsonPropertyName("experimentalFeatures")]
         public bool ExperimentalFeatures { get; set; }
-
-        [JsonPropertyName("twoFactorEnabled")]
         public bool TwoFactorEnabled { get; set; }
-
-        [JsonPropertyName("backupCodesCreated")]
         public bool BackupCodesCreated { get; set; }
-
-        [JsonPropertyName("profile")]
+        public Subscription Subscription { get; set; }
         public Profile Profile { get; set; }
-
-        [JsonPropertyName("entitlements")]
         public List<string> Entitlements { get; set; }
-
-        [JsonPropertyName("roles")]
         public List<string> Roles { get; set; }
-
-        [JsonPropertyName("services")]
         public List<Service> Services { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="redirectUrl"></param>
+        /// <returns></returns>
+        public async Task<OAuthPin> CreateOAuthPinAsync(string redirectUrl) =>
+            await this.plexAccountClient.CreateOAuthPinAsync(redirectUrl);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="pinId"></param>
+        /// <returns></returns>
+        public async Task<OAuthPin> GetAuthTokenFromOAuthPinAsync(string pinId) =>
+            await this.plexAccountClient.GetAuthTokenFromOAuthPinAsync(pinId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<AccountServer>> GetAccountServersAsync() =>
-            await this.plexClient.GetAccountServersAsync(this.AuthToken, false);
+            await this.plexAccountClient.GetAccountServersAsync(this.AuthToken, false);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Resource>> GetResourcesAsync() =>
-            await this.plexClient.GetResourcesAsync(this.AuthToken);
+            await this.plexAccountClient.GetResourcesAsync(this.AuthToken);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Friend>> GetFriendsAsync() =>
-            await this.plexClient.GetFriendsAsync(this.AuthToken);
+            await this.plexAccountClient.GetFriendsAsync(this.AuthToken);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public async Task<AnnouncementContainer> GetPlexAnnouncements() =>
+            await this.plexAccountClient.GetPlexAnnouncementsAsync(this.AuthToken);
+
+        /// <summary>
+        /// Returns a list of all User objects connected to your account.
+        /// This includes both friends and pending invites. You can reference the user.Friend to
+        /// distinguish between the two.
+        /// </summary>
+        /// <returns>UserContainer Object</returns>
+        public async Task<UserContainer> GetUsers() =>
+            await this.plexAccountClient.GetUsers(this.AuthToken);
 
         // public async Task<List<Device>> GetDevices() =>
         //     await this.plexClient.GetDevicesAsync(this.plexUserAuthToken);
@@ -188,17 +166,6 @@ namespace Plex.Api.Account
         // RemoveHomeUser()
         // UpdateFriend()
         // GetUser(string username)
-
-        /// <summary>
-        /// Returns a list of all :class:`~plexapi.myplex.MyPlexUser` objects connected to your account.
-        /// This includes both friends and pending invites. You can reference the user.friend to
-        /// distinguish between the two.
-        /// </summary>
-        /// <returns></returns>
-        public List<object> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
 
         // AddWebhook(string url);
         // DeleteWebhook(string url);
@@ -315,27 +282,6 @@ namespace Plex.Api.Account
         }
         //
 
-        /// <summary>
-        /// Share library content with the specified user.
-        /// </summary>
-        /// <param name="user">username, email of the user to be added.</param>
-        /// <param name="server">PlexServer object or machineIdentifier containing the library sections to share.</param>
-        /// <param name="sections">Library sections, names or ids to be shared (default None). [Section] must be defined in order to update shared sections.</param>
-        /// <param name="allowSync">Set True to allow user to sync content.</param>
-        /// <param name="allowCameraUpload">Set True to allow user to upload photos.</param>
-        /// <param name="allowChannels">Set True to allow user to utilize installed channels.</param>
-        /// <param name="filterMovies">Dict containing key 'contentRating' and/or 'label' each set to a list of values to be filtered. ex: {'contentRating':['G'], 'label':['foo']}</param>
-        /// <param name="filterTelevision">Dict containing key 'contentRating' and/or 'label' each set to a list of values to be filtered. ex: {'contentRating':['G'], 'label':['foo']}</param>
-        /// <param name="filterMusic">Dict containing key 'label' set to a list of values to be filtered. ex: {'label':['foo']}</param>
-        /// <returns></returns>
-        public object InviteFriend(string user, string server, string sections = "None", bool allowSync = false,
-            bool allowCameraUpload = false,
-            bool allowChannels = false, string filterMovies = "None", string filterTelevision = "None",
-            string filterMusic = "None")
-        {
-            throw new NotImplementedException();
-        }
-
         // Parameters:
         // user (str): MyPlexUser, username, email of the user to be added.
         //     server (PlexServer): PlexServer object or machineIdentifier containing the library sections to share.
@@ -352,7 +298,7 @@ namespace Plex.Api.Account
         //     ex: {'label':['foo']}
 
 
-//              FRIENDINVITE = 'https://plex.tv/api/servers/{machineId}/shared_servers'                     # post with data
+//             FRIENDINVITE = 'https://plex.tv/api/servers/{machineId}/shared_servers'                     # post with data
 //             HOMEUSERCREATE = 'https://plex.tv/api/home/users?title={title}'                             # post with data
 //             EXISTINGUSER = 'https://plex.tv/api/home/users?invitedEmail={username}'                     # post with data
 //             FRIENDSERVERS = 'https://plex.tv/api/servers/{machineId}/shared_servers/{serverId}'         # put with data
@@ -371,5 +317,7 @@ namespace Plex.Api.Account
 //             NEWS = 'https://news.provider.plex.tv/'                                                     # get
 //             PODCASTS = 'https://podcasts.provider.plex.tv/'                                             # get
 //             MUSIC = 'https://music.provider.plex.tv/'                                                   # get
+
+
     }
 }
