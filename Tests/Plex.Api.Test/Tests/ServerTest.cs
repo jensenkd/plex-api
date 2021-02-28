@@ -1,20 +1,18 @@
 namespace Plex.Api.Test.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Factories;
     using Helpers;
     using Microsoft.Extensions.DependencyInjection;
-    using Plex.Api;
-    using Plex.Api.Test;
+    using PlexModels.Library;
+    using Test;
     using Xunit;
 
     public class ServerTest : TestBase
     {
         [Fact]
-        public async Task Test_Plex_Server_InfoAsync()
+        public void Test_Plex_Server_InfoAsync()
         {
             var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
 
@@ -29,10 +27,47 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
-        public async Task Test_GetPlexServerLibrary()
+        public async void Test_GetPlexServerLibrarySummary()
         {
-            var library = this.Server.GetLibrary();
-            Assert.NotNull(library);
+            var librarySummary = await this.Server.GetLibrarySummary();
+            Assert.NotNull(librarySummary);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServerLibraryByKey()
+        {
+            const string key = "1";
+            var filter = new LibraryFilter() {Keys = new List<string> {key}};
+            var libraries = await this.Server.GetLibraries(filter);
+            Assert.NotNull(libraries);
+            Assert.Single(libraries);
+            Assert.Equal(key, libraries[0].Key);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServerLibrariesByType()
+        {
+            const string type = "movie";
+            var filter = new LibraryFilter() {Types = new List<string> {type}};
+            var libraries = await this.Server.GetLibraries(filter);
+            Assert.NotNull(libraries);
+            foreach (var library in libraries)
+            {
+                Assert.Equal(type, libraries[0].Type);
+            }
+        }
+
+        [Fact]
+        public async void Test_GetPlexServerLibrariesByTitle()
+        {
+            const string title = "Movies";
+            var filter = new LibraryFilter() {Titles = new List<string> {title}};
+            var libraries = await this.Server.GetLibraries(filter);
+            Assert.NotNull(libraries);
+            foreach (var library in libraries)
+            {
+                Assert.Equal(title, libraries[0].Title);
+            }
         }
     }
 }

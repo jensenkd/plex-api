@@ -42,7 +42,7 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
-        public async Task Test_CreateOAuthPinAsync()
+        public async void Test_CreateOAuthPinAsync()
         {
             var redirectUrl = "http://test.com";
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
@@ -60,7 +60,7 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
-        public async Task Test_GetAccessTokenFromOAuthPinAsync()
+        public async void Test_GetAccessTokenFromOAuthPinAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
             var pin = "XXX";
@@ -72,7 +72,7 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
-        public async Task Test_SignInAsync()
+        public async void Test_SignInAsync()
         {
             var plexApi = this.ServiceProvider.GetService<IPlexClient>();
 
@@ -90,14 +90,14 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
-        public async Task Test_Get_ResourcesAsync()
+        public async void Test_Get_ResourcesAsync()
         {
             var resources = await this.Account.GetResourcesAsync();
             Assert.NotNull(resources);
         }
 
         [Fact]
-        public async Task Test_Get_FriendsAsync()
+        public async void Test_Get_FriendsAsync()
         {
             var friends = await this.Account.GetFriendsAsync();
             Assert.NotNull(friends);

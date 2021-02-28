@@ -2,9 +2,14 @@ namespace Plex.Api
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Api;
     using Automapper;
+    using PlexModels.Library;
+    using PlexModels.Media;
     using PlexModels.Server;
+    using ResourceModels;
 
     public class Server
     {
@@ -291,15 +296,106 @@ namespace Plex.Api
         /// </summary>
         public List<PlexServerDirectory> Directories { get; set; }
 
+        // Methods
+
         /// <summary>
-        /// Get Server Library
+        /// Get Server Library Summary (Including Libraries)
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public object GetLibrary()
+        /// <returns>Library Summary Object</returns>
+        public async Task<LibrarySummary> GetLibrarySummary()
         {
-            var library = this.plexClient.GetLibrarySectionsAsync(this.HostUrl, this.AccessToken);
-            return library;
+            var summary = await this.plexClient.GetLibrarySummaryAsync( this.AccessToken, this.HostUrl);
+            return summary;
         }
+
+        /// <summary>
+        /// Get Libraries Filtered by optional Library Filter (Key, Type, Title)
+        /// </summary>
+        /// <param name="filter">Library Filter</param>
+        /// <returns>List of Library Objects</returns>
+        public async Task<List<Library>> GetLibraries(LibraryFilter filter = null)
+        {
+            var summary = await this.plexClient.GetLibrarySummaryAsync( this.AccessToken, this.HostUrl);
+
+            var libraries = summary.Libraries;
+
+            if (filter != null)
+            {
+                if (filter.Keys.Count > 0)
+                {
+                    libraries = libraries
+                        .Where(c => filter.Keys.Contains(c.Key, StringComparer.OrdinalIgnoreCase))
+                        .ToList();
+                }
+
+                if (filter.Titles.Count > 0)
+                {
+                    libraries = libraries
+                        .Where(c => filter.Titles.Contains(c.Title, StringComparer.OrdinalIgnoreCase))
+                        .ToList();
+                }
+
+                if (filter.Types.Count > 0)
+                {
+                    libraries = libraries
+                        .Where(c => filter.Types.Contains(c.Type, StringComparer.OrdinalIgnoreCase))
+                        .ToList();
+                }
+            }
+
+            return libraries;
+        }
+
+        /// <summary>
+        /// Get Media Items for Given Library
+        /// </summary>
+        /// <param name="key">Library Key</param>
+        /// <returns>List of Media Objects</returns>
+        public async Task<List<Metadata>> GetLibraryMetadata(string key)
+        {
+            var mediaContainer = await this.plexClient.GetMetadataForLibraryAsync(this.AccessToken, this.HostUrl, key);
+            return mediaContainer.Media;
+        }
+
+        public async Task<Metadata> GetMediaMetadata(string ratingKey)
+        {
+            var media = await this.plexClient.GetMediaMetadataAsync(this.AccessToken, this.HostUrl, ratingKey);
+            return media;
+        }
+
+        // GetAllMedia() //Get All Media From All Sections
+        // GetOnDeck()
+        // GetRecentlyAdded()
+
+        // SearchLibrary(string title, string libraryType)
+        // EmptyTrash
+
+        /// <summary>
+        /// Tag a library item with a Collection Name
+        /// </summary>
+        /// <param name="libraryKey">Library Key.</param>
+        /// <param name="ratingKey">Item Rating Key.</param>
+        /// <param name="collectionName">Collection name to add to item.</param>
+        public async void AddCollectionToLibraryItemAsync(string libraryKey, string ratingKey, string collectionName) =>
+            await this.plexClient.AddCollectionToLibraryItemAsync(this.AccessToken, this.HostUrl, libraryKey, ratingKey,
+                collectionName);
+
+        /// <summary>
+        /// Untag a library item with a Collection Name
+        /// </summary>
+        /// <param name="libraryKey">Library Key.</param>
+        /// <param name="ratingKey">Item Rating Key.</param>
+        /// <param name="collectionName">Collection name to remove from item.</param>
+        public async void RemoveCollectionFromLibraryItemAsync(string libraryKey, string ratingKey, string collectionName) =>
+            await this.plexClient.DeleteCollectionFromLibraryItemAsync(this.AccessToken, this.HostUrl, libraryKey, ratingKey,
+                collectionName);
+
+        /// <summary>
+        /// Update Collection in a library
+        /// </summary>
+        /// <param name="libraryKey">Library Key</param>
+        /// <param name="collectionModel">Collection Model</param>
+        public async void UpdateCollection(string libraryKey, CollectionModel collectionModel) =>
+            await this.plexClient.UpdateCollectionAsync(this.AccessToken, this.HostUrl, libraryKey, collectionModel);
     }
 }

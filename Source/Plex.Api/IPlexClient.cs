@@ -11,9 +11,11 @@ namespace Plex.Api
     using PlexModels;
     using PlexModels.Account;
     using PlexModels.Library;
+    using PlexModels.Media;
     using PlexModels.Resources;
     using PlexModels.Server;
     using ResourceModels;
+    using Metadata = PlexModels.Media.Metadata;
 
     /// <summary>
     /// Inteface for Plex Client.
@@ -98,30 +100,21 @@ namespace Plex.Api
         Task<List<Friend>> GetFriendsAsync(string authToken);
 
         /// <summary>
-        /// Get Plex Libraries on given server.
+        /// Get Plex Library Sections on given server.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Server Host.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<LibrarySection>> GetLibrarySectionsAsync(string authToken, string plexServerHost);
-
-        /// <summary>
-        /// Returns a Plex Library.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Plex Host Uri.</param>
-        /// <param name="libraryKey">Library Key.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexMediaContainer> GetLibraryAsync(string authToken, string plexServerHost, string libraryKey);
+        Task<LibrarySummary> GetLibrarySummaryAsync(string authToken, string plexServerHost);
 
         /// <summary>
         /// Returns Metadata for a Plex Library.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Host Uri.</param>
-        /// <param name="libraryKey">Library Key.</param>
+        /// <param name="key">Library Key.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexMediaContainer> GetMetadataForLibraryAsync(string authToken, string plexServerHost, string libraryKey);
+        Task<PlexModels.Media.MediaContainer> GetMetadataForLibraryAsync(string authToken, string plexServerHost, string key);
 
         /// <summary>
         /// Get Recently Added items to given Plex Library.
@@ -141,13 +134,13 @@ namespace Plex.Api
         Task<PlexMediaContainer> GetOnDeckAsync(string authToken, string plexServerHost);
 
         /// <summary>
-        /// Get Metadata for given Plex Item.
+        /// Get Metadata for given Plex Rating Key.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Host Uri.</param>
-        /// <param name="metadataId">Metadata Unique Identifier.</param>
+        /// <param name="ratingKey">Rating Key.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexMediaContainer> GetMetadataAsync(string authToken, string plexServerHost, int metadataId);
+        Task<Metadata> GetMediaMetadataAsync(string authToken, string plexServerHost, string ratingKey);
 
         /// <summary>
         /// Get Child Metadata items for a given Metadata Id.
@@ -244,10 +237,10 @@ namespace Plex.Api
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="libraryKey">Library Key.</param>
-        /// <param name="movieKey">Rating Key of the Movie to add Collection to.</param>
+        /// <param name="ratingKey">Rating Key to add Collection to.</param>
         /// <param name="collectionName">Name of Collection.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddCollectionToMovieAsync(string authToken, string plexServerHost, string libraryKey, string movieKey, string collectionName);
+        Task AddCollectionToLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName);
 
         /// <summary>
         /// Remove a Collection from a Movie.
@@ -255,10 +248,10 @@ namespace Plex.Api
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="libraryKey">Library Key.</param>
-        /// <param name="movieKey">Rating Key of the Movie to add Collection to.</param>
+        /// <param name="ratingKey">Rating Key to add Collection to.</param>
         /// <param name="collectionName">Name of Collection.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task DeleteCollectionFromMovieAsync(string authToken, string plexServerHost, string libraryKey, string movieKey, string collectionName);
+        Task DeleteCollectionFromLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName);
 
         /// <summary>
         /// Update Collection.
@@ -277,7 +270,7 @@ namespace Plex.Api
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="collectionKey">Rating Key for the Collection.</param>
         /// <returns>List of Movies.</returns>
-        Task<List<Metadata>> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey);
+        Task<List<Models.Metadata.Metadata>> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey);
 
         /// <summary>
         /// Start Library Scan for given Plex Library.
