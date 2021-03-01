@@ -2,27 +2,21 @@ namespace Plex.Api.Account
 {
     using System;
     using System.Collections.Generic;
-    using System.Text.Json.Serialization;
     using System.Threading.Tasks;
-    using Api;
     using Automapper;
     using Clients;
-    using Models;
-    using PlexModels;
     using PlexModels.Account;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
-    using PlexModels.Providers;
     using PlexModels.Resources;
-    using IPlexServerClient = Clients.IPlexServerClient;
     using Subscription = PlexModels.Account.Subscription;
 
     public class Account
     {
-        private readonly IPlexServerClient plexServerClient;
         private readonly IPlexAccountClient plexAccountClient;
+        private readonly object session;
 
-        public Account(IPlexServerClient plexServerClient, IPlexAccountClient plexAccountClient, string username, string password)
+        public Account(IPlexAccountClient plexAccountClient, string username, string password)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -34,21 +28,19 @@ namespace Plex.Api.Account
                 throw new ArgumentNullException(nameof(password));
             }
 
-            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
             this.plexAccountClient = plexAccountClient ?? throw new ArgumentNullException(nameof(plexAccountClient));
 
             var account = plexAccountClient.GetPlexAccountAsync(username, password).Result;
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        public Account(IPlexServerClient plexServerClient,IPlexAccountClient plexAccountClient, string authToken)
+        public Account(IPlexAccountClient plexAccountClient, string authToken)
         {
             if (string.IsNullOrEmpty(authToken))
             {
                 throw new ArgumentNullException(nameof(authToken));
             }
 
-            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
             this.plexAccountClient = plexAccountClient ?? throw new ArgumentNullException(nameof(plexAccountClient));
 
             var account = plexAccountClient.GetPlexAccountAsync(authToken).Result;
@@ -57,6 +49,9 @@ namespace Plex.Api.Account
 
         public int Id { get; }
         public string Uuid { get; }
+
+        public string AuthToken { get; set; }
+
         public string Username { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
@@ -66,7 +61,6 @@ namespace Plex.Api.Account
         public bool HasPassword { get; set; }
         public bool Protected { get; set; }
         public string Thumb { get; set; }
-        public string AuthToken { get; set; }
         public string MailingListStatus { get; set; }
         public bool MailingListActive { get; set; }
         public string ScrobbleTypes { get; set; }
@@ -98,7 +92,7 @@ namespace Plex.Api.Account
         /// </summary>
         /// <param name="redirectUrl"></param>
         /// <returns></returns>
-        public async Task<OAuthPin> CreateOAuthPinAsync(string redirectUrl) =>
+        public async Task<OAuthPin> CreatePin(string redirectUrl) =>
             await this.plexAccountClient.CreateOAuthPinAsync(redirectUrl);
 
         /// <summary>
@@ -106,35 +100,35 @@ namespace Plex.Api.Account
         /// </summary>
         /// <param name="pinId"></param>
         /// <returns></returns>
-        public async Task<OAuthPin> GetAuthTokenFromOAuthPinAsync(string pinId) =>
+        public async Task<OAuthPin> ClaimToken(string pinId) =>
             await this.plexAccountClient.GetAuthTokenFromOAuthPinAsync(pinId);
 
         /// <summary>
-        ///
+        /// Get Servers tied to this Account
         /// </summary>
-        /// <returns></returns>
-        public async Task<List<AccountServer>> GetAccountServersAsync() =>
+        /// <returns>List of Server objects</returns>
+        public async Task<List<AccountServer>> Servers() =>
             await this.plexAccountClient.GetAccountServersAsync(this.AuthToken, false);
 
         /// <summary>
-        ///
+        /// Return list of Resources for Plex Account
         /// </summary>
-        /// <returns></returns>
-        public async Task<List<Resource>> GetResourcesAsync() =>
+        /// <returns>List of Resource Objects</returns>
+        public async Task<List<Resource>> Resources() =>
             await this.plexAccountClient.GetResourcesAsync(this.AuthToken);
 
         /// <summary>
-        ///
+        /// Return list of Friends for Plex Account
         /// </summary>
-        /// <returns></returns>
-        public async Task<List<Friend>> GetFriendsAsync() =>
+        /// <returns>List of Friend Objects</returns>
+        public async Task<List<Friend>> Friends() =>
             await this.plexAccountClient.GetFriendsAsync(this.AuthToken);
 
         /// <summary>
-        ///
+        /// Get Announcements for Plex Account
         /// </summary>
-        /// <returns></returns>
-        public async Task<AnnouncementContainer> GetPlexAnnouncements() =>
+        /// <returns>AnnouncementContainer Object</returns>
+        public async Task<AnnouncementContainer> Announcements() =>
             await this.plexAccountClient.GetPlexAnnouncementsAsync(this.AuthToken);
 
         /// <summary>
@@ -143,22 +137,26 @@ namespace Plex.Api.Account
         /// distinguish between the two.
         /// </summary>
         /// <returns>UserContainer Object</returns>
-        public async Task<UserContainer> GetUsers() =>
+        public async Task<UserContainer> Users() =>
             await this.plexAccountClient.GetUsers(this.AuthToken);
 
-        // public async Task<List<Device>> GetDevices() =>
-        //     await this.plexClient.GetDevicesAsync(this.plexUserAuthToken);
+        /// <summary>
+        /// Opt in or out of sharing stuff with plex.
+        /// See: https://www.plex.tv/about/privacy-legal/
+        /// </summary>
+        /// <param name="playback">Opt out of playback</param>
+        /// <param name="library">Opt out of Library statistics</param>
+        /// <returns></returns>
+        public async  Task OptOut(bool playback, bool library) =>
+            await this.plexAccountClient.OptOut(this.AuthToken, playback, library);
 
-        // See https://github.com/pkkid/python-plexapi/blob/2cde3a11b4c5476c709b2029ef39627c45be73ee/plexapi/myplex.py#L182
+        /// <summary>
+        /// Get Account Devices
+        /// </summary>
+        /// <returns>List of Device objects</returns>
+        public async Task<List<Device>> Devices() =>
+            await this.plexAccountClient.GetDevices(this.AuthToken);
 
-        // GetDevices()
-        // GetDevice(string name, string clientId
-        // GetResources()
-        // GetResource(string name)
-
-        // GetSonosSpeakers();
-        // GetSonosSpeaker(string name);
-        // GetSonosSpeakerById(string id);
 
         // CreateHomeUser()
         // CreateExistingUser()
@@ -191,17 +189,7 @@ namespace Plex.Api.Account
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Opt in or out of sharing stuff with plex.
-        /// See: https://www.plex.tv/about/privacy-legal/
-        /// </summary>
-        /// <param name="playback"></param>
-        /// <param name="library"></param>
-        /// <returns></returns>
-        public object OptOut(int? playback, int? library)
-        {
-            throw new NotImplementedException();
-        }
+
 
         /// <summary>
         /// Returns an instance of :class:`~plexapi.sync.SyncList` for specified client.
@@ -270,16 +258,7 @@ namespace Plex.Api.Account
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Get Play History for all library sections on all servers for the owner.
-        /// </summary>
-        /// <param name="maxResults">Only return the specified number of results (optional)</param>
-        /// <param name="minDate">Min datetime to return results from.</param>
-        /// <returns></returns>
-        public object GetHistory(int maxResults = 9999999, DateTime? minDate = null)
-        {
-            throw new NotImplementedException();
-        }
+
         //
 
         // Parameters:
@@ -296,7 +275,6 @@ namespace Plex.Api.Account
         // values to be filtered. ex: {'contentRating':['G'], 'label':['foo']}
         // filterMusic (Dict): Dict containing key 'label' set to a list of values to be filtered.
         //     ex: {'label':['foo']}
-
 
 //             FRIENDINVITE = 'https://plex.tv/api/servers/{machineId}/shared_servers'                     # post with data
 //             HOMEUSERCREATE = 'https://plex.tv/api/home/users?title={title}'                             # post with data
@@ -317,6 +295,7 @@ namespace Plex.Api.Account
 //             NEWS = 'https://news.provider.plex.tv/'                                                     # get
 //             PODCASTS = 'https://podcasts.provider.plex.tv/'                                             # get
 //             MUSIC = 'https://music.provider.plex.tv/'                                                   # get
+
 
 
     }

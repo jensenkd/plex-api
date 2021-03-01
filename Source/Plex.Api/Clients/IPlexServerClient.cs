@@ -260,5 +260,12 @@ namespace Plex.Api.Clients
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task ScanLibraryAsync(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <param name="hostUrl"></param>
+        /// <returns></returns>
+        Task<MediaContainer> GetPlayHistory(string accessToken, string hostUrl);
     }
 }

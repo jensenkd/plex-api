@@ -1,6 +1,7 @@
 namespace Plex.Api.Api
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
 
     /// <summary>
@@ -128,9 +129,12 @@ namespace Plex.Api.Api
 
         private void AddMultipleQueryParams(Dictionary<string, string> queryParameters)
         {
-            foreach (var (key, value) in queryParameters)
+            if (queryParameters != null && queryParameters.Any())
             {
-                this.AddSingleQueryParam(key, value);
+                foreach (var (key, value) in queryParameters)
+                {
+                    this.AddSingleQueryParam(key, value);
+                }
             }
         }
 

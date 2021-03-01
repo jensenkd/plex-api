@@ -1,6 +1,5 @@
 namespace Plex.Api.Factories
 {
-    using System;
     using Account;
     using Api;
     using Clients;
@@ -30,11 +29,15 @@ namespace Plex.Api.Factories
         }
 
         // Plex Account
-        public Account GetPlexAccount(string username, string password) =>
-            new Account(this.plexServerClient, this.plexAccountClient, username, password);
+        public Account GetPlexAccount(string username, string password)
+        {
+            return new Account(this.plexAccountClient, username, password);
+        }
 
-        public Account GetPlexAccount(string authToken) =>
-            new Account(this.plexServerClient, this.plexAccountClient, authToken);
+        public Account GetPlexAccount(string authToken)
+        {
+            return new Account(this.plexAccountClient, authToken);
+        }
 
         // Plex Server
         public Server GetPlexServer(string plexHostUrl, string authToken) =>

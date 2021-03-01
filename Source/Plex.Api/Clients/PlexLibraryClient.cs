@@ -102,7 +102,7 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, string libraryType, int start = 0, int count = 100)
+        public async Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -118,6 +118,7 @@ namespace Plex.Api.Clients
                     .AddPlexToken(authToken)
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddQueryParams(queryParams)
+                    .AddQueryParams(filters)
                     .AcceptJson()
                     .Build();
 

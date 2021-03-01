@@ -87,7 +87,7 @@ namespace Plex.Api.Test.Tests
         public async void Test_CreateOAuthPinAsync()
         {
             const string redirectUrl = "www.test.com";
-            var result = await this.Account.CreateOAuthPinAsync(redirectUrl);
+            var result = await this.Account.CreatePin(redirectUrl);
 
             Assert.Equal(
                 $"https://app.plex.tv/auth#?context[device][product]={this.ClientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={this.ClientOptions.Platform}&context[device][device]={this.ClientOptions.DeviceName}&clientID={this.ClientOptions.ClientId}&forwardUrl={redirectUrl}&code={result.Code}",
@@ -110,7 +110,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_GetPlexAccountServers()
         {
-            var plexServers = await this.Account.GetAccountServersAsync();
+            var plexServers = await this.Account.Servers();
             this.output.WriteLine("Username: " + this.Account.Username);
             Assert.NotNull(this.Account.Username);
             Assert.NotEqual(string.Empty, this.Account.Username);
@@ -131,7 +131,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_Get_ResourcesAsync()
         {
-            var resources = await this.Account.GetResourcesAsync();
+            var resources = await this.Account.Resources();
             foreach (var resource in resources)
             {
                 var name = string.IsNullOrEmpty(resource.Name) ? "Unkown" : resource.Name;
@@ -152,22 +152,37 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_Get_FriendsAsync()
         {
-            var friends = await this.Account.GetFriendsAsync();
+            var friends = await this.Account.Friends();
             Assert.NotNull(friends);
         }
 
         [Fact]
         public async void Test_Get_UsersAsync()
         {
-            var users = await this.Account.GetUsers();
+            var users = await this.Account.Users();
             Assert.NotNull(users);
         }
 
         [Fact]
         public async void Test_Get_Plex_Announcements()
         {
-            var announcements = await this.Account.GetPlexAnnouncements();
+            var announcements = await this.Account.Announcements();
             Assert.NotNull(announcements);
+        }
+
+        [Fact]
+        public async void Test_Get_Plex_Devices()
+        {
+            var devices = await this.Account.Devices();
+            Assert.NotNull(devices);
+        }
+
+        [Fact]
+        public async void Test_Opt_Out()
+        {
+            const bool optOutOfPlayback = true;
+            const bool optOutOfLibrary = true;
+            await this.Account.OptOut(optOutOfPlayback, optOutOfLibrary);
         }
 
         // [Fact]

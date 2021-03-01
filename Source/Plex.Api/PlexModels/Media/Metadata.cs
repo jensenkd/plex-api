@@ -2,7 +2,6 @@ namespace Plex.Api.PlexModels.Media
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
-    using Models;
 
     public class Metadata
     {

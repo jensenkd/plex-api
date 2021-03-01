@@ -2,7 +2,6 @@ namespace Plex.Api.Clients
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using PlexModels;
     using PlexModels.Account;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
@@ -91,5 +90,22 @@ namespace Plex.Api.Clients
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>List of Users</returns>
         Task<UserContainer> GetUsers(string authToken);
+
+        /// <summary>
+        /// Opt in or out of sharing stuff with plex.
+        /// See: https://www.plex.tv/about/privacy-legal/
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="playback">Opt out of playback</param>
+        /// <param name="library">Opt out of Library statistics</param>
+        /// <returns></returns>
+        Task OptOut(string authToken, bool playback, bool library);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken"></param>
+        /// <returns></returns>
+        Task<List<Device>> GetDevices(string authToken);
     }
 }

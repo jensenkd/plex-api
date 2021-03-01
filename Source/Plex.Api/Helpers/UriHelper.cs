@@ -1,7 +1,6 @@
 namespace Plex.Api.Helpers
 {
     using System;
-    using PlexModels.Server;
 
     /// <summary>
     /// Uri Helper Object

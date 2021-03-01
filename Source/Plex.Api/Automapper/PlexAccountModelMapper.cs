@@ -1,6 +1,5 @@
 namespace Plex.Api.Automapper
 {
-    using System.Runtime.Serialization;
     using Account;
     using PlexModels.Account;
     using Profile = AutoMapper.Profile;

@@ -22,7 +22,7 @@ namespace Plex.Api.Test.Tests
             var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
 
             // Get First Owned Server
-            var servers = this.Account.GetAccountServersAsync().Result;
+            var servers = this.Account.Servers().Result;
             var ownedServer = servers.First(c => c.Owned == 1);
             var fullUri = ownedServer.Host.ReturnUriFromServerInfo(ownedServer.Port, ownedServer.Scheme);
 
@@ -59,6 +59,17 @@ namespace Plex.Api.Test.Tests
             var items = await this.Server.GetHubRecentlyAdded(start, count);
 
             Assert.Equal(items.Media.Count, count);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServer_GetPlayHistory()
+        {
+            const int start = 0;
+            const int count = 3;
+            var items = await this.Server.PlayHistory();
+
+            Assert.NotNull(items);
+
         }
 
         [Fact]

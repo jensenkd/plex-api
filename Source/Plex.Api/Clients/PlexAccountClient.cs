@@ -5,8 +5,6 @@ namespace Plex.Api.Clients
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
-    using Models;
-    using PlexModels;
     using PlexModels.Account;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
@@ -166,11 +164,13 @@ namespace Plex.Api.Clients
             return friends;
         }
 
+        /// <inheritdoc/>
         public async Task<List<Friend>> GetInvitesAsync(string authToken)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public async Task<UserContainer> GetUsers(string authToken)
         {
             var apiRequest = new ApiRequestBuilder("https://plex.tv/api/users", string.Empty, HttpMethod.Get)
@@ -180,6 +180,40 @@ namespace Plex.Api.Clients
 
             var container = await this.apiService.InvokeApiAsync<UserContainer>(apiRequest);
             return container;
+        }
+
+        /// <inheritdoc/>
+        public async Task OptOut(string authToken, bool playback, bool library)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"optOutPlayback", playback ? "1" : "0"},
+                {"optOutLibraryStats", library ? "1" : "0"}
+            };
+
+            var apiRequest = new ApiRequestBuilder("https://plex.tv/api/v2/user/privacy", string.Empty, HttpMethod.Put)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AddQueryParams(queryParams)
+                .AcceptJson()
+                .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<Device>> GetDevices(string authToken)
+        {
+            var apiRequest =
+                new ApiRequestBuilder("https://plex.tv/devices.json",string.Empty, HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            var devices = await this.apiService.InvokeApiAsync<List<Device>>(apiRequest);
+
+            return devices;
         }
     }
 }

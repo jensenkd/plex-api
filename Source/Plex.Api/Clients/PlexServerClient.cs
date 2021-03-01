@@ -452,6 +452,49 @@
             await this.apiService.InvokeApiAsync(apiRequest);
         }
 
+        public async Task<MediaContainer> GetPlayHistory(string authToken, string plexServerHost)
+        {
+            // Returns a list of media items from watched history. If there are many results, they will
+            // be fetched from the server in batches of X_PLEX_CONTAINER_SIZE amounts. If you're only
+            // looking for the first <num> results, it would be wise to set the maxresults option to that
+            //     amount so this functions doesn't iterate over all results on the server.
+            //
+            //     Parameters:
+            // maxresults (int): Only return the specified number of results (optional).
+            //     mindate (datetime): Min datetime to return results from. This really helps speed
+            // up the result listing. For example: datetime.now() - timedelta(days=7)
+            // ratingKey (int/str) Request history for a specific ratingKey item.
+            //     accountID (int/str) Request history for a specific account ID.
+            //     librarySectionID (int/str) Request history for a specific library section ID.
+            // """
+            // results, subresults = [], '_init'
+            // args = {'sort': 'viewedAt:desc'}
+            // if ratingKey:
+            // args['metadataItemID'] = ratingKey
+            // if accountID:
+            // args['accountID'] = accountID
+            // if librarySectionID:
+            // args['librarySectionID'] = librarySectionID
+            // if mindate:
+            // args['viewedAt>'] = int(mindate.timestamp())
+            // args['X-Plex-Container-Start'] = 0
+            // args['X-Plex-Container-Size'] = min(X_PLEX_CONTAINER_SIZE, maxresults)
+            // while subresults and maxresults > len(results):
+            // key = '/status/sessions/history/all%s' % utils.joinArgs(args)
+            // subresults = self.fetchItems(key)
+            // results += subresults[:maxresults - len(results)]
+            // args['X-Plex-Container-Start'] += args['X-Plex-Container-Size']
+            // return results
+
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "status/sessions/history/all", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            return await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
+        }
 
 
         public Task<object> InviteFriend(string accessToken, string hostUrl, string sections, bool allowSync, bool allowCameraUpload,

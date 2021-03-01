@@ -1,7 +1,6 @@
 namespace Plex.Api.PlexModels.Library
 {
     using System.Text.Json.Serialization;
-    using Models;
 
     public class LibrarySummaryWrapper
     {

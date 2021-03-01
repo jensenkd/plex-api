@@ -112,8 +112,10 @@ namespace Plex.Api.Test.Tests
         public async void Test_LibrarySearchByName()
         {
             const string title = "Harry Potter";
-            var items = await this.Server.LibrarySearch(title, "1", string.Empty, string.Empty);
+            var filters = new Dictionary<string, string> {{"year", "2002"}};
+            var items = await this.Server.LibrarySearch(title, "1", string.Empty,  string.Empty, filters);
             Assert.NotNull(items);
+            Assert.Single(items.Media);
         }
 
     }

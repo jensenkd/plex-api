@@ -64,7 +64,7 @@ namespace Plex.Api.Test
             }
 
             // Get First Owned Server
-            var servers = this.Account.GetAccountServersAsync().Result;
+            var servers = this.Account.Servers().Result;
             var ownedServer = servers.First(c => c.Owned == 1);
             var fullUri = ownedServer.Host.ReturnUriFromServerInfo(ownedServer.Port, ownedServer.Scheme);
 
