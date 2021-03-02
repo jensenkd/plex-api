@@ -1,6 +1,8 @@
 namespace Plex.Api.PlexModels.Account
 {
+    using System;
     using System.Xml.Serialization;
+    using Helpers;
 
     [XmlRoot(ElementName = "Server")]
     public class AccountServer
@@ -52,5 +54,7 @@ namespace Plex.Api.PlexModels.Account
 
         [XmlAttribute(AttributeName = "home")]
         public int Home { get; set; }
+
+        public Uri Uri => this.Host.ReturnUriFromServerInfo(this.Port, this.Scheme);
     }
 }

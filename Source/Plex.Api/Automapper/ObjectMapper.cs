@@ -17,6 +17,7 @@ namespace Plex.Api.Automapper
                 cfg.AddProfile<CollectionModelMapper>();
                 cfg.AddProfile<PlexAccountModelMapper>();
                 cfg.AddProfile<PlexServerModelMapper>();
+                cfg.AddProfile<LibraryModelMapper>();
             });
             var mapper = config.CreateMapper();
             return mapper;

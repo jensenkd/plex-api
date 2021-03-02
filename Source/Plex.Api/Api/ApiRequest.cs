@@ -58,7 +58,7 @@ namespace Plex.Api.Api
         /// <summary>
         /// Query Parameters of Api Request.
         /// </summary>
-        public Dictionary<string, string> QueryParams { get; }
+        private Dictionary<string, string> QueryParams { get; }
 
         /// <summary>
         /// Body of Api Request.

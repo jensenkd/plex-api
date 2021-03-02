@@ -25,7 +25,9 @@ namespace Plex.Api.Clients
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="key">Library Key</param>
-        Task ScanForNewItems(string authToken, string plexServerHost, string key);
+        /// <param name="forceMetadataRefresh">Force refresh the metadata for all items in the library, regardless of
+        /// whether they already have metadata.</param>
+        Task ScanForNewItems(string authToken, string plexServerHost, string key, bool forceMetadataRefresh);
 
         /// <summary>
         /// Cancels library scan for given library

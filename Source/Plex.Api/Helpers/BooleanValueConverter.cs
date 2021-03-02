@@ -24,7 +24,7 @@ namespace Plex.Api.Helpers
 
                 // try to parse number directly from bytes
                 var span = reader.HasValueSequence ? reader.ValueSequence.ToArray() : reader.ValueSpan;
-                if (Utf8Parser.TryParse(span, out bool boolean, out int bytesConsumed) && span.Length == bytesConsumed)
+                if (Utf8Parser.TryParse(span, out bool boolean, out var bytesConsumed) && span.Length == bytesConsumed)
                 {
                     return boolean;
                 }
@@ -41,9 +41,7 @@ namespace Plex.Api.Helpers
         }
 
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options)
-        {
+        public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) =>
             writer.WriteStringValue(value.ToString());
-        }
     }
 }

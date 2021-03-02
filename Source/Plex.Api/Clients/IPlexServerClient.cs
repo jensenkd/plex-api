@@ -1,13 +1,19 @@
 namespace Plex.Api.Clients
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Models.Session;
+    using PlexModels.Account;
     using PlexModels.Hubs;
     using PlexModels.Library;
     using PlexModels.Media;
     using PlexModels.Providers;
     using PlexModels.Server;
+    using PlexModels.Server.Clients;
+    using PlexModels.Server.DeviceContainer;
+    using PlexModels.Server.History;
+    using PlexModels.Server.Releases;
     using ResourceModels;
     using Metadata = PlexModels.Media.Metadata;
 
@@ -83,8 +89,8 @@ namespace Plex.Api.Clients
         /// <summary>
         ///
         /// </summary>
-        /// <param name="accessToken"></param>
-        /// <param name="hostUrl"></param>
+        /// <param name="authToken"></param>
+        /// <param name="plexServerHost"></param>
         /// <param name="sections"></param>
         /// <param name="allowSync"></param>
         /// <param name="allowCameraUpload"></param>
@@ -93,11 +99,13 @@ namespace Plex.Api.Clients
         /// <param name="filterTelevision"></param>
         /// <param name="filterMusic"></param>
         /// <returns></returns>
-        Task<object> InviteFriend(string accessToken, string hostUrl, string sections, bool allowSync, bool allowCameraUpload, bool allowChannels, string filterMovies, string filterTelevision, string filterMusic);
+        Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload, bool allowChannels, string filterMovies, string filterTelevision, string filterMusic);
 
-
-
-
+        /// <summary>
+        /// Returns a list of all Devices for this server.
+        /// </summary>
+        /// <returns></returns>
+        Task<DeviceContainer> GetDevices(string authToken, string plexServerHost);
 
 
 
@@ -110,17 +118,7 @@ namespace Plex.Api.Clients
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Server Host.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<LibrarySummary> GetLibrarySummaryAsync(string authToken, string plexServerHost);
-
-        /// <summary>
-        /// Returns Metadata for a Plex Library.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Plex Host Uri.</param>
-        /// <param name="key">Library Key.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<MediaContainer> GetMetadataForLibraryAsync(string authToken, string plexServerHost, string key);
-
+        Task<LibraryContainer> GetLibrariesAsync(string authToken, string plexServerHost);
 
         /// <summary>
         /// Get Library Hub from Plex Server instance.
@@ -150,7 +148,7 @@ namespace Plex.Api.Clients
         /// <param name="plexServerHost">Plex Host Uri.</param>
         /// <param name="key">Rating Key.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<Metadata> GetMediaMetadataAsync(string authToken, string plexServerHost, string key);
+        Task<MediaContainer> GetMediaMetadataAsync(string authToken, string plexServerHost, string key);
 
 
 
@@ -201,15 +199,6 @@ namespace Plex.Api.Clients
         Task<CollectionModel> GetCollectionAsync(string authToken, string plexServerHost, string key);
 
         /// <summary>
-        /// Get Collection Tags for a Movie.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Movie Key.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<string>> GetCollectionTagsForMovieAsync(string authToken, string plexServerHost, string key);
-
-        /// <summary>
         /// Add Collection to a Movie.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
@@ -248,7 +237,7 @@ namespace Plex.Api.Clients
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="collectionKey">Rating Key for the Collection.</param>
         /// <returns>List of Movies.</returns>
-        Task<List<Metadata>> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey);
+        Task<MediaContainer> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey);
 
         /// <summary>
         /// Start Library Scan for given Plex Library.
@@ -261,11 +250,30 @@ namespace Plex.Api.Clients
         Task ScanLibraryAsync(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false);
 
         /// <summary>
+        /// Get Library Play History for given Server.
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="start">Starting Record</param>
+        /// <param name="count">Count of Records</param>
+        /// <param name="minDate">Starting Date</param>
+        /// <returns>MediaContainer</returns>
+        Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0, int count = 100, DateTime? minDate = null);
+
+        /// <summary>
+        /// Get Clients connected to a given Server
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <returns>ClientMediaContainer</returns>
+        Task<ClientMediaContainer> GetClients(string authToken, string plexServerHost);
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="accessToken"></param>
         /// <param name="hostUrl"></param>
         /// <returns></returns>
-        Task<MediaContainer> GetPlayHistory(string accessToken, string hostUrl);
+        Task<ReleaseContainer> CheckForUpdate(string accessToken, string hostUrl);
     }
 }

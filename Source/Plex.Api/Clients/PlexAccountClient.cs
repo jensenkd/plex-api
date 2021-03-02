@@ -111,7 +111,7 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<List<AccountServer>> GetAccountServersAsync(string authToken, bool showActiveOnly)
+        public async Task<AccountServerContainer> GetAccountServersAsync(string authToken)
         {
             var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/servers.xml", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
@@ -120,11 +120,7 @@ namespace Plex.Api.Clients
 
             var serverContainer = await this.apiService.InvokeApiAsync<AccountServerContainer>(apiRequest);
 
-            // if (showActiveOnly)
-            // {
-            //     return serverContainer?.Servers.Where(c=>c);
-            // }
-            return serverContainer?.Servers;
+            return serverContainer;
         }
 
         /// <inheritdoc/>
@@ -165,17 +161,12 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<List<Friend>> GetInvitesAsync(string authToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc/>
         public async Task<UserContainer> GetUsers(string authToken)
         {
             var apiRequest = new ApiRequestBuilder("https://plex.tv/api/users", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                 .Build();
 
             var container = await this.apiService.InvokeApiAsync<UserContainer>(apiRequest);
@@ -194,6 +185,7 @@ namespace Plex.Api.Clients
             var apiRequest = new ApiRequestBuilder("https://plex.tv/api/v2/user/privacy", string.Empty, HttpMethod.Put)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                 .AddQueryParams(queryParams)
                 .AcceptJson()
                 .Build();
@@ -208,6 +200,7 @@ namespace Plex.Api.Clients
                 new ApiRequestBuilder("https://plex.tv/devices.json",string.Empty, HttpMethod.Get)
                     .AddPlexToken(authToken)
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                     .AcceptJson()
                     .Build();
 

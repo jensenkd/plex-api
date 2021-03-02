@@ -4,6 +4,7 @@ namespace Plex.Api.Clients
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using PlexModels;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
     using PlexModels.Media;
@@ -39,11 +40,12 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task ScanForNewItems(string authToken, string plexServerHost, string key)
+        public async Task ScanForNewItems(string authToken, string plexServerHost, string key, bool forceMetadataRefresh)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/refresh", HttpMethod.Get)
                     .AddPlexToken(authToken)
+                    .AddQueryParam("force", forceMetadataRefresh ? "1" : "0")
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AcceptJson()
                     .Build();
@@ -65,18 +67,8 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<FilterContainer> GetSearchFilters(string authToken, string plexServerHost, string key)
-        {
-            var apiRequest = new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/filters", HttpMethod.Get)
-                .AddPlexToken(authToken)
-                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                .AcceptJson()
-                .Build();
-
-            var filterContainer = await this.apiService.InvokeApiAsync<FilterContainerWrapper>(apiRequest);
-
-            return filterContainer.FilterContainer;
-        }
+        public async Task<FilterContainer> GetSearchFilters(string authToken, string plexServerHost, string key) =>
+            await this.FetchWithWrapper<FilterContainer>(plexServerHost, $"library/sections/{key}/filters", authToken, HttpMethod.Get);
 
         /// <inheritdoc/>
         public async Task<HubMediaContainer> HubLibrarySearch(string authToken, string plexServerHost, string title)
@@ -88,17 +80,7 @@ namespace Plex.Api.Clients
                 {"includeExternalMedia", "1"}
             };
 
-            var apiRequest =
-                new ApiRequestBuilder(plexServerHost, "hubs/search", HttpMethod.Get)
-                    .AddPlexToken(authToken)
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AddQueryParams(queryParams)
-                    .AcceptJson()
-                    .Build();
-
-            var hubMediaContainerWrapper = await this.apiService.InvokeApiAsync<HubMediaContainerWrapper>(apiRequest);
-
-            return hubMediaContainerWrapper.HubMediaContainer;
+            return await this.FetchWithWrapper<HubMediaContainer>(plexServerHost, "hubs/search", authToken, HttpMethod.Get, queryParams);
         }
 
         /// <inheritdoc/>
@@ -113,18 +95,29 @@ namespace Plex.Api.Clients
                 {"max_results", count.ToString()}
             };
 
+            foreach (var item in filters)
+            {
+                queryParams.Add(item.Key, item.Value);
+            }
+
+            return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/sections/{libraryKey}/all",
+                authToken, HttpMethod.Get, queryParams);
+        }
+
+        private async Task<T> FetchWithWrapper<T>(string baseUrl, string endpoint, string authToken, HttpMethod method,
+            Dictionary<string, string> queryParams = null)
+        {
             var apiRequest =
-                new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
+                new ApiRequestBuilder(baseUrl, endpoint, method)
                     .AddPlexToken(authToken)
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddQueryParams(queryParams)
-                    .AddQueryParams(filters)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AcceptJson()
                     .Build();
 
-            var mediaContainerWrapper = await this.apiService.InvokeApiAsync<MediaContainerWrapper>(apiRequest);
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<T>>(apiRequest);
 
-            return mediaContainerWrapper.MediaContainer;
+            return wrapper.Container;
         }
     }
 }

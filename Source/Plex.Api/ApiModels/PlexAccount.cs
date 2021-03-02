@@ -1,4 +1,4 @@
-namespace Plex.Api.Account
+namespace Plex.Api.ApiModels
 {
     using System;
     using System.Collections.Generic;
@@ -14,9 +14,11 @@ namespace Plex.Api.Account
     public class Account
     {
         private readonly IPlexAccountClient plexAccountClient;
+        private readonly IPlexServerClient plexServerClient;
+        private readonly IPlexLibraryClient plexLibraryClient;
         private readonly object session;
 
-        public Account(IPlexAccountClient plexAccountClient, string username, string password)
+        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, string username, string password)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -29,12 +31,14 @@ namespace Plex.Api.Account
             }
 
             this.plexAccountClient = plexAccountClient ?? throw new ArgumentNullException(nameof(plexAccountClient));
+            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
+            this.plexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
 
             var account = plexAccountClient.GetPlexAccountAsync(username, password).Result;
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        public Account(IPlexAccountClient plexAccountClient, string authToken)
+        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, string authToken)
         {
             if (string.IsNullOrEmpty(authToken))
             {
@@ -42,6 +46,8 @@ namespace Plex.Api.Account
             }
 
             this.plexAccountClient = plexAccountClient ?? throw new ArgumentNullException(nameof(plexAccountClient));
+            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
+            this.plexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
 
             var account = plexAccountClient.GetPlexAccountAsync(authToken).Result;
             ObjectMapper.Mapper.Map(account, this);
@@ -107,8 +113,17 @@ namespace Plex.Api.Account
         /// Get Servers tied to this Account
         /// </summary>
         /// <returns>List of Server objects</returns>
-        public async Task<List<AccountServer>> Servers() =>
-            await this.plexAccountClient.GetAccountServersAsync(this.AuthToken, false);
+        public async Task<List<Server>> Servers()
+        {
+            var servers = new List<Server>();
+            var accountServerContainer = await this.plexAccountClient.GetAccountServersAsync(this.AuthToken);
+            foreach (var server in accountServerContainer.Servers)
+            {
+                var serverModel = new Server(this.plexServerClient, this.plexLibraryClient, server);
+                servers.Add(serverModel);
+            }
+            return servers;
+        }
 
         /// <summary>
         /// Return list of Resources for Plex Account
@@ -170,6 +185,7 @@ namespace Plex.Api.Account
         // SetWebhooks(string[] urls);
         // GetWebhooks();
 
+        //
         // GetVideoOnDemand();
         // GetWebShows();
         // GetNews();

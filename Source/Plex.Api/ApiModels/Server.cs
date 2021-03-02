@@ -1,50 +1,114 @@
-namespace Plex.Api
+namespace Plex.Api.ApiModels
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Automapper;
     using Clients;
+    using Helpers;
+    using PlexModels.Account;
     using PlexModels.Hubs;
-    using PlexModels.Library;
-    using PlexModels.Library.Search;
     using PlexModels.Media;
     using PlexModels.Providers;
     using PlexModels.Server;
-    using ResourceModels;
+    using PlexModels.Server.DeviceContainer;
+    using PlexModels.Server.History;
+    using PlexModels.Server.Releases;
     using LibraryFilter = PlexModels.Library.LibraryFilter;
 
     public class Server
     {
         private readonly IPlexServerClient plexServerClient;
         private readonly IPlexLibraryClient plexLibraryClient;
-        private readonly string hostUrl;
-        private readonly string accessToken;
 
-        public Server(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, string authToken, string serverUrl)
+        public Server(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, AccountServer accountServer)
         {
-            if (string.IsNullOrEmpty(authToken))
-            {
-                throw new ArgumentNullException(nameof(authToken));
-            }
-
-            if (string.IsNullOrEmpty(serverUrl))
-            {
-                throw new ArgumentNullException(nameof(serverUrl));
-            }
-
             this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
             this.plexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
 
-            //Connect to server and populate
-            var server = plexServerClient.GetPlexServerInfo(authToken, serverUrl).Result;
-            this.hostUrl = serverUrl;
-            this.accessToken = authToken;
-            ObjectMapper.Mapper.Map(server, this);
+            if (accountServer == null)
+            {
+                throw new ArgumentNullException(nameof(accountServer));
+            }
+
+            // Map AccountServer to this Server Object (Mainly to get Access Token and Host)
+            ObjectMapper.Mapper.Map(accountServer, this);
+            var serverModel = plexServerClient.GetPlexServerInfo(this.AccessToken, this.Uri.ToString()).Result;
+
+            ObjectMapper.Mapper.Map(serverModel, this);
         }
 
+        /// <summary>
+        /// Server Access Token
+        /// </summary>
+        public string AccessToken { get; set; }
 
+        /// <summary>
+        /// Server Name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Server Address
+        /// </summary>
+        public string Address { get; set; }
+
+        /// <summary>
+        /// Server Port
+        /// </summary>
+        public int Port { get; set; }
+
+        /// <summary>
+        /// Server Scheme
+        /// </summary>
+        public string Scheme { get; set; }
+
+        /// <summary>
+        /// Server Host
+        /// </summary>
+        public string Host { get; set; }
+
+        /// <summary>
+        /// Server Local IP Address
+        /// </summary>
+        public string LocalAddresses { get; set; }
+
+        /// <summary>
+        /// Created At DateTime
+        /// </summary>
+        public int CreatedAt { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public int Owned { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public int Synced { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public string SourceTitle { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public int OwnerId { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public int Home { get; set; }
+
+        /// <summary>
+        /// Server Uri
+        /// </summary>
+        public Uri Uri { get; set; }
 
         /// <summary>
         ///
@@ -301,28 +365,21 @@ namespace Plex.Api
         /// </summary>
         public List<PlexServerDirectory> Directories { get; set; }
 
-        // Methods
-
         /// <summary>
-        /// Get Server Library Summary (Including Libraries)
+        /// Get Libraries
         /// </summary>
-        /// <returns>Library Summary Object</returns>
-        public async Task<LibrarySummary> GetLibrarySummary()
-        {
-            var summary = await this.plexServerClient.GetLibrarySummaryAsync( this.accessToken, this.hostUrl);
-            return summary;
-        }
-
-        /// <summary>
-        /// Get Libraries Filtered by optional Library Filter (Key, Type, Title)
-        /// </summary>
-        /// <param name="filter">Library Filter</param>
+        /// <param name="filter">Library Filter (Optional)</param>
         /// <returns>List of Library Objects</returns>
-        public async Task<List<Library>> GetLibraries(LibraryFilter filter = null)
+        public async Task<List<Library>> Libraries(LibraryFilter filter = null)
         {
-            var summary = await this.plexServerClient.GetLibrarySummaryAsync( this.accessToken, this.hostUrl);
-
-            var libraries = summary.Libraries;
+            var libraries = new List<Library>();
+            var summary = await this.plexServerClient.GetLibrariesAsync(this.AccessToken, this.Uri.ToString());
+            foreach (var library in summary.Libraries)
+            {
+                var libModel = new Library(this.plexServerClient, this.plexLibraryClient, this);
+                ObjectMapper.Mapper.Map(library, libModel);
+                libraries.Add(libModel);
+            }
 
             if (filter != null)
             {
@@ -351,116 +408,38 @@ namespace Plex.Api
             return libraries;
         }
 
-        /// <summary>
-        /// Get Media Items for Given Library
-        /// </summary>
-        /// <param name="key">Library Key</param>
-        /// <returns>List of Media Objects</returns>
-        public async Task<List<Metadata>> GetLibraryMetadata(string key)
-        {
-            var mediaContainer = await this.plexServerClient.GetMetadataForLibraryAsync(this.accessToken, this.hostUrl, key);
-            return mediaContainer.Media;
-        }
-
-        public async Task<Metadata> GetMediaMetadata(string ratingKey) =>
-            await this.plexServerClient.GetMediaMetadataAsync(this.accessToken, this.hostUrl, ratingKey);
-
-        public async Task EmptyTrashForLibrary(string key) =>
-            await this.plexLibraryClient.EmptyTrash(this.accessToken, this.hostUrl, key);
-
-        public async Task ScanLibraryForNewItems(string key) =>
-            await this.plexLibraryClient.ScanForNewItems(this.accessToken, this.hostUrl, key);
-
-        public async Task CancelLibraryScan(string key) =>
-            await this.plexLibraryClient.CancelScanForNewItems(this.accessToken, this.hostUrl, key);
-
-        // GetAllMedia() //Get All Media From All Sections
-        // GetRecentlyAdded()
-
-        // SearchLibrary(string title, string libraryType)
-
-
-        /// <summary>
-        /// Tag a library item with a Collection Name
-        /// </summary>
-        /// <param name="libraryKey">Library Key.</param>
-        /// <param name="ratingKey">Item Rating Key.</param>
-        /// <param name="collectionName">Collection name to add to item.</param>
-        public async void AddCollectionToLibraryItemAsync(string libraryKey, string ratingKey, string collectionName) =>
-            await this.plexServerClient.AddCollectionToLibraryItemAsync(this.accessToken, this.hostUrl, libraryKey, ratingKey,
-                collectionName);
-
-        /// <summary>
-        /// Untag a library item with a Collection Name
-        /// </summary>
-        /// <param name="libraryKey">Library Key.</param>
-        /// <param name="ratingKey">Item Rating Key.</param>
-        /// <param name="collectionName">Collection name to remove from item.</param>
-        public async void RemoveCollectionFromLibraryItemAsync(string libraryKey, string ratingKey, string collectionName) =>
-            await this.plexServerClient.DeleteCollectionFromLibraryItemAsync(this.accessToken, this.hostUrl, libraryKey, ratingKey,
-                collectionName);
-
-        /// <summary>
-        /// Update Collection in a library
-        /// </summary>
-        /// <param name="libraryKey">Library Key</param>
-        /// <param name="collectionModel">Collection Model</param>
-        public async void UpdateCollection(string libraryKey, CollectionModel collectionModel) =>
-            await this.plexServerClient.UpdateCollectionAsync(this.accessToken, this.hostUrl, libraryKey, collectionModel);
-
         // Hubs
+        /// <summary>
+        /// Get Home OnDeck items
+        /// </summary>
+        /// <param name="start">Start record</param>
+        /// <param name="count">Max Number of items to retrieve</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> HomeOnDeck(int start = 0, int count = 10) =>
+            await this.plexServerClient.GetHomeOnDeckAsync(this.AccessToken, this.Uri.ToString(), start, count);
 
         /// <summary>
-        ///
+        /// Get Recently Added items for the Home Hub
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
+        /// <param name="start">Start record</param>
+        /// <param name="count">Max Number of items to retrieve</param>
         /// <returns></returns>
-        public async Task<MediaContainer> GetHomeOnDeck(int start = 0, int count = 10) =>
-            await this.plexServerClient.GetHomeOnDeckAsync(this.accessToken, this.hostUrl, start, count);
+        public async Task<MediaContainer> HomeHubRecentlyAdded(int start = 0, int count = 10) =>
+            await this.plexServerClient.GetHomeRecentlyAddedAsync(this.AccessToken, this.Uri.ToString(), start, count);
 
         /// <summary>
-        ///
+        /// Get Continue Watching items for the Home Hub
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
+        /// <param name="start">Start record</param>
+        /// <param name="count">Max Number of items to retrieve</param>
         /// <returns></returns>
-        public async Task<MediaContainer> GetHubRecentlyAdded(int start = 0, int count = 10) =>
-            await this.plexServerClient.GetHomeRecentlyAddedAsync(this.accessToken, this.hostUrl, start, count);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public async Task<MediaContainer> GetHubContinueWatching(int start = 0, int count = 10) =>
-            await this.plexServerClient.GetHomeContinueWatchingAsync(this.accessToken, this.hostUrl, start, count);
-
-        /// <summary>
-        /// Return list of Hubs on a given library along with their Metadata items
-        /// </summary>
-        /// <param name="libraryKey">Library Key</param>
-        /// <param name="count">Max count of items on each hub</param>
-        /// <returns></returns>
-        public async Task<HubMediaContainer> GetLibraryHub(string libraryKey, int count = 10) =>
-            await this.plexServerClient.GetLibraryHubAsync(this.accessToken, this.hostUrl, libraryKey, count);
-
-        /// <summary>
-        /// Returns recently added items to given Library
-        /// </summary>
-        /// <param name="libraryKey">Key of Library</param>
-        /// <param name="start">Offset number to start with (0 is first record)</param>
-        /// <param name="count">Max number of items to return</param>
-        /// <returns></returns>
-        public async Task<MediaContainer> GetLibraryRecentlyAdded(string libraryKey, int start, int count) =>
-            await this.plexServerClient.GetLibraryRecentlyAddedAsync(this.accessToken,  this.hostUrl, libraryKey, start, count);
+        public async Task<MediaContainer> HomeHubContinueWatching(int start = 0, int count = 10) =>
+            await this.plexServerClient.GetHomeContinueWatchingAsync(this.AccessToken, this.Uri.ToString(), start, count);
 
         /// <summary>
         /// Share library content with the specified user.
         /// </summary>
         /// <param name="user">username, email of the user to be added.</param>
-        /// <param name="server">PlexServer object or machineIdentifier containing the library sections to share.</param>
         /// <param name="sections">Library sections, names or ids to be shared (default None). [Section] must be defined in order to update shared sections.</param>
         /// <param name="allowSync">Set True to allow user to sync content.</param>
         /// <param name="allowCameraUpload">Set True to allow user to upload photos.</param>
@@ -472,71 +451,74 @@ namespace Plex.Api
         public async void InviteFriend(string user, string sections = "None", bool allowSync = false,
             bool allowCameraUpload = false, bool allowChannels = false, string filterMovies = "None", string filterTelevision = "None",
             string filterMusic = "None") =>
-            await this.plexServerClient.InviteFriend(this.accessToken, this.hostUrl, sections, allowSync, allowCameraUpload,
+            await this.plexServerClient.InviteFriend(this.AccessToken, this.Uri.ToString(), sections, allowSync, allowCameraUpload,
                 allowChannels, filterMovies, filterTelevision, filterMusic);
 
         /// <summary>
-        ///
+        /// Get Providers for this Server
         /// </summary>
-        /// <returns></returns>
-        public async Task<ProviderContainer> GetProviders() =>
-            await this.plexServerClient.GetServerProvidersAsync(this.accessToken, this.hostUrl);
+        /// <returns>ProviderContainer</returns>
+        public async Task<ProviderContainer> Providers() =>
+            await this.plexServerClient.GetServerProvidersAsync(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
-        ///
+        /// Search Across All Hubs on this Server
         /// </summary>
-        /// <param name="title"></param>
+        /// <param name="title">Title</param>
         /// <returns></returns>
         public async Task<HubMediaContainer> HubLibrarySearch(string title) =>
-            await this.plexLibraryClient.HubLibrarySearch(this.accessToken, this.hostUrl, title);
-
-        /// <summary>
-        /// Get Filters available for Searching given Library
-        /// </summary>
-        /// <param name="key">Library Key</param>
-        /// <returns>FilterContainer</returns>
-        public async Task<FilterContainer> GetSearchFiltersForLibrary(string key) =>
-            await this.plexLibraryClient.GetSearchFilters(this.accessToken, this.hostUrl, key);
-
-        /// <summary>
-        /// Matching Library Items with Metadata
-        /// </summary>
-        /// <param name="title">General string query to search for (optional).</param>
-        /// <param name="libraryKey">Library Key</param>
-        /// <param name="sort">column:dir; column can be any of {addedAt, originallyAvailableAt, lastViewedAt,
-        /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
-        /// <param name="libraryType">Filter results to a spcifiec libtype (movie, show, episode, artist,
-        /// album, track; optional).</param>
-        /// <param name="filters">
-        /// Any of the available filters for the current library section. Partial string matches allowed. Multiple matches OR together.
-        /// Negative filtering also possible, just add an exclamation mark to the end of filter name, e.g. resolution!=1x1.
-        ///        unwatched: Display or hide unwatched content (True, False). [all]
-        ///        duplicate: Display or hide duplicate items (True, False). [movie]
-        ///        actor: List of actors to search ([actor_or_id, …]). [movie]
-        ///        collection: List of collections to search within ([collection_or_id, …]). [all]
-        ///        contentRating: List of content ratings to search within ([rating_or_key, …]). [movie,tv]
-        ///        country: List of countries to search within ([country_or_key, …]). [movie,music]
-        ///        decade: List of decades to search within ([yyy0, …]). [movie]
-        ///        director: List of directors to search ([director_or_id, …]). [movie]
-        ///        genre: List Genres to search within ([genere_or_id, …]). [all]
-        ///        network: List of TV networks to search within ([resolution_or_key, …]). [tv]
-        ///        resolution: List of video resolutions to search within ([resolution_or_key, …]). [movie]
-        ///        studio: List of studios to search within ([studio_or_key, …]). [music]
-        ///        year: List of years to search within ([yyyy, …]). [all]
-        /// </param>
-        /// <param name="start">Starting record (default 0)</param>
-        /// <param name="count">Only return the specified number of results (default 100).</param>
-        /// <returns>MediaContainer</returns>
-        public async Task<MediaContainer> LibrarySearch(string title, string libraryKey, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100) =>
-            await this.plexLibraryClient.LibrarySearch(this.accessToken, this.hostUrl, title, libraryKey, sort, libraryType, filters, start, count);
+            await this.plexLibraryClient.HubLibrarySearch(this.AccessToken, this.Uri.ToString(), title);
 
         /// <summary>
         /// Get Play History for all library sections on all servers for the owner.
         /// </summary>
-        /// <param name="maxResults">Only return the specified number of results (optional)</param>
+        /// <param name="start">Starting record</param>
+        /// <param name="count">Only return the specified number of results (optional)</param>
         /// <param name="minDate">Min datetime to return results from.</param>
         /// <returns></returns>
-        public async Task<object> PlayHistory(int maxResults = 100, DateTime? minDate = null) =>
-            await this.plexServerClient.GetPlayHistory(this.accessToken, this.hostUrl);
+        public async Task<HistoryMediaContainer> PlayHistory(int start = 0, int count = 100, DateTime? minDate = null) =>
+            await this.plexServerClient.GetPlayHistory(this.AccessToken, this.Uri.ToString(), start, count, minDate);
+
+        /// <summary>
+        /// Get Devices connected to this Server
+        /// </summary>
+        /// <returns>DeviceContainer</returns>
+        public async Task<DeviceContainer> Devices() =>
+            await this.plexServerClient.GetDevices(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Returns list of all Client objects connected to server.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<object> Clients() =>
+            await this.plexServerClient.GetClients(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Scrobble Item on Server
+        /// </summary>
+        /// <param name="ratingKey">Rating Key</param>
+        public async Task ScrobbleItem(string ratingKey) =>
+            await this.plexServerClient.ScrobbleItemAsync(this.AccessToken, this.Uri.ToString(), ratingKey);
+
+        /// <summary>
+        /// Unscrobble Item on Server
+        /// </summary>
+        /// <param name="ratingKey">Rating Key</param>
+        public async Task UnScrobbleItem(string ratingKey) =>
+            await this.plexServerClient.UnScrobbleItemAsync(this.AccessToken, this.Uri.ToString(), ratingKey);
+
+        /// <summary>
+        /// Downloads Server Logs
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<object> DownloadLogs() => throw new NotImplementedException();
+
+        /// <summary>
+        /// Check Server for available updates
+        /// </summary>
+        /// <returns>ReleaseContainer</returns>
+        public async Task<ReleaseContainer> CheckForUpdate() =>
+            await this.plexServerClient.CheckForUpdate(this.AccessToken, this.Uri.ToString());
     }
 }

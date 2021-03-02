@@ -43,14 +43,14 @@ namespace Plex.Api.Clients
         /// <param name="username">Username.</param>
         /// <param name="password">Password.</param>
         /// /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string username, string password);
+        Task<PlexAccount> GetPlexAccountAsync(string username, string password);
 
         /// <summary>
         /// Get Plex Account.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string authToken);
+        Task<PlexAccount> GetPlexAccountAsync(string authToken);
 
         /// <summary>
         /// Get Plex Resources.
@@ -64,9 +64,8 @@ namespace Plex.Api.Clients
         /// Retrieves a list of servers tied to your Plex Account.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
-        /// <param name="showActiveOnly">Show only active Servers</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<AccountServer>> GetAccountServersAsync(string authToken, bool showActiveOnly);
+        /// <returns>AccountServerContainer.</returns>
+        Task<AccountServerContainer> GetAccountServersAsync(string authToken);
 
         /// <summary>
         /// Get Plex Announcements
@@ -102,9 +101,9 @@ namespace Plex.Api.Clients
         Task OptOut(string authToken, bool playback, bool library);
 
         /// <summary>
-        ///
+        /// Returns a list of all Device objects connected to the account.
         /// </summary>
-        /// <param name="authToken"></param>
+        /// <param name="authToken">Authentication Token.</param>
         /// <returns></returns>
         Task<List<Device>> GetDevices(string authToken);
     }

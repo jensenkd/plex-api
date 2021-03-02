@@ -3,7 +3,6 @@ namespace Plex.Api.Api
     using System.Net.Http;
     using System.Threading.Tasks;
 
-
     /// <inheritdoc />
     public class PlexRequestsHttpClient : IPlexRequestsHttpClient
     {

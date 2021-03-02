@@ -2,32 +2,31 @@ namespace Plex.Api.Test
 {
     using System;
     using System.Linq;
-    using Account;
+    using Api;
+    using ApiModels;
     using Clients;
     using Factories;
-    using Helpers;
-    using Plex.Api.Api;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Xunit.Abstractions;
-    using IPlexServerClient = Clients.IPlexServerClient;
 
-    public class TestBase
+    public class PlexFixture : IDisposable
     {
-        protected readonly ServiceProvider ServiceProvider;
-        protected readonly IConfiguration Configuration;
-        protected readonly ClientOptions ClientOptions;
+        public readonly ServiceProvider ServiceProvider;
+        public readonly IConfiguration Configuration;
+
+        public IPlexFactory PlexFactory { get; set; }
+        public TestConfiguration TestConfiguration { get; set; }
 
         public Account Account { get; }
         public Server Server { get; }
 
-        protected TestBase()
+        public PlexFixture()
         {
             this.Configuration = new ConfigurationBuilder()
-                .AddUserSecrets<TestBase>()
+                .AddUserSecrets<PlexFixture>()
                 .Build();
 
-            this.ClientOptions = new ClientOptions
+            var clientOptions = new ClientOptions
             {
                 Platform = "Web",
                 Product = "API_UnitTests",
@@ -38,7 +37,7 @@ namespace Plex.Api.Test
 
             var services = new ServiceCollection();
             services.AddLogging();
-            services.AddSingleton(this.ClientOptions);
+            services.AddSingleton(clientOptions);
             services.AddTransient<IPlexServerClient, PlexServerClient>();
             services.AddTransient<IPlexAccountClient, PlexAccountClient>();
             services.AddTransient<IPlexLibraryClient, PlexLibraryClient>();
@@ -46,18 +45,18 @@ namespace Plex.Api.Test
             services.AddTransient<IPlexFactory, PlexFactory>();
             services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
 
-           this.ServiceProvider = services.BuildServiceProvider();
+            this.ServiceProvider = services.BuildServiceProvider();
 
-            var login = this.Configuration["Plex:Login"];
-            var password = this.Configuration["Plex:Password"];
+            this.TestConfiguration = new TestConfiguration(this.Configuration["Plex:Login"],
+                this.Configuration["Plex:Password"], this.Configuration["Plex:AuthenticationKey"], clientOptions);
 
-            var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
-            if (plexFactory == null)
+            this.PlexFactory = this.ServiceProvider.GetService<IPlexFactory>();
+            if (this.PlexFactory == null)
             {
                 throw new ApplicationException("Invalid Plex Factory Object");
             }
 
-            this.Account = plexFactory.GetPlexAccount(login, password);
+            this.Account = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login, this.TestConfiguration.Password);
             if (this.Account == null)
             {
                 throw new ApplicationException("Invalid Login Credentials");
@@ -65,14 +64,17 @@ namespace Plex.Api.Test
 
             // Get First Owned Server
             var servers = this.Account.Servers().Result;
-            var ownedServer = servers.First(c => c.Owned == 1);
-            var fullUri = ownedServer.Host.ReturnUriFromServerInfo(ownedServer.Port, ownedServer.Scheme);
-
-            this.Server = plexFactory.GetPlexServer(fullUri.ToString(), ownedServer.AccessToken);
+            this.Server = servers.First(c => c.Owned == 1);
             if (this.Server == null)
             {
                 throw new ApplicationException("No Valid Server Found");
             }
+        }
+
+
+        public void Dispose()
+        {
+            // ... clean up test data from the database ...
         }
     }
 }

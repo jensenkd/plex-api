@@ -1,4 +1,4 @@
-namespace Plex.Api.PlexModels.Library
+namespace Plex.Api.ApiModels
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
@@ -24,7 +24,6 @@ namespace Plex.Api.PlexModels.Library
         public string Title1 { get; set; }
 
         [JsonPropertyName("Directory")]
-        public List<Library> Libraries { get; set; }
-
+        public List<ApiModels.Library> Libraries { get; set; }
     }
 }

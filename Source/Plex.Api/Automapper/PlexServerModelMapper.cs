@@ -1,5 +1,7 @@
 namespace Plex.Api.Automapper
 {
+    using ApiModels;
+    using PlexModels.Account;
     using PlexModels.Server;
     using Profile = AutoMapper.Profile;
 
@@ -10,6 +12,7 @@ namespace Plex.Api.Automapper
         /// </summary>
         public PlexServerModelMapper()
         {
+            this.CreateMap<AccountServer, Server>();
             this.CreateMap<PlexServer, Server>();
             this.CreateMap<PlexServerDirectory, PlexServerDirectory>();
         }
