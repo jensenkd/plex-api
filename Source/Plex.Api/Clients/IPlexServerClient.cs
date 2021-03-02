@@ -260,7 +260,7 @@ namespace Plex.Api.Clients
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <returns></returns>
-        Task<ReleaseContainer> CheckForUpdate(string authToken, string plexServerHost);
+        Task<UpdateContainer> CheckForUpdate(string authToken, string plexServerHost);
 
         /// <summary>
         ///

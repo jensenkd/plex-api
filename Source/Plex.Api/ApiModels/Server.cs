@@ -521,7 +521,7 @@ namespace Plex.Api.ApiModels
         /// Check Server for available updates
         /// </summary>
         /// <returns>ReleaseContainer</returns>
-        public async Task<ReleaseContainer> CheckForUpdate() =>
+        public async Task<UpdateContainer> CheckForUpdate() =>
             await this.plexServerClient.CheckForUpdate(this.AccessToken, this.Uri.ToString());
 
         /// <summary>

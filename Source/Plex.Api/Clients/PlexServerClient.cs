@@ -384,8 +384,8 @@
             await this.FetchWithWrapper<ClientMediaContainer>(plexServerHost, "clients", authToken, HttpMethod.Get);
 
         /// <inheritdoc/>
-        public async Task<ReleaseContainer> CheckForUpdate(string authToken, string plexServerHost) =>
-            await this.FetchWithWrapper<ReleaseContainer>(plexServerHost, "updater/status", authToken, HttpMethod.Get);
+        public async Task<UpdateContainer> CheckForUpdate(string authToken, string plexServerHost) =>
+            await this.FetchWithWrapper<UpdateContainer>(plexServerHost, "updater/status", authToken, HttpMethod.Get);
 
         /// <inheritdoc/>
         public async Task<ActivityContainer> GetActivities(string authToken, string plexServerHost) =>
