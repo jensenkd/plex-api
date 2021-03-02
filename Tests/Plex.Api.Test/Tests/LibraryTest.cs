@@ -108,11 +108,17 @@ namespace Plex.Api.Test.Tests
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
 
             const string title = "Harry Potter";
-            var filters = new Dictionary<string, string> {{"year", "2002"}};
+            var filters = new Dictionary<string, string>();
 
-            var items = await library.Search(title, string.Empty, string.Empty, filters);
+            var items = await library.Search(title, "audienceRating:desc", string.Empty, filters);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
             Assert.NotNull(items);
-            Assert.Single(items.Media);
+            Assert.Equal(8, items.Media.Count);
         }
     }
 }

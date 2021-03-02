@@ -56,6 +56,13 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetPlexServer_Activites()
+        {
+            var activities = await this.fixture.Server.Activities();
+
+        }
+
+        [Fact]
         public async void Test_GetPlexServer_DownloadLogs()
         {
            // var logs = await this.fixture.Server.DownloadLogs();
@@ -76,9 +83,48 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetPlexServer_GetStatistics()
+        {
+            var items = await this.fixture.Server.Statistics();
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_PlexServerRefreshSyncList()
+        {
+            await this.fixture.Server.RefreshSyncList();
+        }
+
+        [Fact]
+        public async void Test_PlexServerRefreshContent()
+        {
+            await this.fixture.Server.RefreshContent();
+        }
+
+        [Fact]
+        public async void Test_PlexServerRefreshSync()
+        {
+            await this.fixture.Server.RefreshSync();
+        }
+
+        [Fact]
         public async void Test_GetPlexServer_GetDevices()
         {
             var items = await this.fixture.Server.Devices();
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServer_GetTranscodeSessions()
+        {
+            var items = await this.fixture.Server.TranscodeSessions();
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServer_GetSessions()
+        {
+            var items = await this.fixture.Server.Sessions();
             Assert.NotNull(items);
         }
 
@@ -114,6 +160,20 @@ namespace Plex.Api.Test.Tests
         {
             const string title = "Harry Potter";
             var items = await this.fixture.Server.HubLibrarySearch(title);
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_GetSessions()
+        {
+            var items = await this.fixture.Server.Sessions();
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_GetPlaylists()
+        {
+            var items = await this.fixture.Server.Playlists();
             Assert.NotNull(items);
         }
 

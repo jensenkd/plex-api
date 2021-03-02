@@ -7,17 +7,21 @@
     using System.Threading.Tasks;
     using Api;
     using Automapper;
-    using Models.Session;
     using PlexModels;
     using PlexModels.Hubs;
     using PlexModels.Library;
     using PlexModels.Media;
     using PlexModels.Providers;
     using PlexModels.Server;
+    using PlexModels.Server.Activities;
     using PlexModels.Server.Clients;
     using PlexModels.Server.DeviceContainer;
     using PlexModels.Server.History;
+    using PlexModels.Server.Playlists;
     using PlexModels.Server.Releases;
+    using PlexModels.Server.Sessions;
+    using PlexModels.Server.Statistics;
+    using PlexModels.Server.Transcoders;
     using ResourceModels;
     using Metadata = PlexModels.Media.Metadata;
 
@@ -195,21 +199,12 @@
         }
 
         /// <inheritdoc/>
-        public async Task<List<Session>> GetSessionsAsync(string authToken, string plexServerHost)
-        {
-            var apiRequest = new ApiRequestBuilder(plexServerHost, "status/sessions", HttpMethod.Get)
-                .AddPlexToken(authToken)
-                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                .AcceptJson()
-                .Build();
-
-            var sessionWrapper = await this.apiService.InvokeApiAsync<SessionWrapper>(apiRequest);
-
-            return sessionWrapper.SessionContainer.Sessions?.ToList();
-        }
+        public async Task<SessionContainer> GetSessionsAsync(string authToken, string plexServerHost) =>
+            await this.FetchWithWrapper<SessionContainer>(plexServerHost, "status/sessions",
+                authToken, HttpMethod.Get);
 
         /// <inheritdoc/>
-        public Task<Session> GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey)
+        public Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey)
             => throw new NotImplementedException();
 
         /// <inheritdoc/>
@@ -373,27 +368,6 @@
         }
 
         /// <inheritdoc/>
-        public async Task ScanLibraryAsync(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false)
-        {
-            // From https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
-            // http://[PMS_IP_ADDRESS]:32400/library/sections/29/refresh?X-Plex-Token=YourTokenGoesHere
-            // http://[PMS_IP_ADDRESS]:32400/library/sections/29/refresh?force=1&X-Plex-Token=YourTokenGoesHere
-            var apiRequestBuilder =
-                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/refresh", HttpMethod.Get)
-                    .AddPlexToken(authToken)
-                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AcceptJson();
-
-            if (forceMetadataRefresh)
-            {
-                apiRequestBuilder = apiRequestBuilder.AddQueryParam("force", "1");
-            }
-
-            var apiRequest = apiRequestBuilder.Build();
-
-            await this.apiService.InvokeApiAsync(apiRequest);
-        }
-
         public async Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0, int count = 100, DateTime? minDate = null)
         {
             var queryParams = new Dictionary<string, string>
@@ -405,12 +379,68 @@
             return await this.FetchWithWrapper<HistoryMediaContainer>(plexServerHost, "status/sessions/history/all", authToken, HttpMethod.Get, queryParams);
         }
 
+        /// <inheritdoc/>
         public async Task<ClientMediaContainer> GetClients(string authToken, string plexServerHost) =>
             await this.FetchWithWrapper<ClientMediaContainer>(plexServerHost, "clients", authToken, HttpMethod.Get);
 
+        /// <inheritdoc/>
         public async Task<ReleaseContainer> CheckForUpdate(string authToken, string plexServerHost) =>
             await this.FetchWithWrapper<ReleaseContainer>(plexServerHost, "updater/status", authToken, HttpMethod.Get);
 
+        /// <inheritdoc/>
+        public async Task<ActivityContainer> GetActivities(string authToken, string plexServerHost) =>
+            await this.FetchWithWrapper<ActivityContainer>(plexServerHost, "activities", authToken, HttpMethod.Get);
+
+        /// <inheritdoc/>
+        public async Task<StatisticContainer> GetStatistics(string authToken, string plexServerHost)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "statistics/resources?timespan=6", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParam("timespan", "6")
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<StatisticContainer>>(apiRequest);
+            return wrapper.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task RefreshSyncList(string authToken, string plexServerHost)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "sync/refreshSynclists", HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task RefreshContent(string authToken, string plexServerHost)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "sync/refreshContent", HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task<TranscodeContainer> GetTranscodeSessions(string authToken, string plexServerHost) =>
+            await this.FetchWithWrapper<TranscodeContainer>(plexServerHost, "transcode/sessions", authToken, HttpMethod.Get);
+
+        /// <inheritdoc/>
+        public async Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost) =>
+            await this.FetchWithWrapper<PlaylistContainer>(plexServerHost, "playlists", authToken, HttpMethod.Get);
+
+        /// <inheritdoc/>
         public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload,
             bool allowChannels, string filterMovies, string filterTelevision, string filterMusic) =>
             throw new NotImplementedException();

@@ -3,19 +3,21 @@ namespace Plex.Api.Clients
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models.Session;
-    using PlexModels.Account;
     using PlexModels.Hubs;
     using PlexModels.Library;
     using PlexModels.Media;
     using PlexModels.Providers;
     using PlexModels.Server;
+    using PlexModels.Server.Activities;
     using PlexModels.Server.Clients;
     using PlexModels.Server.DeviceContainer;
     using PlexModels.Server.History;
+    using PlexModels.Server.Playlists;
     using PlexModels.Server.Releases;
+    using PlexModels.Server.Sessions;
+    using PlexModels.Server.Statistics;
+    using PlexModels.Server.Transcoders;
     using ResourceModels;
-    using Metadata = PlexModels.Media.Metadata;
 
     /// <summary>
     /// Inteface for Plex Client.
@@ -69,13 +71,12 @@ namespace Plex.Api.Clients
         Task<PlexServer> GetPlexServerInfo(string authToken, string plexServerHost);
 
         /// <summary>
-        /// http://[PMS_IP_Address]:32400/status/sessions?X-Plex-Token=YourTokenGoesHere
         /// Retrieves a list of active sessions on the Plex Media Server instance.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<Session>> GetSessionsAsync(string authToken, string plexServerHost);
+        /// <returns>SessionContainer object</returns>
+        Task<SessionContainer> GetSessionsAsync(string authToken, string plexServerHost);
 
         /// <summary>
         /// Get Session Information for given Plex Player.
@@ -84,7 +85,7 @@ namespace Plex.Api.Clients
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="playerKey">Plex Player Key.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<Session> GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey);
+        Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey);
 
         /// <summary>
         ///
@@ -106,11 +107,6 @@ namespace Plex.Api.Clients
         /// </summary>
         /// <returns></returns>
         Task<DeviceContainer> GetDevices(string authToken, string plexServerHost);
-
-
-
-
-        // TODO Move to Library Client
 
         /// <summary>
         /// Get Plex Library Sections on given server.
@@ -240,16 +236,6 @@ namespace Plex.Api.Clients
         Task<MediaContainer> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey);
 
         /// <summary>
-        /// Start Library Scan for given Plex Library.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="libraryKey">Library Key.</param>
-        /// <param name="forceMetadataRefresh">Should Force Metadata Refres.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task ScanLibraryAsync(string authToken, string plexServerHost, string libraryKey, bool forceMetadataRefresh = false);
-
-        /// <summary>
         /// Get Library Play History for given Server.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
@@ -269,11 +255,56 @@ namespace Plex.Api.Clients
         Task<ClientMediaContainer> GetClients(string authToken, string plexServerHost);
 
         /// <summary>
+        /// Check Server for available Update Releases
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <returns></returns>
+        Task<ReleaseContainer> CheckForUpdate(string authToken, string plexServerHost);
+
+        /// <summary>
         ///
         /// </summary>
-        /// <param name="accessToken"></param>
-        /// <param name="hostUrl"></param>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <returns></returns>
-        Task<ReleaseContainer> CheckForUpdate(string accessToken, string hostUrl);
+        Task<ActivityContainer> GetActivities(string authToken, string plexServerHost);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        Task<StatisticContainer> GetStatistics(string authToken, string plexServerHost);
+
+        /// <summary>
+        /// Force PMS to download new SyncList from Plex.tv.
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        Task RefreshSyncList(string authToken, string plexServerHost);
+
+        /// <summary>
+        /// Force PMS to refresh content for known SyncLists.
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        Task RefreshContent(string authToken, string plexServerHost);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <returns>TranscodeContainer object</returns>
+        Task<TranscodeContainer> GetTranscodeSessions(string authToken, string plexServerHost);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken"></param>
+        /// <param name="plexServerHost"></param>
+        /// <returns></returns>
+        Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost);
     }
 }

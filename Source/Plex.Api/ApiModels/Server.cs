@@ -3,19 +3,22 @@ namespace Plex.Api.ApiModels
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
     using System.Threading.Tasks;
     using Automapper;
     using Clients;
-    using Helpers;
     using PlexModels.Account;
     using PlexModels.Hubs;
     using PlexModels.Media;
     using PlexModels.Providers;
     using PlexModels.Server;
+    using PlexModels.Server.Activities;
     using PlexModels.Server.DeviceContainer;
     using PlexModels.Server.History;
+    using PlexModels.Server.Playlists;
     using PlexModels.Server.Releases;
+    using PlexModels.Server.Sessions;
+    using PlexModels.Server.Statistics;
+    using PlexModels.Server.Transcoders;
     using LibraryFilter = PlexModels.Library.LibraryFilter;
 
     public class Server
@@ -520,5 +523,60 @@ namespace Plex.Api.ApiModels
         /// <returns>ReleaseContainer</returns>
         public async Task<ReleaseContainer> CheckForUpdate() =>
             await this.plexServerClient.CheckForUpdate(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Get Server Activities
+        /// </summary>
+        /// <returns>ActivityContainer</returns>
+        public async Task<ActivityContainer> Activities() =>
+            await this.plexServerClient.GetActivities(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Get Server Statistics
+        /// </summary>
+        /// <returns>StatisticContainer</returns>
+        public async Task<StatisticContainer> Statistics() =>
+            await this.plexServerClient.GetStatistics(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Force PMS to download new SyncList from Plex.tv.
+        /// </summary>
+        /// <returns></returns>
+        public async Task RefreshSyncList() =>
+            await this.plexServerClient.RefreshSyncList(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Force PMS to refresh content for known SyncLists.
+        /// </summary>
+        /// <returns></returns>
+        public async Task RefreshContent() =>
+            await this.plexServerClient.RefreshSyncList(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Force PMS to download new SyncList and refresh content.
+        /// </summary>
+        /// <returns></returns>
+        public async Task RefreshSync()
+        {
+            await this.RefreshSyncList();
+            await this.RefreshContent();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public async Task<TranscodeContainer> TranscodeSessions() =>
+            await this.plexServerClient.GetTranscodeSessions(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Get Server active Sessions
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SessionContainer> Sessions() =>
+            await this.plexServerClient.GetSessionsAsync(this.AccessToken, this.Uri.ToString());
+
+        public async Task<PlaylistContainer> Playlists() =>
+            await this.plexServerClient.GetPlaylists(this.AccessToken, this.Uri.ToString());
     }
 }
