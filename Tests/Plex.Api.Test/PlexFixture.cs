@@ -10,6 +10,9 @@ namespace Plex.Api.Test
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    ///
+    /// </summary>
     public class PlexFixture : IDisposable
     {
         public readonly ServiceProvider ServiceProvider;

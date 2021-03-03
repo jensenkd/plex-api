@@ -53,7 +53,7 @@ namespace Plex.Api.Api
         /// <summary>
         /// Content Headers of Api Reqeuest.
         /// </summary>
-        public Dictionary<string, string> ContentHeaders { get; }
+        private Dictionary<string, string> ContentHeaders { get; }
 
         /// <summary>
         /// Query Parameters of Api Request.
