@@ -8,7 +8,8 @@ namespace Plex.Api.Clients
         {
             var plexHeaders = new Dictionary<string, string>
             {
-                ["X-Plex-Container-Start"] = from.ToString(), ["X-Plex-Container-Size"] = to.ToString(),
+                ["X-Plex-Container-Start"] = from.ToString(),
+                ["X-Plex-Container-Size"] = to.ToString(),
             };
 
             return plexHeaders;
@@ -16,7 +17,10 @@ namespace Plex.Api.Clients
 
         public static Dictionary<string, string> GetClientIdentifierHeader(string clientId)
         {
-            var plexHeaders = new Dictionary<string, string> { ["X-Plex-Client-Identifier"] = clientId };
+            var plexHeaders = new Dictionary<string, string>
+            {
+                ["X-Plex-Client-Identifier"] = clientId
+            };
             return plexHeaders;
         }
 

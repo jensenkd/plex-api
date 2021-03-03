@@ -1,4 +1,4 @@
-namespace Plex.Api.Clients
+namespace Plex.Api.Clients.Interfaces
 {
     using System;
     using System.Collections.Generic;

@@ -4,6 +4,7 @@ namespace Plex.Api.ApiModels
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Clients;
+    using Clients.Interfaces;
     using PlexModels.Hubs;
     using PlexModels.Library;
     using PlexModels.Library.Search;

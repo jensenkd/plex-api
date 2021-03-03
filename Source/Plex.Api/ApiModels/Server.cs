@@ -6,6 +6,7 @@ namespace Plex.Api.ApiModels
     using System.Threading.Tasks;
     using Automapper;
     using Clients;
+    using Clients.Interfaces;
     using PlexModels.Account;
     using PlexModels.Hubs;
     using PlexModels.Media;

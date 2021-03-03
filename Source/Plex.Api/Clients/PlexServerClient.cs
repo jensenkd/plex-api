@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using Api;
     using Automapper;
+    using Interfaces;
     using PlexModels;
     using PlexModels.Hubs;
     using PlexModels.Library;

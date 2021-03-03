@@ -4,6 +4,7 @@ namespace Plex.Api.Clients
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using Interfaces;
     using PlexModels;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;

@@ -5,6 +5,7 @@ namespace Plex.Api.Test
     using Api;
     using ApiModels;
     using Clients;
+    using Clients.Interfaces;
     using Factories;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

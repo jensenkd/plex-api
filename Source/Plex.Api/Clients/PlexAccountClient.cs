@@ -5,6 +5,7 @@ namespace Plex.Api.Clients
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using Interfaces;
     using PlexModels.Account;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
@@ -126,7 +127,7 @@ namespace Plex.Api.Clients
         /// <inheritdoc/>
         public async Task<List<Resource>> GetResourcesAsync(string authToken)
         {
-            var apiRequest = new ApiRequestBuilder(BaseUri + "resources.json", string.Empty, HttpMethod.Get)
+            var apiRequest = new ApiRequestBuilder(BaseUri + "resources.json?includeHttps=1&includeRelay=1", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                 .Build();

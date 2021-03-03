@@ -14,7 +14,7 @@ namespace Plex.Api.PlexModels.Server.Activities
         public bool Cancellable { get; set; }
 
         [JsonPropertyName("userID")]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
         [JsonPropertyName("title")]
         public string Title { get; set; }

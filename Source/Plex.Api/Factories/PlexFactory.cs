@@ -2,6 +2,7 @@ namespace Plex.Api.Factories
 {
     using ApiModels;
     using Clients;
+    using Clients.Interfaces;
 
     public class PlexFactory : IPlexFactory
     {
