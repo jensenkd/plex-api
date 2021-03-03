@@ -90,6 +90,10 @@ namespace Plex.Api.Api
             }
         }
 
+        /// <summary>
+        /// Add Querystring Parameters
+        /// </summary>
+        /// <param name="uriBuilder"></param>
         private void AddQueryParams(StringBuilder uriBuilder)
         {
             if (!this.QueryParams.Any())

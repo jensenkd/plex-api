@@ -4,7 +4,6 @@ namespace Plex.Api.ApiModels
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Automapper;
-    using Clients;
     using Clients.Interfaces;
     using PlexModels.Account;
     using PlexModels.Account.User;
@@ -17,7 +16,6 @@ namespace Plex.Api.ApiModels
         private readonly IPlexAccountClient plexAccountClient;
         private readonly IPlexServerClient plexServerClient;
         private readonly IPlexLibraryClient plexLibraryClient;
-        private readonly object session;
 
         public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, string username, string password)
         {

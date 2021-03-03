@@ -1,7 +1,6 @@
 namespace Plex.Api.Test.Tests
 {
     using System.Linq;
-    using Clients;
     using Clients.Interfaces;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
