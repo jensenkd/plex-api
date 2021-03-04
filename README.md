@@ -54,30 +54,10 @@ NOTE: v2.0 documentation updates are incoming...
         Platform = "Web",
         Version = "v1"
     };
-    
-   
-    
-              
-    
-                this.TestConfiguration = new TestConfiguration(this.Configuration["Plex:Login"],
-                    this.Configuration["Plex:Password"], this.Configuration["Plex:AuthenticationKey"], clientOptions);
-    
-                this.PlexFactory = this.ServiceProvider.GetService<IPlexFactory>();
-                if (this.PlexFactory == null)
-                {
-                    throw new ApplicationException("Invalid Plex Factory Object");
-                }
-    
-                this.Account = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login, this.TestConfiguration.Password);
-                if (this.Account == null)
-                {
-                    throw new ApplicationException("Invalid Login Credentials");
-                }
 
     // Setup Dependency Injection
     var services = new ServiceCollection();
-    services.AddLogging();
-    services.AddSingleton(clientOptions);
+    services.AddSingleton(apiOptions);
     services.AddTransient<IPlexServerClient, PlexServerClient>();
     services.AddTransient<IPlexAccountClient, PlexAccountClient>();
     services.AddTransient<IPlexLibraryClient, PlexLibraryClient>();
