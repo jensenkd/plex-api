@@ -36,10 +36,12 @@ Getting a PlexClient Instance
 -----------------------------
 
 There are two types of authentication. If you are running on a separate network
-or using Plex Users you can log into MyPlex to get a PlexServer instance. An
+or using Plex Users you can log into PlexAccount to get a PlexAccount instance. An
 example of this is below. NOTE: Servername below is the name of the server (not
 the hostname and port).  If logged into Plex Web you can see the server name in
 the top left above your available libraries.
+
+NOTE: v2.0 documentation updates are incoming...
 
 ```c#
 
@@ -52,15 +54,38 @@ the top left above your available libraries.
         Platform = "Web",
         Version = "v1"
     };
+    
+   
+    
+              
+    
+                this.TestConfiguration = new TestConfiguration(this.Configuration["Plex:Login"],
+                    this.Configuration["Plex:Password"], this.Configuration["Plex:AuthenticationKey"], clientOptions);
+    
+                this.PlexFactory = this.ServiceProvider.GetService<IPlexFactory>();
+                if (this.PlexFactory == null)
+                {
+                    throw new ApplicationException("Invalid Plex Factory Object");
+                }
+    
+                this.Account = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login, this.TestConfiguration.Password);
+                if (this.Account == null)
+                {
+                    throw new ApplicationException("Invalid Login Credentials");
+                }
 
-    // Create DI Provider
+    // Setup Dependency Injection
     var services = new ServiceCollection();
     services.AddLogging();
-    services.AddSingleton(apiOptions);
-    services.AddTransient<IPlexClient, PlexClient>();
+    services.AddSingleton(clientOptions);
+    services.AddTransient<IPlexServerClient, PlexServerClient>();
+    services.AddTransient<IPlexAccountClient, PlexAccountClient>();
+    services.AddTransient<IPlexLibraryClient, PlexLibraryClient>();
     services.AddTransient<IApiService, ApiService>();
+    services.AddTransient<IPlexFactory, PlexFactory>();
     services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
-    ServiceProvider = services.BuildServiceProvider();
+    
+    this.ServiceProvider = services.BuildServiceProvider();
 ```    
 
 If you want to avoid logging into MyPlex and you already know your auth token
@@ -71,29 +96,35 @@ Server
 
 ```c#
 
-    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
     
-    // Signin
-    var user = plexApi
-        .SignInAsync(login, password).Result;
-        
-    // Get Account
-    var user = plexApi.GetAccountAsync(string authToken).Result;
+    // First, you will need to create a PlexAccount object.
+    
+    // Signin with Username, Password
+    PlexAccount account = plexFactory
+        .GetPlexAccount("username", "password");
+    
+    // or use and Plex Auth token
+    var account = plexFactory
+        .GetPlexAccount("access_token_here");
     
     // Get Plex Announcements
-    var announcements = plexApi.GetPlexAnnouncementsAsync(string authToken).Result;
-          
-    // Get Servers
-    var servers = plexApi.GetServersAsync(string authToken).Result;
+    var announcements = account.Announcements().Result;
+     
+    // Get Server Summaries
+    var servers = account.ServerSummaries().Result;
+         
+    // Get Servers (Active Servers w/Details)
+    var servers = account.Servers().Result;
     
     // Get Friends
-    var friends = plexApi.GetFriendsAsync(string authToken).Result;
+    var friends = account.Friends().Result;
     
     // Get Resources
-    var resources = plexApi.GetResourcesAsync(string authToken).Result;
+    var resources = account.Resources().Result;
     
     // Get Providers
-    var providers = plexApi.GetServerProvidersAsync(string authToken, string plexServerHost).Result;
+    var providers = account.Providers().Result;
     
 ```
 
@@ -101,16 +132,19 @@ Libraries
 
 ```c#
 
-    var plexApi = ServiceProvider.GetService<IPlexClient>();
+    var servers = account.Servers().Result;
     
-    // Get Recently Added for Library
-    var recentlyAdded = plexApi.GetRecentlyAddedAsync(string authToken, string plexServerHost, string libraryKey).Result;
+    // Get First owned server
+    var myServer = servers.Where(c=>c.Owned == "1").First();
     
     // Get Libraries
-    var libraries = plexApi.GetLibrariesAsync(string authToken, string plexServerHost).Result;
+    var libraries = myServer.Libraries().Result;
     
-    // Get Library
-    var library = plexApi.GetLibraryAsync(string authToken, string plexServerHost, string libraryKey).Result;
+     // Get Movies library
+    var movieLibrary = libraries.Single(c => c.Title == "Movies");
+  
+    // Get Recently Added for Library
+    var recentlyAdded = movieLibrary.RecentlyAdded().Result;
 
 ```
 

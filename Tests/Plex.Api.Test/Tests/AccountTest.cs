@@ -172,7 +172,7 @@ namespace Plex.Api.Test.Tests
         public async void Test_Get_Plex_ServerSummaries()
         {
             var container = await this.fixture.Account.ServerSummaries();
-            Assert.NotNull(container.Servers);
+            Assert.NotNull(container);
         }
 
         [Fact]
