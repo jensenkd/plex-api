@@ -441,6 +441,12 @@
         public async Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost) =>
             await this.FetchWithWrapper<PlaylistContainer>(plexServerHost, "playlists", authToken, HttpMethod.Get);
 
+        public async Task<object> GetLogs(string authToken, string plexServerHost)
+        {
+            return await this
+                .FetchWithWrapper<object>(plexServerHost, "logs", authToken, HttpMethod.Get);
+        }
+
         /// <inheritdoc/>
         public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload,
             bool allowChannels, string filterMovies, string filterTelevision, string filterMusic) =>

@@ -306,5 +306,12 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="plexServerHost"></param>
         /// <returns></returns>
         Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        Task<object> GetLogs(string authToken, string plexServerHost);
     }
 }

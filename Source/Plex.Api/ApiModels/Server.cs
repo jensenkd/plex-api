@@ -508,6 +508,7 @@ namespace Plex.Api.ApiModels
         /// Unscrobble Item on Server
         /// </summary>
         /// <param name="ratingKey">Rating Key</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task UnScrobbleItem(string ratingKey) =>
             await this.plexServerClient.UnScrobbleItemAsync(this.AccessToken, this.Uri.ToString(), ratingKey);
 
@@ -515,18 +516,20 @@ namespace Plex.Api.ApiModels
         /// Downloads Server Logs
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<object> DownloadLogs() => throw new NotImplementedException();
+        public async Task<object> DownloadLogs()
+        {
+            return await this.plexServerClient.GetLogs(this.AccessToken, this.Uri.ToString());
+        }
 
         /// <summary>
         /// Check Server for available updates
         /// </summary>
-        /// <returns>ReleaseContainer</returns>
+        /// <returns>ReleaseContainer.</returns>
         public async Task<UpdateContainer> CheckForUpdate() =>
             await this.plexServerClient.CheckForUpdate(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
-        /// Get Server Activities
+        /// Get Server Activities.
         /// </summary>
         /// <returns>ActivityContainer</returns>
         public async Task<ActivityContainer> Activities() =>
