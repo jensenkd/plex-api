@@ -9,6 +9,7 @@ namespace Plex.Api.Test
     using Factories;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Xunit;
 
     /// <summary>
     ///
@@ -64,14 +65,6 @@ namespace Plex.Api.Test
             if (this.Account == null)
             {
                 throw new ApplicationException("Invalid Login Credentials");
-            }
-
-            // Get First Owned Server
-            var servers = this.Account.Servers().Result;
-            this.Server = servers.First(c => c.Owned == 1);
-            if (this.Server == null)
-            {
-                throw new ApplicationException("No Valid Server Found");
             }
         }
 

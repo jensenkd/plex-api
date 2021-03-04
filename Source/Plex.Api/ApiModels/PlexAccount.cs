@@ -17,7 +17,8 @@ namespace Plex.Api.ApiModels
         private readonly IPlexServerClient plexServerClient;
         private readonly IPlexLibraryClient plexLibraryClient;
 
-        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, string username, string password)
+        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient,
+            IPlexLibraryClient plexLibraryClient, string username, string password)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -37,7 +38,8 @@ namespace Plex.Api.ApiModels
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, string authToken)
+        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient,
+            IPlexLibraryClient plexLibraryClient, string authToken)
         {
             if (string.IsNullOrEmpty(authToken))
             {
@@ -109,7 +111,15 @@ namespace Plex.Api.ApiModels
             await this.plexAccountClient.GetAuthTokenFromOAuthPinAsync(pinId);
 
         /// <summary>
-        /// Get Servers tied to this Account
+        /// Get Server Summaries.  This does not return a Server Instance but a summary
+        /// of all servers tied to your Plex Account.  The servers may not be active/online.
+        /// </summary>
+        /// <returns>AccountServerContainer</returns>
+        public async Task<AccountServerContainer> ServerSummaries() =>
+            await this.plexAccountClient.GetAccountServersAsync(this.AuthToken);
+
+        /// <summary>
+        /// Get Active Servers tied to this Account
         /// </summary>
         /// <returns>List of Server objects</returns>
         public async Task<List<Server>> Servers()
@@ -118,9 +128,21 @@ namespace Plex.Api.ApiModels
             var accountServerContainer = await this.plexAccountClient.GetAccountServersAsync(this.AuthToken);
             foreach (var server in accountServerContainer.Servers)
             {
-                var serverModel = new Server(this.plexServerClient, this.plexLibraryClient, server);
-                servers.Add(serverModel);
+                try
+                {
+                    var activeServer =
+                        await this.plexServerClient.GetPlexServerInfo(server.AccessToken, server.Uri.ToString());
+                    if (!string.IsNullOrEmpty(activeServer.MachineIdentifier))
+                    {
+                        servers.Add(new Server(this.plexServerClient, this.plexLibraryClient, server));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Cannot access server: " + server.Host);
+                }
             }
+
             return servers;
         }
 
@@ -161,7 +183,7 @@ namespace Plex.Api.ApiModels
         /// <param name="playback">Opt out of playback</param>
         /// <param name="library">Opt out of Library statistics</param>
         /// <returns></returns>
-        public async  Task OptOut(bool playback, bool library) =>
+        public async Task OptOut(bool playback, bool library) =>
             await this.plexAccountClient.OptOut(this.AuthToken, playback, library);
 
         /// <summary>
@@ -203,7 +225,6 @@ namespace Plex.Api.ApiModels
             // }
             throw new NotImplementedException();
         }
-
 
 
         /// <summary>
@@ -258,7 +279,6 @@ namespace Plex.Api.ApiModels
             // data = self.query(url, method=self._session.post, headers={
             //     'Content-type': 'x-www-form-urlencoded',
             // }, params=params)
-
         }
 
         /// <summary>
@@ -310,8 +330,5 @@ namespace Plex.Api.ApiModels
 //             NEWS = 'https://news.provider.plex.tv/'                                                     # get
 //             PODCASTS = 'https://podcasts.provider.plex.tv/'                                             # get
 //             MUSIC = 'https://music.provider.plex.tv/'                                                   # get
-
-
-
     }
 }

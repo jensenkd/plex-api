@@ -169,6 +169,13 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async void Test_Get_Plex_ServerSummaries()
+        {
+            var container = await this.fixture.Account.ServerSummaries();
+            Assert.NotNull(container.Servers);
+        }
+
+        [Fact]
         public async void Test_Opt_Out()
         {
             const bool optOutOfPlayback = true;

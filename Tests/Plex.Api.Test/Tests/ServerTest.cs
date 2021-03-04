@@ -26,9 +26,6 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public void Test_Plex_Server_InfoAsync()
         {
-            var plexFactory = this.fixture.ServiceProvider.GetService<IPlexFactory>();
-
-            // Get First Owned Server
             var servers = this.fixture.Account.Servers().Result;
             var ownedServer = servers.First(c => c.Owned == 1);
 
