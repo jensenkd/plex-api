@@ -3,7 +3,8 @@ namespace Plex.Api.PlexModels.Media
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
-    public class MediaType    {
+    public class MediaType
+    {
         [JsonPropertyName("key")]
         public string Key { get; set; }
 

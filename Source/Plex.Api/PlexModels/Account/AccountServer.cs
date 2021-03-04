@@ -38,7 +38,7 @@ namespace Plex.Api.PlexModels.Account
         public int CreatedAt { get; set; }
 
         [XmlAttribute(AttributeName = "updatedAt")]
-        public int UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         [XmlAttribute(AttributeName = "owned")]
         public int Owned { get; set; }

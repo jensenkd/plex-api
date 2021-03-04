@@ -45,13 +45,13 @@ namespace Plex.Api.PlexModels.Library
         public string Uuid { get; set; }
 
         [JsonPropertyName("updatedAt")]
-        public int UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         [JsonPropertyName("createdAt")]
-        public int CreatedAt { get; set; }
+        public long CreatedAt { get; set; }
 
         [JsonPropertyName("scannedAt")]
-        public int ScannedAt { get; set; }
+        public long ScannedAt { get; set; }
 
         [JsonPropertyName("content")]
         public bool Content { get; set; }
@@ -60,7 +60,7 @@ namespace Plex.Api.PlexModels.Library
         public bool Directory { get; set; }
 
         [JsonPropertyName("contentChangedAt")]
-        public int ContentChangedAt { get; set; }
+        public long ContentChangedAt { get; set; }
 
         [JsonPropertyName("hidden")]
         public int Hidden { get; set; }

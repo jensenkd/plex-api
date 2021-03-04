@@ -80,7 +80,7 @@ namespace Plex.Api.PlexModels.Media
         public int ViewCount { get; set; }
 
         [JsonPropertyName("lastViewedAt")]
-        public int LastViewedAt { get; set; }
+        public long LastViewedAt { get; set; }
 
         [JsonPropertyName("year")]
         public int Year { get; set; }
@@ -104,10 +104,10 @@ namespace Plex.Api.PlexModels.Media
         public int Index { get; set; }
 
         [JsonPropertyName("addedAt")]
-        public int AddedAt { get; set; }
+        public long AddedAt { get; set; }
 
         [JsonPropertyName("updatedAt")]
-        public int UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         [JsonPropertyName("audienceRatingImage")]
         public string AudienceRatingImage { get; set; }

@@ -204,7 +204,7 @@ namespace Plex.Api.PlexModels.Providers
         /// <summary>
         ///
         /// </summary>
-        public int UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         /// <summary>
         ///

@@ -83,7 +83,7 @@ namespace Plex.Api.PlexModels.Account
         public int CertificateVersion { get; set; }
 
         [JsonPropertyName("rememberExpiresAt")]
-        public int RememberExpiresAt { get; set; }
+        public long RememberExpiresAt { get; set; }
 
         [JsonPropertyName("adsConsent")]
         public object AdsConsent { get; set; }

@@ -33,7 +33,7 @@ namespace Plex.Api.PlexModels.Account.User
         /// Last connected to the server?
         /// </summary>
         [XmlAttribute(AttributeName="lastSeenAt")]
-        public int LastSeenAt { get; set; }
+        public long LastSeenAt { get; set; }
 
         /// <summary>
         /// Total number of libraries

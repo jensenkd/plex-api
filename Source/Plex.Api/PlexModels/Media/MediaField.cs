@@ -2,7 +2,8 @@ namespace Plex.Api.PlexModels.Media
 {
     using System.Text.Json.Serialization;
 
-    public class MediaField    {
+    public class MediaField
+    {
         [JsonPropertyName("key")]
         public string Key { get; set; }
 

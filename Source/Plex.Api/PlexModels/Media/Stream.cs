@@ -53,34 +53,26 @@ namespace Plex.Api.PlexModels.Media
 
         [JsonPropertyName("scanType")] public string ScanType { get; set; }
 
-        [JsonPropertyName("separateFields")]
-        public string SeparateFields { get; set; }
+        [JsonPropertyName("separateFields")] public string SeparateFields { get; set; }
 
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
+        [JsonPropertyName("title")] public string Title { get; set; }
 
-        [JsonPropertyName("width")]
-        public int Width { get; set; }
+        [JsonPropertyName("width")] public int Width { get; set; }
 
-        [JsonPropertyName("displayTitle")]
-        public string DisplayTitle { get; set; }
+        [JsonPropertyName("displayTitle")] public string DisplayTitle { get; set; }
 
         [JsonPropertyName("extendedDisplayTitle")]
         public string ExtendedDisplayTitle { get; set; }
 
-        [JsonPropertyName("selected")]
-        public bool? Selected { get; set; }
+        [JsonPropertyName("selected")] public bool? Selected { get; set; }
 
-        [JsonPropertyName("channels")]
-        public int? Channels { get; set; }
+        [JsonPropertyName("channels")] public int? Channels { get; set; }
 
         [JsonPropertyName("audioChannelLayout")]
         public string AudioChannelLayout { get; set; }
 
-        [JsonPropertyName("samplingRate")]
-        public int? SamplingRate { get; set; }
+        [JsonPropertyName("samplingRate")] public int? SamplingRate { get; set; }
 
-        [JsonPropertyName("key")]
-        public string Key { get; set; }
+        [JsonPropertyName("key")] public string Key { get; set; }
     }
 }
