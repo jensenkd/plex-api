@@ -64,19 +64,17 @@ Boiler plate dependency injection setup.
 ```    
 
 The entry point to Plex-Api is with the PlexAccount class.  You can instantiate a PlexAccount class using either your <br />
-Plex account login and password, or your Plex authtoken.
+Plex account login and password, or your Plex Auth Token.
 
 ```c#
     var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
-    
-    // First, you will need to create a PlexAccount object.
     
     // Signin with Username, Password
     PlexAccount account = plexFactory
         .GetPlexAccount("username", "password");
     
     // or use and Plex Auth token
-    var account = plexFactory
+    PlexAccount account = plexFactory
         .GetPlexAccount("access_token_here");
 
 ```
