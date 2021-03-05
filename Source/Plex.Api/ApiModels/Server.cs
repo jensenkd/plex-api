@@ -474,7 +474,7 @@ namespace Plex.Api.ApiModels
             await this.plexLibraryClient.HubLibrarySearch(this.AccessToken, this.Uri.ToString(), title);
 
         /// <summary>
-        /// Get Play History for all library sections on all servers for the owner.
+        /// Get Play History for all library sections on this Server.
         /// </summary>
         /// <param name="start">Starting record</param>
         /// <param name="count">Only return the specified number of results (optional)</param>
@@ -491,7 +491,7 @@ namespace Plex.Api.ApiModels
             await this.plexServerClient.GetDevices(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
-        /// Returns list of all Client objects connected to server.
+        /// Get list of all Client objects connected to server.
         /// </summary>
         /// <returns></returns>
         public async Task<object> Clients() =>
@@ -522,7 +522,7 @@ namespace Plex.Api.ApiModels
         }
 
         /// <summary>
-        /// Check Server for available updates
+        /// Get list of all release updates available for this Server
         /// </summary>
         /// <returns>ReleaseContainer.</returns>
         public async Task<UpdateContainer> CheckForUpdate() =>
@@ -543,21 +543,21 @@ namespace Plex.Api.ApiModels
             await this.plexServerClient.GetStatistics(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
-        /// Force PMS to download new SyncList from Plex.tv.
+        /// Force Plex Server to download new SyncList from Plex.tv.
         /// </summary>
         /// <returns></returns>
         public async Task RefreshSyncList() =>
             await this.plexServerClient.RefreshSyncList(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
-        /// Force PMS to refresh content for known SyncLists.
+        /// Force Plex Server to refresh content for known SyncLists.
         /// </summary>
         /// <returns></returns>
         public async Task RefreshContent() =>
             await this.plexServerClient.RefreshSyncList(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
-        /// Force PMS to download new SyncList and refresh content.
+        /// Force Plex Server to download new SyncList and refresh content.
         /// </summary>
         /// <returns></returns>
         public async Task RefreshSync()

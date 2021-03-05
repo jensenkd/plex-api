@@ -11,13 +11,25 @@ namespace Plex.Api.ApiModels
     using PlexModels.Resources;
     using Subscription = PlexModels.Account.Subscription;
 
-    public class Account
+    /// <summary>
+    /// Plex Account Object.  This is the entry point to Plex-Api.
+    /// </summary>
+    public class PlexAccount
     {
         private readonly IPlexAccountClient plexAccountClient;
         private readonly IPlexServerClient plexServerClient;
         private readonly IPlexLibraryClient plexLibraryClient;
 
-        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient,
+        /// <summary>
+        /// Initialize PlexAccount instance.
+        /// </summary>
+        /// <param name="plexAccountClient">IPlexAccountClient instance.</param>
+        /// <param name="plexServerClient">IPlexServerClient instance.</param>
+        /// <param name="plexLibraryClient">IPlexLibraryClient instance.</param>
+        /// <param name="username">Plex account username.</param>
+        /// <param name="password">Plex account password.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public PlexAccount(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient,
             IPlexLibraryClient plexLibraryClient, string username, string password)
         {
             if (string.IsNullOrEmpty(username))
@@ -38,7 +50,15 @@ namespace Plex.Api.ApiModels
             ObjectMapper.Mapper.Map(account, this);
         }
 
-        public Account(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient,
+        /// <summary>
+        /// Initialize PlexAccount instance.
+        /// </summary>
+        /// <param name="plexAccountClient">IPlexAccountClient instance.</param>
+        /// <param name="plexServerClient">IPlexServerClient instance.</param>
+        /// <param name="plexLibraryClient">IPlexLibraryClient instance.</param>
+        /// <param name="authToken">Plex Auth Token.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public PlexAccount(IPlexAccountClient plexAccountClient, IPlexServerClient plexServerClient,
             IPlexLibraryClient plexLibraryClient, string authToken)
         {
             if (string.IsNullOrEmpty(authToken))
@@ -54,11 +74,24 @@ namespace Plex.Api.ApiModels
             ObjectMapper.Mapper.Map(account, this);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         public int Id { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
         public string Uuid { get; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public string AuthToken { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public string Username { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }

@@ -10,14 +10,14 @@ namespace Plex.Api.Factories
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        Account GetPlexAccount(string username, string password);
+        PlexAccount GetPlexAccount(string username, string password);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="authToken"></param>
         /// <returns></returns>
-        Account GetPlexAccount(string authToken);
+        PlexAccount GetPlexAccount(string authToken);
 
         /// <summary>
         ///

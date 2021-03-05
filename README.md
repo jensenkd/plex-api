@@ -32,19 +32,14 @@ Dotnet Cli
     dotnet add package 'Plex.Api'
 ```
 
-Getting a PlexClient Instance
+Getting a PlexAccount Instance
 -----------------------------
-
-There are two types of authentication. If you are running on a separate network
-or using Plex Users you can log into PlexAccount to get a PlexAccount instance. An
-example of this is below. NOTE: Servername below is the name of the server (not
-the hostname and port).  If logged into Plex Web you can see the server name in
-the top left above your available libraries.
 
 NOTE: v2.0 documentation updates are incoming...
 
-```c#
+Boiler plate dependency injection setup.
 
+```c#
     // Create Client Options
     var apiOptions = new ClientOptions
     {
@@ -68,14 +63,10 @@ NOTE: v2.0 documentation updates are incoming...
     this.ServiceProvider = services.BuildServiceProvider();
 ```    
 
-If you want to avoid logging into MyPlex and you already know your auth token
-string, you can use the PlexServer object directly as above, but passing in
-the baseurl and auth token directly.
-
-Server
+The entry point to Plex-Api is with the PlexAccount class.  You can instantiate a PlexAccount class using either your <br />
+Plex account login and password, or your Plex authtoken.
 
 ```c#
-
     var plexFactory = this.ServiceProvider.GetService<IPlexFactory>();
     
     // First, you will need to create a PlexAccount object.
@@ -87,17 +78,23 @@ Server
     // or use and Plex Auth token
     var account = plexFactory
         .GetPlexAccount("access_token_here");
-    
-    // Get Plex Announcements
+
+```
+
+PlexAccount Documentation
+-----------------------------
+```c#
+    // Get Announcements for Plex Account
     var announcements = account.Announcements().Result;
      
-    // Get Server Summaries
+    // Get Server Summaries.  This does not return a Server Instance but a summary
+    // of all servers tied to your Plex Account.  The servers may not be active/online.
     var servers = account.ServerSummaries().Result;
          
     // Get Servers (Active Servers w/Details)
     var servers = account.Servers().Result;
     
-    // Get Friends
+    // Get list of Friends for Plex Account
     var friends = account.Friends().Result;
     
     // Get Resources
@@ -106,27 +103,134 @@ Server
     // Get Providers
     var providers = account.Providers().Result;
     
+    // Returns a list of all User objects connected to your account.
+    // This includes both friends and pending invites. You can reference the user.Friend to
+    // distinguish between the two.
+    var users = account.users().Result;
+    
+    // Opt in or out of sharing stuff with plex.
+    // See: https://www.plex.tv/about/privacy-legal/
+    bool optOutOfPlaybackDetails = true;
+    bool optOutOfLibraryDetails = true;
+    account.OptOut(optOutOfPlaybackDetails, optOutOfLibraryDetails);
+ 
+    // Get Account Devices
+    var devices = account.Devices().Result;      
 ```
 
-Libraries
-
+Server Documentation
+-----------------------------
 ```c#
-
     var servers = account.Servers().Result;
-    
-    // Get First owned server
     var myServer = servers.Where(c=>c.Owned == "1").First();
     
-    // Get Libraries
+    // Get Home OnDeck items
+    var onDeckItems = myServer.HomeOnDeck().Result;
+    
+    // Get Recently Added items for the Home Hub
+    var recentItems = myServer.HomeHubRecentlyAdded().Result;
+    
+    // Get Continue Watching items for the Home Hub
+    var continueItems = myServer.HomeHubContinueWatching().Result;
+    
+    // Share library content with the specified user.
+    string sections = "1,3,4";
+    myServer.InviteFriend("testuser", sections); 
+    
+    // Get Providers for this Server
+    var providers = myServer.Providers().Result;
+    
+    // Search Across All Hubs on this Server
+    var items = myServer.HubLibrarySearch("Harry Potter").Result;
+    
+    // Get Play History for all library sections on this server.
+    var playHistory = myServer.PlayHistory().Result;
+    
+    // Get Devices connected to this Server
+    var devices = myServer.Devices().Result;
+    
+    // Get list of all Client objects connected to server.
+    var clients = myServer.Clients().Result;
+    
+    // Scrobble Item on this server
+    myServer.ScrobbleItem("123");
+
+    // UnScrobble Item on this server
+    myServer.UnScrobbleItem("123");
+
+    // Downloads Server Logs
+    var logs = myServer.DownloadLogs().Result;
+    
+    // Get list of all release updates available for this Server
+    var updates = myServer.CheckForUpdate().Result;
+    
+    // Get Server Activities.
+    var activities = myServer.Activities().Result;
+
+    // Get Server Statistics.
+    var statistics = myServer.Activities().Result;
+    
+    // Force Plex Server to download new SyncList from Plex.tv.
+    myServer.RefreshSyncList();
+    
+    // Force Plex Server to refresh content for known SyncLists.
+    myServer.RefreshContent();
+    
+    // Force Plex Server to download new SyncList and refresh content.
+    myServer.RefreshSync();
+    
+    // Get Transcode Sessions
+    var transcodeSessions = myServer.TranscodeSessions().Result;
+    
+    // Get Server active Sessions
+    var sessions = myServer.Sessions().Result;
+    
+    // Get Server Playlists
+    var playlists = myServer.Playlists().Result;
+
+```
+
+Library Documentation
+-----------------------------
+
+```c#
+    var servers = account.Servers().Result;
+    var myServer = servers.Where(c=>c.Owned == "1").First();
+     
+    // Get Libraries for server
     var libraries = myServer.Libraries().Result;
     
      // Get Movies library
     var movieLibrary = libraries.Single(c => c.Title == "Movies");
   
+    // Get Search Filters available for this Library
+    var filters = movieLibrary.SearchFilters().Result;
+  
+    // Search Library for item
+    string title = "Harry Potter";
+    string sort = "rating:desc";
+    string libraryType = "movie";
+    var items = movieLibrary.Search(title, sort, libraryType).Result;
+ 
     // Get Recently Added for Library
     var recentlyAdded = movieLibrary.RecentlyAdded().Result;
+    
+    // Return list of Hubs on this library along with their Metadata items
+    var hubs = movieLibrary.Hubs();
+    
+    // Empty Trash for this Library
+    movieLibrary.EmptyTrash();
+    
+    // Scan for new items on this Library
+    movieLibrary.ScanForNewItems();
+    
+    // Cancel running Scan on this library
+    movieLibrary.CancelScan();
 
 ```
+
+
+#OLD DOCUMENTATION (NEED TO UPDATE)
 
 Metadata
 

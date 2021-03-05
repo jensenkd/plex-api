@@ -2,6 +2,7 @@ namespace Plex.Api.Automapper
 {
     using ApiModels;
     using PlexModels.Account;
+    using PlexAccount = ApiModels.PlexAccount;
     using Profile = AutoMapper.Profile;
 
     public class PlexAccountModelMapper : Profile
@@ -11,7 +12,7 @@ namespace Plex.Api.Automapper
         /// </summary>
         public PlexAccountModelMapper()
         {
-            CreateMap<PlexAccount, Account>();
+            CreateMap<PlexModels.Account.PlexAccount, PlexAccount>();
         }
     }
 }

@@ -37,16 +37,16 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public void Test_ValidPlexAccount()
         {
-            Assert.NotNull(this.fixture.Account);
-            this.output.WriteLine("Username: " + this.fixture.Account.Username);
-            Assert.NotNull(this.fixture.Account.Username);
-            Assert.NotEqual(string.Empty, this.fixture.Account.Username);
-            this.output.WriteLine("AuthToken: " + this.fixture.Account.AuthToken);
-            Assert.NotNull(this.fixture.Account.AuthToken);
-            Assert.NotEqual(string.Empty, this.fixture.Account.AuthToken);
-            this.output.WriteLine("Email: " + this.fixture.Account.Email);
-            Assert.NotNull(this.fixture.Account.Email);
-            Assert.NotEqual(string.Empty, this.fixture.Account.Email);
+            Assert.NotNull(this.fixture.PlexAccount);
+            this.output.WriteLine("Username: " + this.fixture.PlexAccount.Username);
+            Assert.NotNull(this.fixture.PlexAccount.Username);
+            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Username);
+            this.output.WriteLine("AuthToken: " + this.fixture.PlexAccount.AuthToken);
+            Assert.NotNull(this.fixture.PlexAccount.AuthToken);
+            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.AuthToken);
+            this.output.WriteLine("Email: " + this.fixture.PlexAccount.Email);
+            Assert.NotNull(this.fixture.PlexAccount.Email);
+            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Email);
         }
 
         // [Fact]
@@ -80,7 +80,7 @@ namespace Plex.Api.Test.Tests
         public async void Test_CreateOAuthPinAsync()
         {
             const string redirectUrl = "www.test.com";
-            var result = await this.fixture.Account.CreatePin(redirectUrl);
+            var result = await this.fixture.PlexAccount.CreatePin(redirectUrl);
 
             Assert.Equal(
                 $"https://app.plex.tv/auth#?context[device][product]={this.fixture.TestConfiguration.ClientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={this.fixture.TestConfiguration.ClientOptions.Platform}&context[device][device]={this.fixture.TestConfiguration.ClientOptions.DeviceName}&clientID={this.fixture.TestConfiguration.ClientOptions.ClientId}&forwardUrl={redirectUrl}&code={result.Code}",
@@ -92,27 +92,27 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public void Test_PlexAccountSubscription()
         {
-            Assert.True(this.fixture.Account.Subscription.Active, "Subscription is not active");
-            Assert.Equal("Active", this.fixture.Account.Subscription.Status);
-            Assert.NotNull(this.fixture.Account.Subscription.Plan);
-            Assert.Contains("premium_music_metadata", this.fixture.Account.Subscription.Features);
-            Assert.Contains("sync", this.fixture.Account.Subscription.Features);
-            Assert.Contains("plexpass", this.fixture.Account.Roles);
+            Assert.True(this.fixture.PlexAccount.Subscription.Active, "Subscription is not active");
+            Assert.Equal("Active", this.fixture.PlexAccount.Subscription.Status);
+            Assert.NotNull(this.fixture.PlexAccount.Subscription.Plan);
+            Assert.Contains("premium_music_metadata", this.fixture.PlexAccount.Subscription.Features);
+            Assert.Contains("sync", this.fixture.PlexAccount.Subscription.Features);
+            Assert.Contains("plexpass", this.fixture.PlexAccount.Roles);
         }
 
         [Fact]
         public async void Test_GetPlexAccountServers()
         {
-            this.output.WriteLine("Username: " + this.fixture.Account.Username);
-            Assert.NotNull(this.fixture.Account.Username);
-            Assert.NotEqual(string.Empty, this.fixture.Account.Username);
-            this.output.WriteLine("AuthToken: " + this.fixture.Account.AuthToken);
-            Assert.NotNull(this.fixture.Account.AuthToken);
-            Assert.NotEqual(string.Empty, this.fixture.Account.AuthToken);
-            this.output.WriteLine("Email: " + this.fixture.Account.Email);
-            Assert.NotNull(this.fixture.Account.Email);
-            Assert.NotEqual(string.Empty, this.fixture.Account.Email);
-            foreach (var server in await this.fixture.Account.Servers())
+            this.output.WriteLine("Username: " + this.fixture.PlexAccount.Username);
+            Assert.NotNull(this.fixture.PlexAccount.Username);
+            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Username);
+            this.output.WriteLine("AuthToken: " + this.fixture.PlexAccount.AuthToken);
+            Assert.NotNull(this.fixture.PlexAccount.AuthToken);
+            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.AuthToken);
+            this.output.WriteLine("Email: " + this.fixture.PlexAccount.Email);
+            Assert.NotNull(this.fixture.PlexAccount.Email);
+            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Email);
+            foreach (var server in await this.fixture.PlexAccount.Servers())
             {
                 this.output.WriteLine("Server Name: " + server.FriendlyName);
                 this.output.WriteLine("Server Host: " + server.Uri);
@@ -122,7 +122,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_Get_ResourcesAsync()
         {
-            var resources = await this.fixture.Account.Resources();
+            var resources = await this.fixture.PlexAccount.Resources();
             foreach (var resource in resources)
             {
                 var name = string.IsNullOrEmpty(resource.Name) ? "Unkown" : resource.Name;
@@ -143,35 +143,35 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_Get_FriendsAsync()
         {
-            var friends = await this.fixture.Account.Friends();
+            var friends = await this.fixture.PlexAccount.Friends();
             Assert.NotNull(friends);
         }
 
         [Fact]
         public async void Test_Get_UsersAsync()
         {
-            var users = await this.fixture.Account.Users();
+            var users = await this.fixture.PlexAccount.Users();
             Assert.NotNull(users);
         }
 
         [Fact]
         public async void Test_Get_Plex_Announcements()
         {
-            var announcements = await this.fixture.Account.Announcements();
+            var announcements = await this.fixture.PlexAccount.Announcements();
             Assert.NotNull(announcements);
         }
 
         [Fact]
         public async void Test_Get_Plex_Devices()
         {
-            var devices = await this.fixture.Account.Devices();
+            var devices = await this.fixture.PlexAccount.Devices();
             Assert.NotNull(devices);
         }
 
         [Fact]
         public async void Test_Get_Plex_ServerSummaries()
         {
-            var container = await this.fixture.Account.ServerSummaries();
+            var container = await this.fixture.PlexAccount.ServerSummaries();
             Assert.NotNull(container);
         }
 
@@ -180,7 +180,7 @@ namespace Plex.Api.Test.Tests
         {
             const bool optOutOfPlayback = true;
             const bool optOutOfLibrary = true;
-            await this.fixture.Account.OptOut(optOutOfPlayback, optOutOfLibrary);
+            await this.fixture.PlexAccount.OptOut(optOutOfPlayback, optOutOfLibrary);
         }
 
         // [Fact]

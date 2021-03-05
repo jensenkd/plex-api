@@ -22,7 +22,7 @@ namespace Plex.Api.Test
         public IPlexFactory PlexFactory { get; set; }
         public TestConfiguration TestConfiguration { get; set; }
 
-        public Account Account { get; }
+        public PlexAccount PlexAccount { get; }
         public Server Server { get; }
 
         public PlexFixture()
@@ -61,8 +61,8 @@ namespace Plex.Api.Test
                 throw new ApplicationException("Invalid Plex Factory Object");
             }
 
-            this.Account = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login, this.TestConfiguration.Password);
-            if (this.Account == null)
+            this.PlexAccount = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login, this.TestConfiguration.Password);
+            if (this.PlexAccount == null)
             {
                 throw new ApplicationException("Invalid Login Credentials");
             }

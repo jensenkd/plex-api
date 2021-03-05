@@ -1,13 +1,8 @@
 namespace Plex.Api.Test.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using Factories;
-    using Helpers;
-    using Microsoft.Extensions.DependencyInjection;
-    using PlexModels.Library;
     using Test;
     using Xunit;
     using Xunit.Abstractions;
@@ -26,7 +21,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public void Test_Plex_Server_InfoAsync()
         {
-            var servers = this.fixture.Account.Servers().Result;
+            var servers = this.fixture.PlexAccount.Servers().Result;
             var ownedServer = servers.First(c => c.Owned == 1);
 
             Assert.NotNull(ownedServer);
