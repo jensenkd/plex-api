@@ -56,7 +56,7 @@ namespace Plex.Api.Clients.Interfaces
         Task<HubMediaContainer> HubLibrarySearch(string authToken, string plexServerHost, string title);
 
         /// <summary>
-        ///
+        /// Search for items in this library
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
@@ -89,6 +89,17 @@ namespace Plex.Api.Clients.Interfaces
         Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100);
 
 
-
+        /// <summary>
+        /// Get List of items in this library
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="key">Library Key</param>
+        /// <param name="sort">column:dir; column can be any of {addedAt, originallyAvailableAt, lastViewedAt,
+        /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
+        /// <returns></returns>
+        Task<MediaContainer> GetAll(string authToken, string plexServerHost,  string key, string sort, int start, int count);
     }
 }

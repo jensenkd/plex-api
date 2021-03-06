@@ -87,6 +87,13 @@ namespace Plex.Api.ApiModels
             await this.plexLibraryClient.LibrarySearch(this.server.AccessToken, this.server.Uri.ToString(), title, this.Key, sort, libraryType, filters, start, count);
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MediaContainer> All(string sort, int start = 0, int count = 100) =>
+            await this.plexLibraryClient.GetAll(this.server.AccessToken, this.server.Uri.ToString(), this.Key, sort, start, count);
+
+        /// <summary>
         /// Returns recently added items for this library
         /// </summary>
         /// <param name="start">Offset number to start with (0 is first record)</param>

@@ -31,7 +31,6 @@
     {
         private readonly IApiService apiService;
         private readonly ClientOptions clientOptions;
-        private const string BaseUri = "https://plex.tv/api/v2/";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlexServerClient"/> class.
@@ -128,6 +127,7 @@
             return wrapper.Container;
         }
 
+        /// <inheritdoc/>
         public async Task<MediaContainer> GetHomeContinueWatchingAsync(string authToken, string plexServerHost,
             int start, int count)
         {
@@ -165,10 +165,21 @@
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> GetMediaMetadataAsync(string authToken, string plexServerHost, string key) =>
-            await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/metadata/{key}",
-                authToken, HttpMethod.Get);
+        public async Task<MediaContainer> GetMediaMetadataAsync(string authToken, string plexServerHost, string key)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"includeExternalMedia", "1"},
+                {"skipRefresh", "1"},
+                {"includePreferences", "1"},
+                {"includeExtras", "1"},
+                {"includeStations", "1"},
+                {"includeChapters", "1"},
+            };
 
+            return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/metadata/{key}",
+                authToken, HttpMethod.Get, queryParams);
+        }
 
         /// <inheritdoc/>
         public async Task<MediaContainer> GetChildrenMetadataAsync(string authToken, string plexServerHost, int id)
@@ -441,11 +452,10 @@
         public async Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost) =>
             await this.FetchWithWrapper<PlaylistContainer>(plexServerHost, "playlists", authToken, HttpMethod.Get);
 
-        public async Task<object> GetLogs(string authToken, string plexServerHost)
-        {
-            return await this
+        /// <inheritdoc/>
+        public async Task<object> GetLogs(string authToken, string plexServerHost) =>
+            await this
                 .FetchWithWrapper<object>(plexServerHost, "logs", authToken, HttpMethod.Get);
-        }
 
         /// <inheritdoc/>
         public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload,

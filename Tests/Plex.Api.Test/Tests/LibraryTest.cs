@@ -120,6 +120,20 @@ namespace Plex.Api.Test.Tests
             Assert.NotNull(items);
             Assert.Equal(8, items.Media.Count);
         }
+
+        [Fact]
+        public async void Test_LibraryAll()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+            var items = await library.All("audienceRating:desc", 0, 10);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+        }
     }
 }
 

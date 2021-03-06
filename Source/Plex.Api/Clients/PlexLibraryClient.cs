@@ -10,11 +10,13 @@ namespace Plex.Api.Clients
     using PlexModels.Library.Search;
     using PlexModels.Media;
 
+    /// <summary>
+    ///
+    /// </summary>
     public class PlexLibraryClient : IPlexLibraryClient
     {
         private readonly IApiService apiService;
         private readonly ClientOptions clientOptions;
-        private const string BaseUri = "https://plex.tv/api/v2/";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlexLibraryClient"/> class.
@@ -102,6 +104,20 @@ namespace Plex.Api.Clients
             }
 
             return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/sections/{libraryKey}/all",
+                authToken, HttpMethod.Get, queryParams);
+        }
+
+        /// <inheritdoc/>
+        public async Task<MediaContainer> GetAll(string authToken, string plexServerHost, string key, string sort, int start, int count)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"sort", sort},
+                {"container_start", start.ToString()},
+                {"max_results", count.ToString()}
+            };
+
+            return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/sections/{key}/all",
                 authToken, HttpMethod.Get, queryParams);
         }
 

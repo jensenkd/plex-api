@@ -61,13 +61,21 @@ namespace Plex.Api.Test
                 throw new ApplicationException("Invalid Plex Factory Object");
             }
 
-            this.PlexAccount = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login, this.TestConfiguration.Password);
+            this.PlexAccount = this.PlexFactory.GetPlexAccount(this.TestConfiguration.Login,
+                this.TestConfiguration.Password);
             if (this.PlexAccount == null)
             {
                 throw new ApplicationException("Invalid Login Credentials");
             }
-        }
 
+            // Get First Owned Server
+            var servers = this.PlexAccount.Servers().Result;
+            this.Server = servers.First(c => c.Owned == 1);
+            if (this.Server == null)
+            {
+                throw new ApplicationException("No Valid Server Found");
+            }
+        }
 
         public void Dispose()
         {
