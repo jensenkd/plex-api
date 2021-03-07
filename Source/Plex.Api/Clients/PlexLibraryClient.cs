@@ -1,6 +1,7 @@
 namespace Plex.Api.Clients
 {
     using System.Collections.Generic;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
@@ -93,9 +94,7 @@ namespace Plex.Api.Clients
             {
                 {"title", title},
                 {"sort", sort},
-                {"libtype", libraryType},
-                {"container_start", start.ToString()},
-                {"max_results", count.ToString()}
+                {"libtype", libraryType}
             };
 
             foreach (var item in filters)
@@ -103,8 +102,17 @@ namespace Plex.Api.Clients
                 queryParams.Add(item.Key, item.Value);
             }
 
-            return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/sections/{libraryKey}/all",
-                authToken, HttpMethod.Get, queryParams);
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(queryParams)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AddQueryParams(ClientUtilities.GetClientLimitHeaders(start, count))
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<MediaContainer>>(apiRequest);
+            return wrapper.Container;
         }
 
         /// <inheritdoc/>
@@ -112,13 +120,21 @@ namespace Plex.Api.Clients
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"sort", sort},
-                {"container_start", start.ToString()},
-                {"max_results", count.ToString()}
+                {"sort", sort}
             };
 
-            return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/sections/{key}/all",
-                authToken, HttpMethod.Get, queryParams);
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/all", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(queryParams)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AddQueryParams(ClientUtilities.GetClientLimitHeaders(start, count))
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<MediaContainer>>(apiRequest);
+
+            return wrapper.Container;
         }
 
         private async Task<T> FetchWithWrapper<T>(string baseUrl, string endpoint, string authToken, HttpMethod method,

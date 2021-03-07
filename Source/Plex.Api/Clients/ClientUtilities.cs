@@ -4,6 +4,12 @@ namespace Plex.Api.Clients
 
     public static class ClientUtilities
     {
+        /// <summary>
+        /// Build Client Limit Headers
+        /// </summary>
+        /// <param name="from">Start Record</param>
+        /// <param name="to">Number of records to return</param>
+        /// <returns></returns>
         public static  Dictionary<string, string> GetClientLimitHeaders(int from, int to)
         {
             var plexHeaders = new Dictionary<string, string>
@@ -15,6 +21,11 @@ namespace Plex.Api.Clients
             return plexHeaders;
         }
 
+        /// <summary>
+        /// Get Client Identifier Header
+        /// </summary>
+        /// <param name="clientId">Client Id</param>
+        /// <returns></returns>
         public static Dictionary<string, string> GetClientIdentifierHeader(string clientId)
         {
             var plexHeaders = new Dictionary<string, string>
@@ -24,6 +35,11 @@ namespace Plex.Api.Clients
             return plexHeaders;
         }
 
+        /// <summary>
+        /// Get Client Options Header
+        /// </summary>
+        /// <param name="clientOptions">Client Options</param>
+        /// <returns></returns>
         public static Dictionary<string, string> GetClientMetaHeaders(ClientOptions clientOptions)
         {
             var plexHeaders = new Dictionary<string, string>

@@ -108,9 +108,11 @@ namespace Plex.Api.Test.Tests
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
 
             const string title = "Harry Potter";
+            const int start = 0;
+            const int count = 2;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.Search(title, "audienceRating:desc", string.Empty, filters);
+            var items = await library.Search(title, "audienceRating:desc", string.Empty, filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -118,7 +120,7 @@ namespace Plex.Api.Test.Tests
                 this.output.WriteLine("Rating: " + item.AudienceRating);
             }
             Assert.NotNull(items);
-            Assert.Equal(8, items.Media.Count);
+            Assert.Equal(count, items.Media.Count);
         }
 
         [Fact]
