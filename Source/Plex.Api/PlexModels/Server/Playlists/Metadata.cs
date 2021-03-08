@@ -6,7 +6,7 @@ namespace Plex.Api.PlexModels.Server.Playlists
     public class PlaylistMetadata
     {
         [JsonPropertyName("addedAt")]
-        public string AddedAt { get; set; }
+        public long AddedAt { get; set; }
 
         [JsonPropertyName("art")]
         public string Art { get; set; }
@@ -15,7 +15,7 @@ namespace Plex.Api.PlexModels.Server.Playlists
         public string ContentRating { get; set; }
 
         [JsonPropertyName("duration")]
-        public string Duration { get; set; }
+        public int Duration { get; set; }
 
         [JsonPropertyName("grandparentArt")]
         public string GrandparentArt { get; set; }
@@ -57,7 +57,7 @@ namespace Plex.Api.PlexModels.Server.Playlists
         public string LibrarySectionTitle { get; set; }
 
         [JsonPropertyName("originallyAvailableAt")]
-        public string OriginallyAvailableAt { get; set; }
+        public long OriginallyAvailableAt { get; set; }
 
         [JsonPropertyName("parentGuid")]
         public string ParentGuid { get; set; }
@@ -99,7 +99,7 @@ namespace Plex.Api.PlexModels.Server.Playlists
         public string Type { get; set; }
 
         [JsonPropertyName("updatedAt")]
-        public string UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         [JsonPropertyName("viewOffset")]
         public string ViewOffset { get; set; }
@@ -123,10 +123,10 @@ namespace Plex.Api.PlexModels.Server.Playlists
         public string ChapterSource { get; set; }
 
         [JsonPropertyName("lastViewedAt")]
-        public string LastViewedAt { get; set; }
+        public long LastViewedAt { get; set; }
 
         [JsonPropertyName("viewCount")]
-        public string ViewCount { get; set; }
+        public int ViewCount { get; set; }
 
         [JsonPropertyName("Writer")]
         public List<Writer> Writer { get; set; }
