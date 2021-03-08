@@ -25,6 +25,5 @@ namespace Plex.Api.PlexModels.Library
 
         [JsonPropertyName("Directory")]
         public List<Library> Libraries { get; set; }
-
     }
 }

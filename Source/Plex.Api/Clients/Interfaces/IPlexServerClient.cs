@@ -131,11 +131,12 @@ namespace Plex.Api.Clients.Interfaces
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Plex Host Uri.</param>
+        /// <param name="libraryType">Library Type</param>
         /// <param name="key">Library Key</param>
         /// <param name="start">Offset number to start with (0 = first record)</param>
         /// <param name="count">Total Number of record to return</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, string key, int start, int count);
+        Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, string libraryType, string key, int start, int count);
 
         /// <summary>
         /// Get Metadata for given Plex Rating Key.
@@ -145,8 +146,6 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="key">Rating Key.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<MediaContainer> GetMediaMetadataAsync(string authToken, string plexServerHost, string key);
-
-
 
         /// <summary>
         /// Get Child Metadata items for a given Metadata Id.
@@ -313,8 +312,5 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         Task<object> GetLogs(string authToken, string plexServerHost);
-
-
-        Task<object> WebSocketConnection(string authToken, string plexServerHost);
     }
 }

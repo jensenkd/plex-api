@@ -5,8 +5,6 @@
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using System.Net.WebSockets;
-    using System.Threading;
     using Api;
     using Automapper;
     using Interfaces;
@@ -100,11 +98,12 @@
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, string key, int start = 0, int count = 50)
+        public async Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, string libraryType, string key, int start = 0, int count = 50)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/recentlyAdded", HttpMethod.Get)
                     .AddPlexToken(authToken)
+                    .AddQueryParam("libType", libraryType)
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddRequestHeaders(ClientUtilities.GetClientLimitHeaders(start, count))
                     .AcceptJson()
@@ -458,21 +457,6 @@
         public async Task<object> GetLogs(string authToken, string plexServerHost) =>
             await this
                 .FetchWithWrapper<object>(plexServerHost, "logs", authToken, HttpMethod.Get);
-
-        public Task<object> WebSocketConnection(string authToken, string plexServerHost)
-        {
-            throw new NotImplementedException();
-
-            // var _socket = new ClientWebSocket();
-            //
-            // _socket.Options.SetRequestHeader(headerName: "predix-zone-id", headerValue: PREDIX_ZONE_ID_HERE);
-            // _socket.Options.SetRequestHeader(headerName: "authorization", headerValue: "Bearer " + AUTH_TOKEN_HERE);
-            // _socket.Options.SetRequestHeader(headerName: "content-type", headerValue: "application/json");
-            // CancellationToken token = new CancellationToken();
-            //
-            // var uri = new Uri(uriString: plexServerHost + ":/websockets/notifications");
-            // await _socket.ConnectAsync(uri: uri, cancellationToken: token);
-        }
 
         /// <inheritdoc/>
         public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload,

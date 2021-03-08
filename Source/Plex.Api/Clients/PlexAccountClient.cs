@@ -13,6 +13,9 @@ namespace Plex.Api.Clients
     using PlexAccount = Models.PlexAccount;
     using User = Models.User;
 
+    /// <summary>
+    ///
+    /// </summary>
     public class PlexAccountClient : IPlexAccountClient
     {
         private readonly IApiService apiService;

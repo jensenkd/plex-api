@@ -2,6 +2,8 @@ namespace Plex.Api.Test.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
+    using ApiModels;
+    using ApiModels.Libraries;
     using PlexModels.Library;
     using Xunit;
     using Xunit.Abstractions;
@@ -29,7 +31,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_GetLibraryRecentlyAddedItems()
         {
-            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+            var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
             const int start = 0;
             const int count = 5;
             var items = await library.RecentlyAdded(start, count);
@@ -105,14 +107,35 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_LibrarySearchByName()
         {
-            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+            var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
 
             const string title = "Harry Potter";
             const int start = 0;
             const int count = 2;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.Search(title, "audienceRating:desc", string.Empty, filters, start, count);
+            var items = await library.Search(title, "audienceRating:desc", filters, start, count);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+            Assert.Equal(count, items.Media.Count);
+        }
+
+        [Fact]
+        public async void Test_LibrarySearchTVByName()
+        {
+            var library = (ShowLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "TV Shows");
+
+            const string title = "simpson";
+            const int start = 0;
+            const int count = 2;
+            var filters = new Dictionary<string, string>();
+
+            var items = await library.SearchEpisodes(title, "audienceRating:desc", filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);

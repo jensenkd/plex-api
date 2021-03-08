@@ -26,10 +26,20 @@ namespace Plex.Api.Factories
             this.plexLibraryClient = plexLibraryClient;
         }
 
-        // Plex Account
+        /// <summary>
+        /// Plex Account
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public PlexAccount GetPlexAccount(string username, string password) =>
             new(this.plexAccountClient, this.plexServerClient, this.plexLibraryClient, username, password);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken"></param>
+        /// <returns></returns>
         public PlexAccount GetPlexAccount(string authToken) =>
             new(this.plexAccountClient, this.plexServerClient, this.plexLibraryClient, authToken);
     }

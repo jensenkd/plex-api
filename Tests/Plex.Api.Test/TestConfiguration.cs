@@ -11,10 +11,10 @@ namespace Plex.Api.Test
 
         public TestConfiguration(string login, string password, string accessToken, ClientOptions clientOptions)
         {
-            Login = login;
-            Password = password;
-            AccessToken = accessToken;
-            ClientOptions = clientOptions;
+            this.Login = login;
+            this.Password = password;
+            this.AccessToken = accessToken;
+            this.ClientOptions = clientOptions;
         }
     }
 }

@@ -2,6 +2,9 @@ namespace Plex.Api.Clients
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    ///
+    /// </summary>
     public static class ClientUtilities
     {
         /// <summary>
