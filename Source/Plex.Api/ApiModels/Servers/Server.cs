@@ -5,8 +5,8 @@ namespace Plex.Api.ApiModels
     using System.Linq;
     using System.Threading.Tasks;
     using Automapper;
-    using Clients;
     using Clients.Interfaces;
+    using Libraries;
     using PlexModels.Account;
     using PlexModels.Hubs;
     using PlexModels.Media;
@@ -82,7 +82,7 @@ namespace Plex.Api.ApiModels
         /// <summary>
         /// Created At DateTime
         /// </summary>
-        public int CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         ///
@@ -347,7 +347,7 @@ namespace Plex.Api.ApiModels
         /// <summary>
         /// Datetime the server was updated.
         /// </summary>
-        public int UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// Unknown
@@ -374,15 +374,37 @@ namespace Plex.Api.ApiModels
         /// </summary>
         /// <param name="filter">Library Filter (Optional)</param>
         /// <returns>List of Library Objects</returns>
-        public async Task<List<Library>> Libraries(LibraryFilter filter = null)
+        public async Task<List<LibraryBase>> Libraries(LibraryFilter filter = null)
         {
-            var libraries = new List<Library>();
+            var libraries = new List<LibraryBase>();
             var summary = await this.plexServerClient.GetLibrariesAsync(this.AccessToken, this.Uri.ToString());
             foreach (var library in summary.Libraries)
             {
-                var libModel = new Library(this.plexServerClient, this.plexLibraryClient, this);
-                ObjectMapper.Mapper.Map(library, libModel);
-                libraries.Add(libModel);
+                switch (library.Type.ToUpper())
+                {
+                    case "MOVIE":
+                        var movieLibrary = new MovieLibrary(this.plexServerClient, this.plexLibraryClient, this);
+                        ObjectMapper.Mapper.Map(library, movieLibrary);
+                        libraries.Add(movieLibrary);
+                        break;
+                    case "SHOW":
+                        var showLibrary = new ShowLibrary(this.plexServerClient, this.plexLibraryClient, this);
+                        ObjectMapper.Mapper.Map(library, showLibrary);
+                        libraries.Add(showLibrary);
+                        break;
+                    case "ARTIST":
+                        var musicLibrary = new MusicLibrary(this.plexServerClient, this.plexLibraryClient, this);
+                        ObjectMapper.Mapper.Map(library, musicLibrary);
+                        libraries.Add(musicLibrary);
+                        break;
+                    case "PHOTO":
+                        var photoLibrary = new PhotoLibrary(this.plexServerClient, this.plexLibraryClient, this);
+                        ObjectMapper.Mapper.Map(library, photoLibrary);
+                        libraries.Add(photoLibrary);
+                        break;
+                    default:
+                        throw new ApplicationException("Invalid Library Type");
+                }
             }
 
             if (filter != null)

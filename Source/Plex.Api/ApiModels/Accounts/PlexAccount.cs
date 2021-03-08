@@ -1,4 +1,4 @@
-namespace Plex.Api.ApiModels
+namespace Plex.Api.ApiModels.Accounts
 {
     using System;
     using System.Collections.Generic;
@@ -114,7 +114,7 @@ namespace Plex.Api.ApiModels
         public bool HomeAdmin { get; set; }
         public int MaxHomeSize { get; set; }
         public int CertificateVersion { get; set; }
-        public int RememberExpiresAt { get; set; }
+        public DateTime RememberExpiresAt { get; set; }
         public object AdsConsent { get; set; }
         public object AdsConsentSetAt { get; set; }
         public object AdsConsentReminderAt { get; set; }

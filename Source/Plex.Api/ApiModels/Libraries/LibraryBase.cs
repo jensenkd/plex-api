@@ -1,61 +1,86 @@
-namespace Plex.Api.ApiModels
+namespace Plex.Api.ApiModels.Libraries
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Clients;
     using Clients.Interfaces;
     using PlexModels.Hubs;
-    using PlexModels.Library;
     using PlexModels.Library.Search;
     using PlexModels.Media;
-    using ResourceModels;
 
-    public class Library : BaseApi
+    /// <summary>
+    ///
+    /// </summary>
+    public class LibraryBase
     {
-        private readonly IPlexServerClient plexServerClient;
-        private readonly IPlexLibraryClient plexLibraryClient;
-        private readonly Server server;
+        /// <summary>
+        ///
+        /// </summary>
+        protected readonly IPlexServerClient PlexServerClient;
 
-        public Library(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, Server server)
+        /// <summary>
+        ///
+        /// </summary>
+        protected readonly IPlexLibraryClient PlexLibraryClient;
+
+        /// <summary>
+        ///
+        /// </summary>
+        protected readonly Server Server;
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="plexServerClient"></param>
+        /// <param name="plexLibraryClient"></param>
+        /// <param name="server"></param>
+        public LibraryBase(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, Server server)
         {
-            this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
-            this.plexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
-            this.server = server ?? throw new ArgumentNullException(nameof(server));
+            this.PlexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
+            this.PlexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
+            this.Server = server ?? throw new ArgumentNullException(nameof(server));
         }
 
-        public bool AllowSync { get; set; }
-        public string Art { get; set; }
-        public string Composite { get; set; }
-        public bool Filters { get; set; }
-        public bool Refreshing { get; set; }
-        public string Thumb { get; set; }
-        public string Key { get; set; }
-        public string Type { get; set; }
-        public string Title { get; set; }
-        public string Agent { get; set; }
-        public string Scanner { get; set; }
-        public string Language { get; set; }
         public string Uuid { get; set; }
-        public int UpdatedAt { get; set; }
-        public int CreatedAt { get; set; }
-        public int ScannedAt { get; set; }
-        public bool Content { get; set; }
-        public bool Directory { get; set; }
-        public int ContentChangedAt { get; set; }
-        public int Hidden { get; set; }
-        public bool? EnableAutoPhotoTags { get; set; }
 
-        public List<LibraryLocation> Location { get; set; }
+        public string Agent { get; set; }
+
+        public bool AllowSync { get; set; }
+
+        public string Art { get; set; }
+
+        public string Composite { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public string Filters { get; set; }
+
+        public string Key { get; set; }
+
+        public string Language { get; set; }
+
+        public bool Refreshing { get; set; }
+
+        public string Scanner { get; set; }
+
+        public string Thumb { get; set; }
+
+        public string Title { get; set; }
+
+        public string Type { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+
+        public List<string> Locations { get; set; }
 
         /// <summary>
         /// Get Filters available for this Library
         /// </summary>
         /// <returns>FilterContainer</returns>
         public async Task<FilterContainer> SearchFilters() =>
-            await this.plexLibraryClient.GetSearchFilters(this.server.AccessToken, this.server.Uri.ToString(), this.Key);
+            await this.PlexLibraryClient.GetSearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
 
-        /// <summary>
+            /// <summary>
         /// Matching Library Items with Metadata
         /// </summary>
         /// <param name="title">General string query to search for (optional).</param>
@@ -84,14 +109,14 @@ namespace Plex.Api.ApiModels
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
         public async Task<MediaContainer> Search(string title, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100) =>
-            await this.plexLibraryClient.LibrarySearch(this.server.AccessToken, this.server.Uri.ToString(), title, this.Key, sort, libraryType, filters, start, count);
+            await this.PlexLibraryClient.LibrarySearch(this.Server.AccessToken, this.Server.Uri.ToString(), title, this.Key, sort, libraryType, filters, start, count);
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
         public async Task<MediaContainer> All(string sort, int start = 0, int count = 100) =>
-            await this.plexLibraryClient.GetAll(this.server.AccessToken, this.server.Uri.ToString(), this.Key, sort, start, count);
+            await this.PlexLibraryClient.GetAll(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, sort, start, count);
 
         /// <summary>
         /// Returns recently added items for this library
@@ -100,7 +125,7 @@ namespace Plex.Api.ApiModels
         /// <param name="count">Max number of items to return</param>
         /// <returns></returns>
         public async Task<MediaContainer> RecentlyAdded(int start, int count) =>
-            await this.plexServerClient.GetLibraryRecentlyAddedAsync(this.server.AccessToken, this.server.Uri.ToString(), this.Key, start, count);
+            await this.PlexServerClient.GetLibraryRecentlyAddedAsync(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, start, count);
 
         /// <summary>
         /// Return list of Hubs on this library along with their Metadata items
@@ -108,50 +133,42 @@ namespace Plex.Api.ApiModels
         /// <param name="count">Max count of items on each hub</param>
         /// <returns></returns>
         public async Task<HubMediaContainer> Hubs(int count = 10) =>
-            await this.plexServerClient.GetLibraryHubAsync(this.server.AccessToken, this.server.Uri.ToString(), this.Key, count);
+            await this.PlexServerClient.GetLibraryHubAsync(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, count);
 
         /// <summary>
         /// Empty Trash for this Library
         /// </summary>
         public async Task EmptyTrash() =>
-            await this.plexLibraryClient.EmptyTrash(this.server.AccessToken, this.server.Uri.ToString(), this.Key);
+            await this.PlexLibraryClient.EmptyTrash(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
 
         /// <summary>
         /// Scan for new items on this Library
         /// </summary>
         public async Task ScanForNewItems(bool forceMetadataRefresh) =>
-            await this.plexLibraryClient.ScanForNewItems(this.server.AccessToken, this.server.Uri.ToString(), this.Key, forceMetadataRefresh);
+            await this.PlexLibraryClient.ScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, forceMetadataRefresh);
 
         /// <summary>
         /// Cancel running Scan on this library
         /// </summary>
         public async Task CancelScan() =>
-            await this.plexLibraryClient.CancelScanForNewItems(this.server.AccessToken, this.server.Uri.ToString(), this.Key);
+            await this.PlexLibraryClient.CancelScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
 
         /// <summary>
-        /// Tag a library item with a Collection Name
+        /// Get Total Number of Items in Library
         /// </summary>
-        /// <param name="ratingKey">Item Rating Key.</param>
-        /// <param name="collectionName">Collection name to add to item.</param>
-        public async void AddCollectionToItem(string ratingKey, string collectionName) =>
-            await this.plexServerClient.AddCollectionToLibraryItemAsync(this.server.AccessToken, this.server.Uri.ToString(), this.Key, ratingKey,
-                collectionName);
+        /// <returns>Size of library</returns>
+        public async Task<int> Size() =>
+            await this.PlexLibraryClient.GetLibrarySize(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
 
         /// <summary>
-        /// Untag a library item with a Collection Name
+        /// Get Folders for this Library
         /// </summary>
-       /// <param name="ratingKey">Item Rating Key.</param>
-        /// <param name="collectionName">Collection name to remove from item.</param>
-        public async void RemoveCollectionFromItem(string ratingKey, string collectionName) =>
-            await this.plexServerClient.DeleteCollectionFromLibraryItemAsync(this.server.AccessToken, this.server.Uri.ToString(), this.Key, ratingKey,
-                collectionName);
-
-        /// <summary>
-        /// Update Collection
-        /// </summary>
-        /// <param name="collectionModel">Collection Model</param>
-        public async void UpdateCollection(CollectionModel collectionModel) =>
-            await this.plexServerClient.UpdateCollectionAsync(this.server.AccessToken, this.server.Uri.ToString(), this.Key, collectionModel);
+        /// <returns>List of Folders</returns>
+        public async Task<object> Folders()
+        {
+            return await this.PlexLibraryClient.GetLibraryFolders(this.Server.AccessToken, this.Server.Uri.ToString(),
+                this.Key);
+        }
 
     }
 }

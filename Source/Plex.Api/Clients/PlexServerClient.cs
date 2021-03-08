@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Net.WebSockets;
+    using System.Threading;
     using Api;
     using Automapper;
     using Interfaces;
@@ -456,6 +458,21 @@
         public async Task<object> GetLogs(string authToken, string plexServerHost) =>
             await this
                 .FetchWithWrapper<object>(plexServerHost, "logs", authToken, HttpMethod.Get);
+
+        public Task<object> WebSocketConnection(string authToken, string plexServerHost)
+        {
+            throw new NotImplementedException();
+
+            // var _socket = new ClientWebSocket();
+            //
+            // _socket.Options.SetRequestHeader(headerName: "predix-zone-id", headerValue: PREDIX_ZONE_ID_HERE);
+            // _socket.Options.SetRequestHeader(headerName: "authorization", headerValue: "Bearer " + AUTH_TOKEN_HERE);
+            // _socket.Options.SetRequestHeader(headerName: "content-type", headerValue: "application/json");
+            // CancellationToken token = new CancellationToken();
+            //
+            // var uri = new Uri(uriString: plexServerHost + ":/websockets/notifications");
+            // await _socket.ConnectAsync(uri: uri, cancellationToken: token);
+        }
 
         /// <inheritdoc/>
         public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload,

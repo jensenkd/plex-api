@@ -2,82 +2,95 @@ namespace Plex.Api.Enums
 {
     /// <summary>
     /// Session Media Type Object
+    /// {'movie': 1, 'show': 2, 'season': 3, 'episode': 4, 'trailer': 5, 'comic': 6, 'person': 7,
+    /// 'artist': 8, 'album': 9, 'track': 10, 'picture': 11, 'clip': 12, 'photo': 13, 'photoalbum': 14,
+    /// 'playlist': 15, 'playlistFolder': 16, 'collection': 18, 'optimizedVersion': 42, 'userPlaylistItem': 1001}
     /// </summary>
     public enum SessionMediaType
     {
         /// <summary>
         /// Movie
         /// </summary>
-        Movie,
+        Movie = 1,
 
         /// <summary>
         /// TV Show
         /// </summary>
-        Show,
+        Show = 2,
 
         /// <summary>
         /// TV Season
         /// </summary>
-        Season,
+        Season = 3,
 
         /// <summary>
         /// TV Episode
         /// </summary>
-        Episode,
+        Episode = 4,
 
         /// <summary>
         /// Movie Trailer
         /// </summary>
-        Trailer,
+        Trailer = 5,
 
         /// <summary>
         /// Comic
         /// </summary>
-        Comic,
+        Comic = 6,
 
         /// <summary>
         /// Person
         /// </summary>
-        Person,
+        Person = 7,
 
         /// <summary>
         /// Artist
         /// </summary>
-        Artist,
+        Artist = 8,
 
         /// <summary>
         /// Music Album
         /// </summary>
-        Album,
+        Album = 9,
 
         /// <summary>
         /// Music Track
         /// </summary>
-        Track,
+        Track = 10,
 
         /// <summary>
         /// Photo Album
         /// </summary>
-        PhotoAlbum,
+        PhotoAlbum = 14,
 
         /// <summary>
         /// Picture
         /// </summary>
-        Picture,
+        Picture = 11,
 
         /// <summary>
         /// Photo
         /// </summary>
-        Photo,
+        Photo = 13,
 
         /// <summary>
         /// Clip
         /// </summary>
-        Clip,
+        Clip = 12,
 
         /// <summary>
         /// Playlist Item
         /// </summary>
-        PlayListItem
+        PlayListItem = 15,
+
+        /// <summary>
+        /// Playlist Folder
+        /// </summary>
+        PlayListFolder = 16,
+
+        /// <summary>
+        /// Collection Item
+        /// </summary>
+        Collection = 18
     }
 }

@@ -1,6 +1,7 @@
 namespace Plex.Api.Factories
 {
     using ApiModels;
+    using ApiModels.Accounts;
     using Clients;
     using Clients.Interfaces;
 

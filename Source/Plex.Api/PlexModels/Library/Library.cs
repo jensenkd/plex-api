@@ -1,7 +1,9 @@
 namespace Plex.Api.PlexModels.Library
 {
+    using System;
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
+    using Helpers;
 
     public class Library
     {

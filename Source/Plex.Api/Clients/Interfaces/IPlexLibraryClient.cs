@@ -2,6 +2,7 @@ namespace Plex.Api.Clients.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using PlexModels.Folders;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
     using PlexModels.Media;
@@ -88,7 +89,6 @@ namespace Plex.Api.Clients.Interfaces
         /// <returns>MediaContainer</returns>
         Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100);
 
-
         /// <summary>
         /// Get List of items in this library
         /// </summary>
@@ -101,5 +101,33 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         Task<MediaContainer> GetAll(string authToken, string plexServerHost,  string key, string sort, int start, int count);
+
+        /// <summary>
+        /// Get Item from Library
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="key">Library Key</param>
+        /// <returns></returns>
+        Task<MediaContainer> GetItem(string authToken, string plexServerHost,  string key);
+
+
+        /// <summary>
+        /// Get Total Size of the Library
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="key">Library Key</param>
+        /// <returns></returns>
+        Task<int> GetLibrarySize(string authToken, string plexServerHost, string key);
+
+        /// <summary>
+        /// Get File Folders for this Library
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="key">Library Key</param>
+        /// <returns></returns>
+        Task<FolderContainer> GetLibraryFolders(string authToken, string plexServerHost, string key);
     }
 }

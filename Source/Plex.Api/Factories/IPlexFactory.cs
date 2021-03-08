@@ -1,6 +1,7 @@
 namespace Plex.Api.Factories
 {
     using ApiModels;
+    using ApiModels.Accounts;
 
     public interface IPlexFactory
     {

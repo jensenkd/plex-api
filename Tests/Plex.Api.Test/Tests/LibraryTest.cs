@@ -136,6 +136,22 @@ namespace Plex.Api.Test.Tests
             }
             Assert.NotNull(items);
         }
+
+        [Fact]
+        public async void Test_Library_GetSize()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+            int size = await library.Size();
+            Assert.True(size > 3000);
+        }
+
+        [Fact]
+        public async void Test_Library_Folders()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+            var folders = await library.Folders();
+            Assert.NotNull(folders);
+        }
     }
 }
 

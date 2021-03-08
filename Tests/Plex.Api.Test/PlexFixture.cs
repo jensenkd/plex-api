@@ -4,6 +4,7 @@ namespace Plex.Api.Test
     using System.Linq;
     using Api;
     using ApiModels;
+    using ApiModels.Accounts;
     using Clients;
     using Clients.Interfaces;
     using Factories;
