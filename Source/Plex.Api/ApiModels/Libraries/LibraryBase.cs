@@ -2,8 +2,10 @@ namespace Plex.Api.ApiModels.Libraries
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Clients.Interfaces;
+    using Enums;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
     using PlexModels.Media;
@@ -78,11 +80,13 @@ namespace Plex.Api.ApiModels.Libraries
         /// </summary>
         /// <returns>FilterContainer</returns>
         public async Task<FilterContainer> SearchFilters() =>
-            await this.PlexLibraryClient.GetSearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
+            await this.PlexLibraryClient.GetSearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(),
+                this.Key);
 
-            /// <summary>
+        /// <summary>
         /// Matching Library Items with Metadata
         /// </summary>
+        /// <param name="includeExtendedMetadata"></param>
         /// <param name="title">General string query to search for (optional).</param>
         /// <param name="sort">column:dir; column can be any of {addedAt, originallyAvailableAt, lastViewedAt,
         /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
@@ -108,25 +112,65 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
-        protected async Task<MediaContainer> Search(string title, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100) =>
-            await this.PlexLibraryClient.LibrarySearch(this.Server.AccessToken, this.Server.Uri.ToString(), title, this.Key, sort, libraryType, filters, start, count);
+        protected async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType libraryType,
+            Dictionary<string, string> filters, int start = 0, int count = 100)
+        {
+            var librarySummaryContainer =
+                await this.PlexLibraryClient.LibrarySearch(this.Server.AccessToken, this.Server.Uri.ToString(),
+                title, this.Key, sort, libraryType, filters, start, count);
+
+            if (librarySummaryContainer?.Media != null && librarySummaryContainer.Media.Count > 0)
+            {
+                if (includeExtendedMetadata)
+                {
+                    for (var i = 0; i < librarySummaryContainer.Media.Count; i++)
+                    {
+                        var mediaContainer = await this.PlexLibraryClient.GetItem(this.Server.AccessToken,
+                            this.Server.Uri.ToString(),
+                            librarySummaryContainer.Media[i].RatingKey);
+                        librarySummaryContainer.Media[i] = mediaContainer.Media.First();
+                    }
+                }
+            }
+
+            return librarySummaryContainer;
+        }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        public async Task<MediaContainer> All(string sort, int start = 0, int count = 100) =>
-            await this.PlexLibraryClient.GetAll(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, sort, start, count);
+        public async Task<MediaContainer> All(bool includeExtendedMetadata, string sort, int start = 0,
+            int count = 100)
+        {
+            var librarySummaryContainer =
+                await this.PlexLibraryClient.GetAll(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, sort,
+                    start, count);
+
+            if (includeExtendedMetadata)
+            {
+                for (var i = 0; i < librarySummaryContainer.Media.Count; i++)
+                {
+                    var mediaContainer = await this.PlexLibraryClient.GetItem(this.Server.AccessToken,
+                        this.Server.Uri.ToString(),
+                        librarySummaryContainer.Media[i].RatingKey);
+                    librarySummaryContainer.Media[i] = mediaContainer.Media.First();
+                }
+            }
+
+            return librarySummaryContainer;
+        }
 
         /// <summary>
         /// Returns recently added items for this library
         /// </summary>
-        /// <param name="libraryType"></param>
+        /// <param name="libraryType">Library Type</param>
         /// <param name="start">Offset number to start with (0 is first record)</param>
         /// <param name="count">Max number of items to return</param>
         /// <returns></returns>
-        protected async Task<MediaContainer> RecentlyAdded(string libraryType, int start, int count) =>
-            await this.PlexServerClient.GetLibraryRecentlyAddedAsync(this.Server.AccessToken, this.Server.Uri.ToString(), libraryType, this.Key, start, count);
+        protected async Task<MediaContainer> RecentlyAdded(SearchType libraryType, int start, int count) =>
+            await this.PlexServerClient.GetLibraryRecentlyAddedAsync(this.Server.AccessToken,
+                this.Server.Uri.ToString(), libraryType, this.Key, start, count);
 
         /// <summary>
         /// Return list of Hubs on this library along with their Metadata items
@@ -134,7 +178,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="count">Max count of items on each hub</param>
         /// <returns></returns>
         public async Task<HubMediaContainer> Hubs(int count = 10) =>
-            await this.PlexServerClient.GetLibraryHubAsync(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, count);
+            await this.PlexServerClient.GetLibraryHubAsync(this.Server.AccessToken, this.Server.Uri.ToString(),
+                this.Key, count);
 
         /// <summary>
         /// Empty Trash for this Library
@@ -146,13 +191,15 @@ namespace Plex.Api.ApiModels.Libraries
         /// Scan for new items on this Library
         /// </summary>
         public async Task ScanForNewItems(bool forceMetadataRefresh) =>
-            await this.PlexLibraryClient.ScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, forceMetadataRefresh);
+            await this.PlexLibraryClient.ScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key,
+                forceMetadataRefresh);
 
         /// <summary>
         /// Cancel running Scan on this library
         /// </summary>
         public async Task CancelScan() =>
-            await this.PlexLibraryClient.CancelScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
+            await this.PlexLibraryClient.CancelScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(),
+                this.Key);
 
         /// <summary>
         /// Get Total Number of Items in Library
@@ -170,6 +217,5 @@ namespace Plex.Api.ApiModels.Libraries
             return await this.PlexLibraryClient.GetLibraryFolders(this.Server.AccessToken, this.Server.Uri.ToString(),
                 this.Key);
         }
-
     }
 }

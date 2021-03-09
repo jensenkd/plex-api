@@ -1,8 +1,10 @@
 namespace Plex.Api.ApiModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Clients.Interfaces;
+    using Enums;
     using Libraries;
     using PlexModels.Media;
 
@@ -51,22 +53,16 @@ namespace Plex.Api.ApiModels
             throw new NotImplementedException();
         }
 
-        public async Task<MediaContainer> SearchArtists(string sort, int start = 0, int count = 100)
-        {
-            string libType = "artist";
-            throw new NotImplementedException();
-        }
+        public async Task<MediaContainer> SearchArtists(string name, string sort, Dictionary<string, string> filters,
+            int start = 0, int count = 100) =>
+            await this.Search(true, name, sort, SearchType.Artist, filters, start, count);
 
-        public async Task<MediaContainer> SearchAlbums(string sort, int start = 0, int count = 100)
-        {
-            string libType = "album";
-            throw new NotImplementedException();
-        }
+        public async Task<MediaContainer> SearchAlbums(string title, string sort, Dictionary<string, string> filters,
+            int start = 0, int count = 100) =>
+            await this.Search(true, title, sort, SearchType.Artist, filters, start, count);
 
-        public async Task<MediaContainer> SearchTracks(string sort, int start = 0, int count = 100)
-        {
-            string libType = "track";
-            throw new NotImplementedException();
-        }
+        public async Task<MediaContainer> SearchTracks(string title, string sort, Dictionary<string, string> filters,
+            int start = 0, int count = 100) =>
+            await this.Search(true, title, sort, SearchType.Track, filters, start, count);
     }
 }

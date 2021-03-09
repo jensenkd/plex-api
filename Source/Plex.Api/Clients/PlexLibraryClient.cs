@@ -1,9 +1,11 @@
 namespace Plex.Api.Clients
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using Enums;
     using Interfaces;
     using PlexModels;
     using PlexModels.Folders;
@@ -92,12 +94,14 @@ namespace Plex.Api.Clients
 
         /// <inheritdoc/>
         public async Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title,
-            string libraryKey, string sort, string libraryType, Dictionary<string, string> filters, int start = 0,
+            string libraryKey, string sort, SearchType libraryType, Dictionary<string, string> filters, int start = 0,
             int count = 100)
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"title", title}, {"sort", sort}, {"libtype", libraryType}
+                {"title", title},
+                {"sort", sort},
+                {"type", ((int)libraryType).ToString()}
             };
 
             foreach (var item in filters)
@@ -149,9 +153,32 @@ namespace Plex.Api.Clients
             return wrapper.Container;
         }
 
-        public Task<MediaContainer> GetItem(string authToken, string plexServerHost, string key)
+        /// <inheritdoc/>
+        public async Task<MediaContainer> GetItem(string authToken, string plexServerHost, string key)
         {
-            throw new System.NotImplementedException();
+            var queryParams = new Dictionary<string, string>
+            {
+                {"includeConcerts", "1"},
+                {"includeExtras", "1"},
+                {"includeOnDeck", "1"},
+                {"includePopularLeaves", "1"},
+                {"includePreferences", "1"},
+                {"includeReviews", "1"},
+                {"includeChapters", "1"},
+                {"includeStations", "1"},
+                {"includeExternalMedia", "1"}
+            };
+
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/metadata/{key}", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<MediaContainer>>(apiRequest);
+
+            return wrapper.Container;
         }
 
         /// <inheritdoc/>

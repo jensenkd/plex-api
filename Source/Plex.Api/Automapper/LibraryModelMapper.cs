@@ -43,7 +43,7 @@ namespace Plex.Api.Automapper
                             DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
                                 .ToString(CultureInfo.InvariantCulture)));
 
-            this.CreateMap<PlexModels.Library.Library, ApiModels.ShowLibrary>()
+            this.CreateMap<PlexModels.Library.Library, ShowLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
                         opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).

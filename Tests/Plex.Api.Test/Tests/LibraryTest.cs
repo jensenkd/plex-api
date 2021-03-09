@@ -114,7 +114,27 @@ namespace Plex.Api.Test.Tests
             const int count = 2;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.Search(title, "audienceRating:desc", filters, start, count);
+            var items = await library.SearchMovies(title, "audienceRating:desc", filters, start, count);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+            Assert.Equal(count, items.Media.Count);
+        }
+
+        public async void Test_LibrarySearchByPerson()
+        {
+            var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+
+            const string title = "Tom";
+            const int start = 0;
+            const int count = 2;
+            var filters = new Dictionary<string, string>();
+
+            var items = await library.SearchActors(title, "audienceRating:desc", filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -126,16 +146,76 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async void Test_LibrarySearchMusicByArtist()
+        {
+            var library = (MusicLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Music");
+
+            const string title = "Guns";
+            const int start = 0;
+            const int count = 24;
+            var filters = new Dictionary<string, string>();
+
+            var items = await library.SearchArtists(title, "audienceRating:desc", filters, start, count);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_LibrarySearchMusicByTrack()
+        {
+            var library = (MusicLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Music");
+
+            const string title = "November";
+            const int start = 0;
+            const int count = 24;
+            var filters = new Dictionary<string, string>();
+
+            var items = await library.SearchTracks(title, "audienceRating:desc", filters, start, count);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_LibrarySearchMusicByAlbum()
+        {
+            var library = (MusicLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Music");
+
+            const string title = "Black";
+            const int start = 0;
+            const int count = 24;
+            var filters = new Dictionary<string, string>();
+
+            var items = await library.SearchTracks(title, "audienceRating:desc", filters, start, count);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+        }
+
+        [Fact]
         public async void Test_LibrarySearchTVByName()
         {
             var library = (ShowLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "TV Shows");
 
-            const string title = "simpson";
+            const string title = "hard";
             const int start = 0;
-            const int count = 2;
+            const int count = 20;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.SearchEpisodes(title, "audienceRating:desc", filters, start, count);
+            var items = await library.SearchEpisodes(true, title, "audienceRating:desc", filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -150,7 +230,7 @@ namespace Plex.Api.Test.Tests
         public async void Test_LibraryAll()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
-            var items = await library.All("audienceRating:desc", 0, 10);
+            var items = await library.All(true, "audienceRating:desc",  0, 10);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);

@@ -2,6 +2,7 @@ namespace Plex.Api.Clients.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Enums;
     using PlexModels.Folders;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
@@ -65,8 +66,7 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="libraryKey">Library Key</param>
         /// <param name="sort">column:dir; column can be any of {addedAt, originallyAvailableAt, lastViewedAt,
         /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
-        /// <param name="libraryType">Filter results to a spcifiec libtype (movie, show, episode, artist,
-        /// album, track; optional).</param>
+        /// <param name="libraryType">Type of Library to sarch (movie, show, episode)</param>
         /// <param name="filters">
         /// Any of the available filters for the current library section. Partial string matches allowed. Multiple matches OR together.
         /// Negative filtering also possible, just add an exclamation mark to the end of filter name, e.g. resolution!=1x1.
@@ -87,7 +87,7 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
-        Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, string libraryType, Dictionary<string, string> filters, int start = 0, int count = 100);
+        Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, SearchType libraryType, Dictionary<string, string> filters, int start = 0, int count = 100);
 
         /// <summary>
         /// Get List of items in this library

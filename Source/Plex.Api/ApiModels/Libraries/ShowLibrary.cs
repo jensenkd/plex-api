@@ -1,33 +1,69 @@
-namespace Plex.Api.ApiModels
+namespace Plex.Api.ApiModels.Libraries
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Clients.Interfaces;
-    using Libraries;
+    using Enums;
     using PlexModels.Media;
 
+    /// <summary>
+    ///
+    /// </summary>
     public class ShowLibrary : LibraryBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="plexServerClient"></param>
+        /// <param name="plexLibraryClient"></param>
+        /// <param name="server"></param>
         public ShowLibrary(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, Server server)
             : base(plexServerClient, plexLibraryClient, server)
         {
         }
 
-        public async Task<MediaContainer> SearchShows(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100)
-        {
-            const string libraryType = "show";
-            return await this.Search(title, sort, libraryType, filters, start, count);
-        }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="includeExtendedMetadata"></param>
+        /// <param name="title"></param>
+        /// <param name="sort"></param>
+        /// <param name="filters"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> SearchShows(bool includeExtendedMetadata, string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100) =>
+            await this.Search(includeExtendedMetadata, title, sort, SearchType.Show, filters, start, count);
 
-        public async Task<MediaContainer> SearchEpisodes(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100)
-        {
-            string libraryType = "episode";
-            return await this.Search(title, sort, libraryType, filters, start, count);
-        }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="includeExtendedMetadata"></param>
+        /// <param name="title"></param>
+        /// <param name="sort"></param>
+        /// <param name="filters"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> SearchEpisodes(bool includeExtendedMetadata, string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100) =>
+            await this.Search(includeExtendedMetadata, title, sort, SearchType.Episode, filters, start, count);
 
-        public async Task<MediaContainer> RecentlyAdded(string libraryType = "episode", int start = 0, int count = 100)
-        {
-            return await this.RecentlyAdded(libraryType, start, count);
-        }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> RecentlyAddedShows(int start = 0, int count = 100) =>
+            await this.RecentlyAdded(SearchType.Show, start, count);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> RecentlyAddedEpisodes(int start = 0, int count = 100) =>
+            await this.RecentlyAdded(SearchType.Episode, start, count);
     }
 }

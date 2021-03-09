@@ -3,6 +3,7 @@ namespace Plex.Api.Clients.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Enums;
     using PlexModels.Hubs;
     using PlexModels.Library;
     using PlexModels.Media;
@@ -136,7 +137,7 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="start">Offset number to start with (0 = first record)</param>
         /// <param name="count">Total Number of record to return</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, string libraryType, string key, int start, int count);
+        Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, SearchType libraryType, string key, int start, int count);
 
         /// <summary>
         /// Get Metadata for given Plex Rating Key.

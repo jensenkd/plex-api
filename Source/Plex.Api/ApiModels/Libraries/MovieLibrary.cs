@@ -4,6 +4,7 @@ namespace Plex.Api.ApiModels.Libraries
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Clients.Interfaces;
+    using Enums;
     using PlexModels.Library;
     using PlexModels.Media;
     using ResourceModels;
@@ -94,11 +95,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="start">Offset number to start with (0 is first record)</param>
         /// <param name="count">Max number of items to return</param>
         /// <returns></returns>
-        public async Task<MediaContainer> RecentlyAdded(int start = 0, int count = 100)
-        {
-            const string libraryType = "movie";
-            return await this.RecentlyAdded(this.Server.AccessToken, start, count);
-        }
+        public async Task<MediaContainer> RecentlyAdded(int start = 0, int count = 100) =>
+            await this.RecentlyAdded(SearchType.Movie, start, count);
 
         /// <summary>
         ///
@@ -109,10 +107,19 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<MediaContainer> Search(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100)
-        {
-            const string libraryType = "movie";
-            return await this.Search(title, sort, libraryType, filters, start, count);
-        }
+        public async Task<MediaContainer> SearchMovies(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100) =>
+            await this.Search(true, title, sort, SearchType.Movie, filters, start, count);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="sort"></param>
+        /// <param name="filters"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> SearchActors(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100) =>
+            await this.Search(true, title, sort, SearchType.Person, filters, start, count);
     }
 }

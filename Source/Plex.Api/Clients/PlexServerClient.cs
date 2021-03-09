@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using Api;
     using Automapper;
+    using Enums;
     using Interfaces;
     using PlexModels;
     using PlexModels.Hubs;
@@ -98,12 +99,12 @@
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, string libraryType, string key, int start = 0, int count = 50)
+        public async Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, SearchType libraryType, string key, int start = 0, int count = 50)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/recentlyAdded", HttpMethod.Get)
                     .AddPlexToken(authToken)
-                    .AddQueryParam("libType", libraryType)
+                    .AddQueryParam("type", ((int)libraryType).ToString())
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddRequestHeaders(ClientUtilities.GetClientLimitHeaders(start, count))
                     .AcceptJson()
