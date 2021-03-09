@@ -3,6 +3,7 @@ namespace Plex.Api.Test.Tests
     using System;
     using System.Globalization;
     using System.Linq;
+    using PlexModels.Server.Releases;
     using Test;
     using Xunit;
     using Xunit.Abstractions;
@@ -63,7 +64,14 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_GetPlexServer_CheckForUpdate()
         {
-            var updates = await this.fixture.Server.CheckForUpdate();
+            UpdateContainer updates = await this.fixture.Server.CheckForUpdate();
+            if (updates.Size > 0)
+            {
+                foreach (var release in updates.Releases)
+                {
+                    this.output.WriteLine(release.Version);
+                }
+            }
             Assert.NotNull(updates);
         }
 

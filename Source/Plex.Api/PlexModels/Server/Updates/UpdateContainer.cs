@@ -1,5 +1,6 @@
 namespace Plex.Api.PlexModels.Server.Releases
 {
+    using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
     public class UpdateContainer
@@ -15,5 +16,8 @@ namespace Plex.Api.PlexModels.Server.Releases
 
         [JsonPropertyName("status")]
         public int Status { get; set; }
+
+        [JsonPropertyName("Release")]
+        public List<Release> Releases { get; set; }
     }
 }
