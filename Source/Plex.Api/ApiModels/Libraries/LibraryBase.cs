@@ -119,7 +119,7 @@ namespace Plex.Api.ApiModels.Libraries
                 await this.PlexLibraryClient.LibrarySearch(this.Server.AccessToken, this.Server.Uri.ToString(),
                 title, this.Key, sort, libraryType, filters, start, count);
 
-            if (librarySummaryContainer?.Media != null && librarySummaryContainer.Media.Count > 0)
+            if (librarySummaryContainer != null && librarySummaryContainer.Size > 0)
             {
                 if (includeExtendedMetadata)
                 {

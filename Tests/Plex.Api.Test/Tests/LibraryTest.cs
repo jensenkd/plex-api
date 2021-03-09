@@ -125,16 +125,17 @@ namespace Plex.Api.Test.Tests
             Assert.Equal(count, items.Media.Count);
         }
 
+        [Fact]
         public async void Test_LibrarySearchByPerson()
         {
             var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
 
-            const string title = "Tom";
+            const string name = "Tom Cruise";
             const int start = 0;
             const int count = 2;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.SearchActors(title, "audienceRating:desc", filters, start, count);
+            var items = await library.SearchActors(name, "audienceRating:desc", filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -190,12 +191,14 @@ namespace Plex.Api.Test.Tests
         {
             var library = (MusicLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Music");
 
+            var searchFilters = await library.SearchFilters();
+
             const string title = "Black";
             const int start = 0;
             const int count = 24;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.SearchTracks(title, "audienceRating:desc", filters, start, count);
+            var items = await library.SearchAlbums(title, "audienceRating:desc", filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
