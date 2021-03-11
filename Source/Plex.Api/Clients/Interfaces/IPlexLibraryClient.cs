@@ -6,6 +6,7 @@ namespace Plex.Api.Clients.Interfaces
     using PlexModels.Folders;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
+    using PlexModels.Library.Search.Plex.Api.PlexModels.Library.Search;
     using PlexModels.Media;
 
     /// <summary>
@@ -46,7 +47,7 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="key">Library Key</param>
         /// <returns></returns>
-        Task<FilterContainer> GetSearchFilters(string authToken, string plexServerHost, string key);
+        Task<FilterFieldContainer> GetFilterFields(string authToken, string plexServerHost, string key);
 
         /// <summary>
         /// Hub Search across everything
@@ -87,20 +88,7 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
-        Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, SearchType libraryType, Dictionary<string, string> filters, int start = 0, int count = 100);
-
-        /// <summary>
-        /// Get List of items in this library
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Library Key</param>
-        /// <param name="sort">column:dir; column can be any of {addedAt, originallyAvailableAt, lastViewedAt,
-        /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
-        /// <param name="start">Starting record (default 0)</param>
-        /// <param name="count">Only return the specified number of results (default 100).</param>
-        /// <returns></returns>
-        Task<MediaContainer> GetAll(string authToken, string plexServerHost,  string key, string sort, int start, int count);
+        Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, SearchType? libraryType, Dictionary<string, string> filters = null, int start = 0, int count = 100);
 
         /// <summary>
         /// Get Item from Library
@@ -138,5 +126,13 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="key">Library Key</param>
         /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
         Task<FilterValueContainer> GetLibrarySearchFilters(string authToken, string plexServerHost, string key, string fieldType);
+
+        /// <summary>
+        /// Get Filters for this Library
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="librarykey">Library Key</param>
+        Task<FilterContainer> GetLibraryFilters(string authToken, string plexServerHost, string librarykey);
     }
 }

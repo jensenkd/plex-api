@@ -15,7 +15,7 @@ namespace Plex.Api.PlexModels.Library
         public string Composite { get; set; }
 
         [JsonPropertyName("filters")]
-        public bool Filters { get; set; }
+        public bool HasFilters { get; set; }
 
         [JsonPropertyName("refreshing")]
         public bool Refreshing { get; set; }

@@ -10,6 +10,7 @@ namespace Plex.Api.ApiModels.Libraries
     using Helpers.Mappings;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
+    using PlexModels.Library.Search.Plex.Api.PlexModels.Library.Search;
     using PlexModels.Media;
 
     /// <summary>
@@ -45,6 +46,8 @@ namespace Plex.Api.ApiModels.Libraries
             this.Server = server ?? throw new ArgumentNullException(nameof(server));
         }
 
+        public bool HasFilters { get; }
+
         public string Uuid { get; set; }
 
         public string Agent { get; set; }
@@ -74,14 +77,27 @@ namespace Plex.Api.ApiModels.Libraries
         public DateTime UpdatedAt { get; set; }
 
         public List<string> Locations { get; set; }
+        public List<Filter> Filters { get; set; }
 
         /// <summary>
         /// Get Filters available for this Library
         /// </summary>
         /// <returns>List of FilterField</returns>
-        public async Task<List<FilterModel>> Filters()
+        private async Task<FilterContainer> GetFilters()
         {
-            var filterFieldContainer = await this.PlexLibraryClient.GetSearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(),
+            var filterContainer = await this.PlexLibraryClient.GetLibraryFilters(this.Server.AccessToken, this.Server.Uri.ToString(),
+                this.Key);
+
+            return filterContainer;
+        }
+
+        /// <summary>
+        /// Get Filters available for this Library
+        /// </summary>
+        /// <returns>List of FilterField</returns>
+        public async Task<List<FilterModel>> FilterFields()
+        {
+             var filterFieldContainer = await this.PlexLibraryClient.GetFilterFields(this.Server.AccessToken, this.Server.Uri.ToString(),
                 this.Key);
 
             return LibraryFilterMapper.GetFilterModelsFromFilterContainer(filterFieldContainer);
@@ -116,8 +132,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
-        protected async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType libraryType,
-            Dictionary<string, string> filters, int start = 0, int count = 100)
+        public async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType? libraryType,
+            Dictionary<string, string> filters = null, int start = 0, int count = 100)
         {
             var librarySummaryContainer =
                 await this.PlexLibraryClient.LibrarySearch(this.Server.AccessToken, this.Server.Uri.ToString(),
@@ -141,29 +157,18 @@ namespace Plex.Api.ApiModels.Libraries
         }
 
         /// <summary>
-        ///
+        /// Get All Library Items
         /// </summary>
+        /// <param name="includeExtendedMetadata">Include Extra Metadata like IMDB/TMDB.  This requires another api call
+        /// for every item in library.</param>
+        /// <param name="libraryType">Library Type</param>
+        /// <param name="sort">Sort field:dir</param>
+        /// <param name="start">Offset number to start with (0 is first record)</param>
+        /// <param name="count">Max number of items to return</param>
         /// <returns></returns>
-        public async Task<MediaContainer> All(bool includeExtendedMetadata, string sort, int start = 0,
-            int count = 100)
-        {
-            var librarySummaryContainer =
-                await this.PlexLibraryClient.GetAll(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, sort,
-                    start, count);
-
-            if (includeExtendedMetadata)
-            {
-                for (var i = 0; i < librarySummaryContainer.Media.Count; i++)
-                {
-                    var mediaContainer = await this.PlexLibraryClient.GetItem(this.Server.AccessToken,
-                        this.Server.Uri.ToString(),
-                        librarySummaryContainer.Media[i].RatingKey);
-                    librarySummaryContainer.Media[i] = mediaContainer.Media.First();
-                }
-            }
-
-            return librarySummaryContainer;
-        }
+        public async Task<MediaContainer> All(bool includeExtendedMetadata, SearchType libraryType, string sort, int start = 0,
+            int count = 100) =>
+            await this.Search(includeExtendedMetadata, string.Empty, sort, libraryType, null, start, count);
 
         /// <summary>
         /// Returns recently added items for this library
@@ -227,7 +232,7 @@ namespace Plex.Api.ApiModels.Libraries
         /// </summary>
         /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<FilterValueContainer> FilterValues(string fieldType) =>
+        public async Task<FilterValueContainer> GetFilterValues(string fieldType) =>
             await this.PlexLibraryClient.GetLibrarySearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, fieldType);
     }
 }

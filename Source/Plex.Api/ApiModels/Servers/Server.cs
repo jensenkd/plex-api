@@ -385,21 +385,33 @@ namespace Plex.Api.ApiModels
                     case "MOVIE":
                         var movieLibrary = new MovieLibrary(this.plexServerClient, this.plexLibraryClient, this);
                         ObjectMapper.Mapper.Map(library, movieLibrary);
+                        var movieFilterContainer = await this.plexLibraryClient.GetLibraryFilters(this.AccessToken, this.Uri.ToString(),
+                            library.Key);
+                        movieLibrary.Filters = movieFilterContainer.Filters;
                         libraries.Add(movieLibrary);
                         break;
                     case "SHOW":
                         var showLibrary = new ShowLibrary(this.plexServerClient, this.plexLibraryClient, this);
                         ObjectMapper.Mapper.Map(library, showLibrary);
+                        var showFilterContainer = await this.plexLibraryClient.GetLibraryFilters(this.AccessToken, this.Uri.ToString(),
+                            showLibrary.Key);
+                        showLibrary.Filters = showFilterContainer.Filters;
                         libraries.Add(showLibrary);
                         break;
                     case "ARTIST":
                         var musicLibrary = new MusicLibrary(this.plexServerClient, this.plexLibraryClient, this);
                         ObjectMapper.Mapper.Map(library, musicLibrary);
+                        var musicFilterContainer = await this.plexLibraryClient.GetLibraryFilters(this.AccessToken, this.Uri.ToString(),
+                            musicLibrary.Key);
+                        musicLibrary.Filters = musicFilterContainer.Filters;
                         libraries.Add(musicLibrary);
                         break;
                     case "PHOTO":
                         var photoLibrary = new PhotoLibrary(this.plexServerClient, this.plexLibraryClient, this);
                         ObjectMapper.Mapper.Map(library, photoLibrary);
+                        var photoFilterContainer = await this.plexLibraryClient.GetLibraryFilters(this.AccessToken, this.Uri.ToString(),
+                            photoLibrary.Key);
+                        photoLibrary.Filters = photoFilterContainer.Filters;
                         libraries.Add(photoLibrary);
                         break;
                     default:

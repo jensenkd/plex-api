@@ -63,8 +63,7 @@ namespace Plex.Api.Clients
                 ["includeReviews"] = "1",
                 ["includeStations"] = "1",
                 ["includeCollections"] = "1",
-                ["includeAdvanced"] = "1",
-                ["includeMeta"] = "1"
+                ["includeAdvanced"] = "1"
             };
             return plexFlags;
         }

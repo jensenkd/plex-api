@@ -13,16 +13,16 @@ namespace Plex.Api.Helpers.Mappings
         /// <summary>
         /// Get List of FilterModel objects from Plex FilterContainer object
         /// </summary>
-        /// <param name="filterContainer">Plex FilterContainer object from Api</param>
+        /// <param name="filterFieldContainer">Plex FilterContainer object from Api</param>
         /// <returns></returns>
-        public static List<FilterModel> GetFilterModelsFromFilterContainer(FilterContainer filterContainer)
+        public static List<FilterModel> GetFilterModelsFromFilterContainer(FilterFieldContainer filterFieldContainer)
         {
             var models = new List<FilterModel>();
 
-            var operatorDictionary = filterContainer.FieldMetas
+            var operatorDictionary = filterFieldContainer.FieldMetas
                 .FieldTypes.ToDictionary(c => c.Type, c => c.Operators);
 
-            foreach (var fieldType in filterContainer.FieldMetas.Types)
+            foreach (var fieldType in filterFieldContainer.FieldMetas.Types)
             {
                 var filterModel = new FilterModel
                 {

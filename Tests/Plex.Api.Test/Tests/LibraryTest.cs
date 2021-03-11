@@ -21,6 +21,18 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async void Test_Get_Library_By_Name()
+        {
+            var libraries = await this.fixture.Server.Libraries();
+            Assert.NotNull(libraries);
+            Assert.True(libraries.Count >= 3);
+
+            var library = (ShowLibrary)libraries.SingleOrDefault(c => c.Title == "TV Shows");
+            Assert.NotNull(library);
+            Assert.Equal("TV Shows", library.Title);
+        }
+
+        [Fact]
         public async void Test_GetLibraryHub()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
@@ -101,7 +113,7 @@ namespace Plex.Api.Test.Tests
         public async void Test_GetLibrarySearchFilters()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
-            var filters = await library.Filters();
+            var filters = library.Filters;
 
             Assert.NotNull(filters);
         }
@@ -116,7 +128,7 @@ namespace Plex.Api.Test.Tests
             const int count = 2;
             var filters = new Dictionary<string, string>();
 
-            var items = await library.SearchMovies(title, "audienceRating:desc", filters, start, count);
+            var items = await library.Search(true, title, "audienceRating:desc", SearchType.Movie, filters, start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -132,7 +144,7 @@ namespace Plex.Api.Test.Tests
         {
             var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
 
-            var filterValues = library.FilterValues("actor").Result;
+            var filterValues = library.GetFilterValues("genre").Result;
 
             Assert.NotNull(filterValues);
             Assert.True(filterValues.Size > 0);
@@ -146,7 +158,7 @@ namespace Plex.Api.Test.Tests
             var filter = new Dictionary<string, string>
                 {{"actor", "Tom Cruise"}};
 
-            var movieContainer = library.SearchMovies(string.Empty, string.Empty, filter).Result;
+            var movieContainer = library.Search(true, string.Empty, string.Empty, SearchType.Movie, filter).Result;
 
             Assert.NotNull(movieContainer);
         }
@@ -196,7 +208,7 @@ namespace Plex.Api.Test.Tests
         {
             var library = (MusicLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Music");
 
-            var searchFilters = await library.Filters();
+            var searchFilters = await library.FilterFields();
 
             const string title = "Black";
             const int start = 0;
@@ -238,7 +250,21 @@ namespace Plex.Api.Test.Tests
         public async void Test_LibraryAll()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
-            var items = await library.All(true, "audienceRating:desc",  0, 10);
+            var items = await library.All(true, SearchType.Movie, "year:asc",  0, 10);
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async void Test_LibraryOperators()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+            var items = await library.Search(true, string.Empty,  "year:asc", SearchType.Movie, null, 0, 10);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
