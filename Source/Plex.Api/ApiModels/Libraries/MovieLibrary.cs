@@ -6,6 +6,7 @@ namespace Plex.Api.ApiModels.Libraries
     using Clients.Interfaces;
     using Enums;
     using PlexModels.Library;
+    using PlexModels.Library.Search;
     using PlexModels.Media;
     using ResourceModels;
 
@@ -109,17 +110,5 @@ namespace Plex.Api.ApiModels.Libraries
         /// <returns></returns>
         public async Task<MediaContainer> SearchMovies(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100) =>
             await this.Search(true, title, sort, SearchType.Movie, filters, start, count);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="sort"></param>
-        /// <param name="filters"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public async Task<MediaContainer> SearchActors(string title, string sort, Dictionary<string, string> filters, int start = 0, int count = 100) =>
-            await this.Search(true, title, sort, SearchType.Person, filters, start, count);
     }
 }

@@ -43,7 +43,7 @@ namespace Plex.Api.Test
             };
 
             var services = new ServiceCollection();
-            services.AddLogging();
+            services.AddLogging(configure=> configure.AddConsole());
             services.AddSingleton(clientOptions);
             services.AddTransient<IPlexServerClient, PlexServerClient>();
             services.AddTransient<IPlexAccountClient, PlexAccountClient>();

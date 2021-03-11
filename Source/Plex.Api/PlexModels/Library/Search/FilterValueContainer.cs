@@ -1,8 +1,9 @@
 namespace Plex.Api.PlexModels.Library.Search
 {
+    using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
-    public class FilterContainer
+    public class FilterValueContainer
     {
         [JsonPropertyName("size")]
         public int Size { get; set; }
@@ -19,15 +20,6 @@ namespace Plex.Api.PlexModels.Library.Search
         [JsonPropertyName("identifier")]
         public string Identifier { get; set; }
 
-        [JsonPropertyName("librarySectionID")]
-        public int LibrarySectionId { get; set; }
-
-        [JsonPropertyName("librarySectionTitle")]
-        public string LibrarySectionTitle { get; set; }
-
-        [JsonPropertyName("librarySectionUUID")]
-        public string LibrarySectionUuid { get; set; }
-
         [JsonPropertyName("mediaTagPrefix")]
         public string MediaTagPrefix { get; set; }
 
@@ -40,13 +32,16 @@ namespace Plex.Api.PlexModels.Library.Search
         [JsonPropertyName("title1")]
         public string Title1 { get; set; }
 
+        [JsonPropertyName("title2")]
+        public string Title2 { get; set; }
+
         [JsonPropertyName("viewGroup")]
         public string ViewGroup { get; set; }
 
         [JsonPropertyName("viewMode")]
         public int ViewMode { get; set; }
 
-        [JsonPropertyName("Meta")]
-        public FieldMeta FieldMetas { get; set; }
+        [JsonPropertyName("Directory")]
+        public List<FilterValue> FilterValues { get; set; }
     }
 }

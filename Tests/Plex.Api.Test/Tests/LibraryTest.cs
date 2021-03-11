@@ -4,6 +4,7 @@ namespace Plex.Api.Test.Tests
     using System.Linq;
     using ApiModels;
     using ApiModels.Libraries;
+    using Enums;
     using PlexModels.Library;
     using Xunit;
     using Xunit.Abstractions;
@@ -100,7 +101,8 @@ namespace Plex.Api.Test.Tests
         public async void Test_GetLibrarySearchFilters()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
-            var filters = await library.SearchFilters();
+            var filters = await library.Filters();
+
             Assert.NotNull(filters);
         }
 
@@ -126,24 +128,27 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
+        public async void Test_LibraryFilterValues()
+        {
+            var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
+
+            var filterValues = library.FilterValues("actor").Result;
+
+            Assert.NotNull(filterValues);
+            Assert.True(filterValues.Size > 0);
+        }
+
+        [Fact]
         public async void Test_LibrarySearchByPerson()
         {
             var library = (MovieLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies");
 
-            const string name = "Tom Cruise";
-            const int start = 0;
-            const int count = 2;
-            var filters = new Dictionary<string, string>();
+            var filter = new Dictionary<string, string>
+                {{"actor", "Tom Cruise"}};
 
-            var items = await library.SearchActors(name, "audienceRating:desc", filters, start, count);
-            foreach (var item in items.Media)
-            {
-                this.output.WriteLine("Title: " + item.Title);
-                this.output.WriteLine("Year: " + item.Year);
-                this.output.WriteLine("Rating: " + item.AudienceRating);
-            }
-            Assert.NotNull(items);
-            Assert.Equal(count, items.Media.Count);
+            var movieContainer = library.SearchMovies(string.Empty, string.Empty, filter).Result;
+
+            Assert.NotNull(movieContainer);
         }
 
         [Fact]
@@ -191,7 +196,7 @@ namespace Plex.Api.Test.Tests
         {
             var library = (MusicLibrary)this.fixture.Server.Libraries().Result.Single(c => c.Title == "Music");
 
-            var searchFilters = await library.SearchFilters();
+            var searchFilters = await library.Filters();
 
             const string title = "Black";
             const int start = 0;

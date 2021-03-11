@@ -129,5 +129,14 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="key">Library Key</param>
         /// <returns></returns>
         Task<FolderContainer> GetLibraryFolders(string authToken, string plexServerHost, string key);
+
+        /// <summary>
+        /// Get Search Filter Values for this Library for given types
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="key">Library Key</param>
+        /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
+        Task<FilterValueContainer> GetLibrarySearchFilters(string authToken, string plexServerHost, string key, string fieldType);
     }
 }

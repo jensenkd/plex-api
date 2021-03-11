@@ -64,7 +64,7 @@ namespace Plex.Api.Test.Tests
         [Fact]
         public async void Test_GetPlexServer_CheckForUpdate()
         {
-            UpdateContainer updates = await this.fixture.Server.CheckForUpdate();
+            var updates = await this.fixture.Server.CheckForUpdate();
             if (updates.Size > 0)
             {
                 foreach (var release in updates.Releases)

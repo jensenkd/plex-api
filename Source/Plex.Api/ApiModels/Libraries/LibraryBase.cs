@@ -6,6 +6,8 @@ namespace Plex.Api.ApiModels.Libraries
     using System.Threading.Tasks;
     using Clients.Interfaces;
     using Enums;
+    using Filters;
+    using Helpers.Mappings;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
     using PlexModels.Media;
@@ -55,8 +57,6 @@ namespace Plex.Api.ApiModels.Libraries
 
         public DateTime CreatedAt { get; set; }
 
-        public string Filters { get; set; }
-
         public string Key { get; set; }
 
         public string Language { get; set; }
@@ -78,10 +78,14 @@ namespace Plex.Api.ApiModels.Libraries
         /// <summary>
         /// Get Filters available for this Library
         /// </summary>
-        /// <returns>FilterContainer</returns>
-        public async Task<FilterContainer> SearchFilters() =>
-            await this.PlexLibraryClient.GetSearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(),
+        /// <returns>List of FilterField</returns>
+        public async Task<List<FilterModel>> Filters()
+        {
+            var filterFieldContainer = await this.PlexLibraryClient.GetSearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(),
                 this.Key);
+
+            return LibraryFilterMapper.GetFilterModelsFromFilterContainer(filterFieldContainer);
+        }
 
         /// <summary>
         /// Matching Library Items with Metadata
@@ -217,5 +221,13 @@ namespace Plex.Api.ApiModels.Libraries
             return await this.PlexLibraryClient.GetLibraryFolders(this.Server.AccessToken, this.Server.Uri.ToString(),
                 this.Key);
         }
+
+        /// <summary>
+        /// Get Filter Type Values
+        /// </summary>
+        /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<FilterValueContainer> FilterValues(string fieldType) =>
+            await this.PlexLibraryClient.GetLibrarySearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, fieldType);
     }
 }
