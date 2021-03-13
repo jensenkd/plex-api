@@ -61,34 +61,6 @@ namespace Plex.Api.ApiModels.Libraries
         public List<LibraryLocation> Location { get; set; }
 
         /// <summary>
-        /// Tag a library item with a Collection Name
-        /// </summary>
-        /// <param name="ratingKey">Item Rating Key.</param>
-        /// <param name="collectionName">Collection name to add to item.</param>
-        public async void AddCollectionToItem(string ratingKey, string collectionName) =>
-            await this._plexLibraryClient.AddCollectionToLibraryItemAsync(this._server.AccessToken,
-                this._server.Uri.ToString(), this.Key, ratingKey,
-                collectionName);
-
-        /// <summary>
-        /// Untag a library item with a Collection Name
-        /// </summary>
-        /// <param name="ratingKey">Item Rating Key.</param>
-        /// <param name="collectionName">Collection name to remove from item.</param>
-        public async void RemoveCollectionFromItem(string ratingKey, string collectionName) =>
-            await this._plexLibraryClient.DeleteCollectionFromLibraryItemAsync(this._server.AccessToken,
-                this._server.Uri.ToString(), this.Key, ratingKey,
-                collectionName);
-
-        /// <summary>
-        /// Update Collection
-        /// </summary>
-        /// <param name="collectionModel">Collection Model</param>
-        public async void UpdateCollection(CollectionModel collectionModel) =>
-            await this._plexLibraryClient.UpdateCollectionAsync(this._server.AccessToken, this._server.Uri.ToString(),
-                this.Key, collectionModel);
-
-        /// <summary>
         /// Returns recently added items for this library
         /// </summary>
         /// <param name="start">Starting record (default 0)</param>
@@ -124,7 +96,85 @@ namespace Plex.Api.ApiModels.Libraries
         /// Get Movie Collections
         /// </summary>
         /// <returns></returns>
-        public new async Task<List<CollectionModel>> Collections() =>
-            await base.Collections();
+        public async Task<List<CollectionModel>> Collections() =>
+            await this.GetCollections();
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="collectionKey"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<CollectionModel> Collection(string collectionKey)
+        {
+            if (string.IsNullOrEmpty(collectionKey))
+            {
+                throw new ArgumentNullException(nameof(collectionKey));
+            }
+
+            return await this.GetCollectionByKey(collectionKey);
+        }
+
+        /// <summary>
+        /// Get Media Items associated with a Collection by Collection Key
+        /// </summary>
+        /// <param name="collectionKey">Collection Key (unique identifier)</param>
+        /// <returns>List of Media Items</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<MediaContainer> GetCollectionItemsByKey(string collectionKey)
+        {
+            if (string.IsNullOrEmpty(collectionKey))
+            {
+                throw new ArgumentNullException(nameof(collectionKey));
+            }
+
+            return await this._plexLibraryClient.GetCollectionItemsAsync(this._server.AccessToken,
+                this._server.Uri.ToString(), collectionKey);
+        }
+
+        /// <summary>
+        /// Get Media Items associated with a Collection by Collection Name
+        /// </summary>
+        /// <param name="collectionName">Collection Name</param>
+        /// <returns>List of Media Items</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<MediaContainer> GetCollectionItemsByName(string collectionName)
+        {
+            if (string.IsNullOrEmpty(collectionName))
+            {
+                throw new ArgumentNullException(nameof(collectionName));
+            }
+
+            return await this._plexLibraryClient.GetCollectionItemsByCollectionName(this._server.AccessToken,
+                this._server.Uri.ToString(), this.Key, collectionName);
+        }
+
+        /// <summary>
+        /// Tag a library item with a Collection Name
+        /// </summary>
+        /// <param name="ratingKey">Item Rating Key.</param>
+        /// <param name="collectionName">Collection name to add to item.</param>
+        public async Task AddCollectionToItem(string ratingKey, string collectionName) =>
+            await this._plexLibraryClient.AddCollectionToLibraryItemAsync(this._server.AccessToken,
+                this._server.Uri.ToString(), this.Key, ratingKey,
+                collectionName);
+
+        /// <summary>
+        /// Untag a library item with a Collection Name
+        /// </summary>
+        /// <param name="ratingKey">Item Rating Key.</param>
+        /// <param name="collectionName">Collection name to remove from item.</param>
+        public async Task RemoveCollectionFromItem(string ratingKey, string collectionName) =>
+            await this._plexLibraryClient.DeleteCollectionFromLibraryItemAsync(this._server.AccessToken,
+                this._server.Uri.ToString(), this.Key, ratingKey,
+                collectionName);
+
+        /// <summary>
+        /// Update Collection
+        /// </summary>
+        /// <param name="collectionModel">Collection Model</param>
+        public async void UpdateCollection(CollectionModel collectionModel) =>
+            await this._plexLibraryClient.UpdateCollectionAsync(this._server.AccessToken, this._server.Uri.ToString(),
+                this.Key, collectionModel);
     }
 }

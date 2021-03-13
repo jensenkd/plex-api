@@ -167,18 +167,6 @@ namespace Plex.Api.ApiModels.Libraries
             return filterValueContainer.FilterValues;
         }
 
-        // /// <summary>
-        // /// Get Filters available for this Library
-        // /// </summary>
-        // /// <returns>List of FilterField</returns>
-        // public async Task<List<FilterModel>> FilterFields()
-        // {
-        //      var filterFieldContainer = await this.PlexLibraryClient.GetFilterFields(this.Server.AccessToken, this.Server.Uri.ToString(),
-        //         this.Key);
-        //
-        //     return LibraryFilterMapper.GetFilterModelsFromFilterContainer(filterFieldContainer);
-        // }
-
         /// <summary>
         /// Matching Library Items with Metadata
         /// </summary>
@@ -293,9 +281,9 @@ namespace Plex.Api.ApiModels.Libraries
         /// Get Library Collections
         /// </summary>
         /// <returns>List of Collection Models</returns>
-        protected async Task<List<CollectionModel>> Collections()
+        protected async Task<List<CollectionModel>> GetCollections()
         {
-            var collectionContainer = await this._plexLibraryClient.GetCollectionsAsync(this._server.AccessToken, this._server.Uri.ToString(), this.Key);
+            var collectionContainer = await this._plexLibraryClient.GetCollectionsAsync(this._server.AccessToken, this._server.Uri.ToString(), this.Key, string.Empty);
 
             var collections =
                 ObjectMapper.Mapper.Map<List<PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
@@ -303,5 +291,18 @@ namespace Plex.Api.ApiModels.Libraries
             return collections;
         }
 
+        /// <summary>
+        /// Get Library Collection by Key
+        /// </summary>
+        /// <returns>List of Collection Models</returns>
+        protected async Task<CollectionModel> GetCollectionByKey(string collectionKey)
+        {
+            var collectionContainer = await this._plexLibraryClient.GetCollectionAsync(this._server.AccessToken, this._server.Uri.ToString(), collectionKey);
+
+            var collections =
+                ObjectMapper.Mapper.Map<List<PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
+
+            return collections.SingleOrDefault();
+        }
     }
 }

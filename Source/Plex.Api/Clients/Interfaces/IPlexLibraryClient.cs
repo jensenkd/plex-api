@@ -1,6 +1,7 @@
 namespace Plex.Api.Clients.Interfaces
 {
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using ApiModels.Libraries;
     using ApiModels.Libraries.Filters;
@@ -138,23 +139,24 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="librarykey">Library Key</param>
         Task<FilterContainer> GetLibraryFilters(string authToken, string plexServerHost, string librarykey);
 
-     /// <summary>
+        /// <summary>
         /// Get All Collections for a Given Library.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Library Key.</param>
+        /// <param name="libraryKey">Library Key.</param>
+        /// <param name="title">Title of Collection (optional)</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<CollectionContainer> GetCollectionsAsync(string authToken, string plexServerHost, string key);
+        Task<CollectionContainer> GetCollectionsAsync(string authToken, string plexServerHost, string libraryKey, string title);
 
         /// <summary>
         /// Get a Single Plex Collection.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Rating Key for the Collection.</param>
+        /// <param name="collectionKey">Rating Key for the Collection.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<CollectionModel> GetCollectionAsync(string authToken, string plexServerHost, string key);
+        Task<CollectionContainer> GetCollectionAsync(string authToken, string plexServerHost, string collectionKey);
 
         /// <summary>
         /// Add Collection to a Movie.
@@ -189,7 +191,7 @@ namespace Plex.Api.Clients.Interfaces
         Task UpdateCollectionAsync(string authToken, string plexServerHost, string libraryKey, CollectionModel collectionModel);
 
         /// <summary>
-        /// Get All Items attached to a Collection.
+        /// Get All Items attached to a Collection by Collection Key
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
@@ -197,5 +199,14 @@ namespace Plex.Api.Clients.Interfaces
         /// <returns>List of Items in the collection.</returns>
         Task<MediaContainer> GetCollectionItemsAsync(string authToken, string plexServerHost, string collectionKey);
 
+        /// <summary>
+        /// /// Get All Items attached to a Collection by Collection Name
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="libraryKey">Library Key</param>
+        /// <param name="collectionName">Name of the Collection.</param>
+        /// <returns>List of Items in the collection.</returns>
+        Task<MediaContainer> GetCollectionItemsByCollectionName(string authToken, string plexServerHost, string libraryKey, string collectionName);
     }
 }
