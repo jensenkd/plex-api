@@ -3,9 +3,10 @@ namespace Plex.Api.Clients.Interfaces
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using PlexModels.Account;
+    using PlexModels.Account.Announcements;
+    using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
-    using PlexModels.Resources;
     using User = Models.User;
 
     /// <summary>
@@ -57,7 +58,7 @@ namespace Plex.Api.Clients.Interfaces
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<Resource>> GetResourcesAsync(string authToken);
+        Task<ResourceContainer> GetResourcesAsync(string authToken);
 
         /// <summary>
         /// http://[PMS_IP_Address]:32400/library/sections?X-Plex-Token=YourTokenGoesHere

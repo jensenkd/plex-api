@@ -3,6 +3,7 @@ namespace Plex.Api.Clients.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ApiModels.Libraries;
     using Enums;
     using PlexModels.Hubs;
     using PlexModels.Library;
@@ -18,7 +19,6 @@ namespace Plex.Api.Clients.Interfaces
     using PlexModels.Server.Sessions;
     using PlexModels.Server.Statistics;
     using PlexModels.Server.Transcoders;
-    using ResourceModels;
 
     /// <summary>
     /// Inteface for Plex Client.
@@ -175,65 +175,6 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="key">Rating Key of the item.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task ScrobbleItemAsync(string authToken, string plexServerHost, string key);
-
-        /// <summary>
-        /// Get All Collections for a Given Library.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Library Key.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<CollectionModel>> GetCollectionsAsync(string authToken, string plexServerHost, string key);
-
-        /// <summary>
-        /// Get a Single Plex Collection.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Rating Key for the Collection.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<CollectionModel> GetCollectionAsync(string authToken, string plexServerHost, string key);
-
-        /// <summary>
-        /// Add Collection to a Movie.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="libraryKey">Library Key.</param>
-        /// <param name="ratingKey">Rating Key to add Collection to.</param>
-        /// <param name="collectionName">Name of Collection.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddCollectionToLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName);
-
-        /// <summary>
-        /// Remove a Collection from a Movie.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="libraryKey">Library Key.</param>
-        /// <param name="ratingKey">Rating Key to add Collection to.</param>
-        /// <param name="collectionName">Name of Collection.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task DeleteCollectionFromLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName);
-
-        /// <summary>
-        /// Update Collection.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="libraryKey">Plex Library Key.</param>
-        /// <param name="collectionModel">Plex Collection Model for Updating.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task UpdateCollectionAsync(string authToken, string plexServerHost, string libraryKey, CollectionModel collectionModel);
-
-        /// <summary>
-        /// Get All Movies attached to a Collection.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="collectionKey">Rating Key for the Collection.</param>
-        /// <returns>List of Movies.</returns>
-        Task<MediaContainer> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey);
 
         /// <summary>
         /// Get Library Play History for given Server.

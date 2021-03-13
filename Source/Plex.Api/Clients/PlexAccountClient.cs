@@ -7,9 +7,10 @@ namespace Plex.Api.Clients
     using Api;
     using Interfaces;
     using PlexModels.Account;
+    using PlexModels.Account.Announcements;
+    using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
-    using PlexModels.Resources;
     using PlexAccount = Models.PlexAccount;
     using User = Models.User;
 
@@ -128,14 +129,18 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<List<Resource>> GetResourcesAsync(string authToken)
+        public async Task<ResourceContainer> GetResourcesAsync(string authToken)
         {
-            var apiRequest = new ApiRequestBuilder(BaseUri + "resources.json?includeHttps=1&includeRelay=1", string.Empty, HttpMethod.Get)
+            var queryParams = new Dictionary<string, string> {{"includeHttps", "1"}, {"includeRelay", "1"}};
+
+            var apiRequest = new ApiRequestBuilder("https://plex.tv/", "api/resources", HttpMethod.Get)
                 .AddPlexToken(authToken)
+                .AddQueryParams(queryParams)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AcceptJson()
                 .Build();
 
-            var resources = await this.apiService.InvokeApiAsync<List<Resource>>(apiRequest);
+            var resources = await this.apiService.InvokeApiAsync<ResourceContainer>(apiRequest);
             return resources;
         }
 

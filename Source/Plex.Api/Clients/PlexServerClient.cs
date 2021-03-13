@@ -6,6 +6,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using ApiModels.Libraries;
     using Automapper;
     using Enums;
     using Interfaces;
@@ -24,7 +25,6 @@
     using PlexModels.Server.Sessions;
     using PlexModels.Server.Statistics;
     using PlexModels.Server.Transcoders;
-    using ResourceModels;
     using Metadata = PlexModels.Media.Metadata;
 
     /// <inheritdoc/>
@@ -247,136 +247,6 @@
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                 .AcceptJson()
                 .Build();
-
-            await this.apiService.InvokeApiAsync(apiRequest);
-        }
-
-        /// <inheritdoc/>
-        public async Task<List<CollectionModel>> GetCollectionsAsync(string authToken, string plexServerHost, string key)
-        {
-            var apiRequest = new ApiRequestBuilder(
-                    plexServerHost,
-                    $"library/sections/{key}/collections?includeCollections=1&includeAdvanced=1&includeMeta=1",
-                    HttpMethod.Get)
-                .AddPlexToken(authToken)
-                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                .AcceptJson()
-                .Build();
-
-            var container = await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
-
-            var collections =
-                ObjectMapper.Mapper.Map<List<Metadata>, List<CollectionModel>>(container.Media);
-
-            return collections;
-        }
-
-        /// <inheritdoc/>
-        public async Task UpdateCollectionAsync(string authToken, string plexServerHost, string libraryKey, CollectionModel collectionModel)
-        {
-            if (authToken == null)
-            {
-                throw new ArgumentNullException(nameof(authToken));
-            }
-
-            if (plexServerHost == null)
-            {
-                throw new ArgumentNullException(nameof(plexServerHost));
-            }
-
-            if (libraryKey == null)
-            {
-                throw new ArgumentNullException(nameof(libraryKey));
-            }
-
-            if (collectionModel == null)
-            {
-                throw new ArgumentNullException(nameof(collectionModel));
-            }
-
-            var apiRequest =
-                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
-                    .AddPlexToken(authToken)
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AcceptJson()
-                    .AddQueryParams(new Dictionary<string, string>()
-                    {
-                        {"type", "18"},
-                        {"id", collectionModel.RatingKey},
-                        {"includeExternalMedia", "1"},
-                        {"title.value", collectionModel.Title},
-                        {"titleSort.value", collectionModel.TitleSort},
-                        {"summary.value", collectionModel.Summary},
-                        {"contentRating.value", collectionModel.ContentRating},
-                        {"title.locked", "1"},
-                        {"titleSort.locked", "1"},
-                        {"contentRating.locked", "1"},
-                    })
-                    .Build();
-
-            await this.apiService.InvokeApiAsync(apiRequest);
-        }
-
-        /// <inheritdoc/>
-        public async Task<CollectionModel> GetCollectionAsync(string authToken, string plexServerHost, string key)
-        {
-            var apiRequest = new ApiRequestBuilder(plexServerHost, "library/metadata/" + key, HttpMethod.Get)
-                .AddPlexToken(authToken)
-                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                .AcceptJson()
-                .Build();
-
-            var container = await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
-
-            var collection =
-                ObjectMapper.Mapper.Map<Metadata, CollectionModel>(container.Media.FirstOrDefault());
-
-            return collection;
-        }
-
-        /// <inheritdoc/>
-        public async Task<MediaContainer> GetCollectionMoviesAsync(string authToken, string plexServerHost, string collectionKey) =>
-            await this.FetchWithWrapper<MediaContainer>(plexServerHost, "library/metadata/" + collectionKey + "/children",
-                authToken, HttpMethod.Get);
-
-        /// <inheritdoc/>
-        public async Task AddCollectionToLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName)
-        {
-            var apiRequest =
-                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
-                    .AddPlexToken(authToken)
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AcceptJson()
-                    .AddQueryParams(new Dictionary<string, string>()
-                    {
-                        {"type", "1"},
-                        {"id", ratingKey},
-                        {"includeExternalMedia", "1"},
-                        {"collection[0].tag.tag", collectionName},
-                        {"collection.locked", "1"},
-                    })
-                    .Build();
-
-            await this.apiService.InvokeApiAsync(apiRequest);
-        }
-
-        /// <inheritdoc/>
-        public async Task DeleteCollectionFromLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName)
-        {
-            var apiRequest =
-                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
-                    .AddPlexToken(authToken)
-                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AcceptJson()
-                    .AddJsonBody(new Dictionary<string, string>()
-                    {
-                        {"type", "1"},
-                        {"id", ratingKey},
-                        {"includeExternalMedia", "1"},
-                        {"collection.locked", "1"},
-                        {"collection[0].tag.tag-", collectionName},
-                    })
-                    .Build();
 
             await this.apiService.InvokeApiAsync(apiRequest);
         }

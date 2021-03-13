@@ -120,24 +120,23 @@ namespace Plex.Api.Test.Tests
         }
 
         [Fact]
-        public async void Test_Get_ResourcesAsync()
+        public async void Test_Get_Resources()
         {
-            var resources = await this.fixture.PlexAccount.Resources();
-            foreach (var resource in resources)
-            {
-                var name = string.IsNullOrEmpty(resource.Name) ? "Unkown" : resource.Name;
-                if (resource.Connections.Any())
-                {
-                    var connections = string.Join(",", resource.Connections.Select(c => c.Uri.ToString()));
-                    this.output.WriteLine($"{name} ({resource.Product}): {connections}");
-                }
-                else
-                {
-                    this.output.WriteLine("No Connections");
-                }
-
+            var resourceContainer = await this.fixture.PlexAccount.Resources();
+             foreach (var resource in resourceContainer.Resources)
+             {
+                 var name = string.IsNullOrEmpty(resource.Name) ? "Unkown" : resource.Name;
+                 if (resource.Connections.Any())
+                 {
+                     var connections = string.Join(",", resource.Connections.Select(c => c.Uri.ToString()));
+                     this.output.WriteLine($"{name} ({resource.Product}): {connections}");
+                 }
+                 else
+                 {
+                     this.output.WriteLine("No Connections");
+                 }
             }
-            Assert.NotNull(resources);
+            Assert.NotNull(resourceContainer);
         }
 
         [Fact]

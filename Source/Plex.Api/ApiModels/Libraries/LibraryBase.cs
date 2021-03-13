@@ -4,6 +4,7 @@ namespace Plex.Api.ApiModels.Libraries
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Automapper;
     using Clients.Interfaces;
     using Enums;
     using Filters;
@@ -206,11 +207,12 @@ namespace Plex.Api.ApiModels.Libraries
         /// </param>
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
+        /// <exception cref="InvalidOperatorException">An invalid Filter Operator was used for a given Filter Field.</exception>
         /// <returns>MediaContainer</returns>
-        public async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType? libraryType,
-            List<FilterRequest> filters = null, int start = 0, int count = 100)
+        protected async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType libraryType,
+            List<FilterRequest> filters, int start, int count)
         {
-            // TODO Validate Operators if used
+            // TODO Validate Operators if used [InvalidOperatorException]
             var librarySummaryContainer =
                 await this._plexLibraryClient.LibrarySearch(this._server.AccessToken, this._server.Uri.ToString(),
                 title, this.Key, sort, libraryType, filters, start, count);
@@ -231,20 +233,6 @@ namespace Plex.Api.ApiModels.Libraries
 
             return librarySummaryContainer;
         }
-
-        /// <summary>
-        /// Get All Library Items
-        /// </summary>
-        /// <param name="includeExtendedMetadata">Include Extra Metadata like IMDB/TMDB.  This requires another api call
-        /// for every item in library.</param>
-        /// <param name="libraryType">Library Type</param>
-        /// <param name="sort">Sort field:dir</param>
-        /// <param name="start">Offset number to start with (0 is first record)</param>
-        /// <param name="count">Max number of items to return</param>
-        /// <returns></returns>
-        public async Task<MediaContainer> All(bool includeExtendedMetadata, SearchType libraryType, string sort, int start = 0,
-            int count = 100) =>
-            await this.Search(includeExtendedMetadata, string.Empty, sort, libraryType, null, start, count);
 
         /// <summary>
         /// Returns recently added items for this library
@@ -297,18 +285,23 @@ namespace Plex.Api.ApiModels.Libraries
         /// Get Folders for this Library
         /// </summary>
         /// <returns>List of Folders</returns>
-        public async Task<object> Folders()
-        {
-            return await this._plexLibraryClient.GetLibraryFolders(this._server.AccessToken, this._server.Uri.ToString(),
+        public async Task<object> Folders() =>
+            await this._plexLibraryClient.GetLibraryFolders(this._server.AccessToken, this._server.Uri.ToString(),
                 this.Key);
+
+        /// <summary>
+        /// Get Library Collections
+        /// </summary>
+        /// <returns>List of Collection Models</returns>
+        protected async Task<List<CollectionModel>> Collections()
+        {
+            var collectionContainer = await this._plexLibraryClient.GetCollectionsAsync(this._server.AccessToken, this._server.Uri.ToString(), this.Key);
+
+            var collections =
+                ObjectMapper.Mapper.Map<List<PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
+
+            return collections;
         }
 
-        // /// <summary>
-        // /// Get Filter Type Values
-        // /// </summary>
-        // /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
-        // /// <exception cref="NotImplementedException"></exception>
-        // public async Task<FilterValueContainer> GetFilterValues(string fieldType) =>
-        //     await this.PlexLibraryClient.GetLibraryFilterValues(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, fieldType);
     }
 }

@@ -6,9 +6,10 @@ namespace Plex.Api.ApiModels.Accounts
     using Automapper;
     using Clients.Interfaces;
     using PlexModels.Account;
+    using PlexModels.Account.Announcements;
+    using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
-    using PlexModels.Resources;
     using Subscription = PlexModels.Account.Subscription;
 
     /// <summary>
@@ -183,7 +184,7 @@ namespace Plex.Api.ApiModels.Accounts
         /// Return list of Resources for Plex Account
         /// </summary>
         /// <returns>List of Resource Objects</returns>
-        public async Task<List<Resource>> Resources() =>
+        public async Task<ResourceContainer> Resources() =>
             await this.plexAccountClient.GetResourcesAsync(this.AuthToken);
 
         /// <summary>

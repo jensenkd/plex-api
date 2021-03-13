@@ -20,8 +20,8 @@ namespace Plex.Api.ApiModels
         /// Get Albums for this library
         /// </summary>
         /// <param name="sort"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<MediaContainer> Albums(string sort, int start = 0, int count = 100)
@@ -34,8 +34,8 @@ namespace Plex.Api.ApiModels
         /// Get Artists for this library
         /// </summary>
         /// <param name="sort"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<MediaContainer> Artists(string sort, int start = 0, int count = 100)
@@ -48,8 +48,8 @@ namespace Plex.Api.ApiModels
         /// Get Stations for this Library
         /// </summary>
         /// <param name="sort"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<MediaContainer> Stations(string sort, int start = 0, int count = 100)
@@ -64,8 +64,8 @@ namespace Plex.Api.ApiModels
         /// <param name="name">Name of Artist to search for</param>
         /// <param name="sort">Sort order.</param>
         /// <param name="filters">Filters</param>
-        /// <param name="start">Start Record</param>
-        /// <param name="count">Count to return</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         public async Task<MediaContainer> SearchArtists(string name, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
@@ -77,8 +77,8 @@ namespace Plex.Api.ApiModels
         /// <param name="title">Title to search for</param>
         /// <param name="sort">Sort order.</param>
         /// <param name="filters">Filters</param>
-        /// <param name="start">Start Record</param>
-        /// <param name="count">Count to return</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         public async Task<MediaContainer> SearchAlbums(string title, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
@@ -90,11 +90,41 @@ namespace Plex.Api.ApiModels
         /// <param name="title">Title to search for</param>
         /// <param name="sort">Sort order.</param>
         /// <param name="filters">Filters</param>
-        /// <param name="start">Start Record</param>
-        /// <param name="count">Count to return</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         public async Task<MediaContainer> SearchTracks(string title, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
             await this.Search(true, title, sort, SearchType.Track, filters, start, count);
+
+        /// <summary>
+        /// Get All Artists
+        /// </summary>
+        /// <param name="sort">Sort field:dir</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> AllArtists(string sort, int start = 0, int count = 100) =>
+            await this.Search(true, string.Empty, sort, SearchType.Artist, null, start, count);
+
+        /// <summary>
+        /// Get All Albums
+        /// </summary>
+        /// <param name="sort">Sort field:dir</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> AllAlbums(string sort, int start = 0, int count = 100) =>
+            await this.Search(true, string.Empty, sort, SearchType.Album, null, start, count);
+
+        /// <summary>
+        /// Get All Tracks
+        /// </summary>
+        /// <param name="sort">Sort field:dir</param>
+        /// <param name="start">Starting record (default 0)</param>
+        /// <param name="count">Only return the specified number of results (default 100).</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> AllTracks(string sort, int start = 0, int count = 100) =>
+            await this.Search(true, string.Empty, sort, SearchType.Track, null, start, count);
     }
 }

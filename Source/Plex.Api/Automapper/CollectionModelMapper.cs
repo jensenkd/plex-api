@@ -1,8 +1,10 @@
 namespace Plex.Api.Automapper
 {
+    using ApiModels.Libraries;
     using AutoMapper;
-    using ResourceModels;
+    using PlexModels.Library.Collections;
     using PlexModels.Media;
+    using Collection = PlexModels.Library.Collections.Collection;
 
     /// <summary>
     ///
@@ -14,7 +16,7 @@ namespace Plex.Api.Automapper
         /// </summary>
         public CollectionModelMapper()
         {
-            CreateMap<MediaContainer, CollectionModel>();
+            this.CreateMap<Collection, CollectionModel>();
         }
     }
 }

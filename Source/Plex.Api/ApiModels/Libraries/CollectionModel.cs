@@ -1,4 +1,4 @@
-namespace Plex.Api.ResourceModels
+namespace Plex.Api.ApiModels.Libraries
 {
     /// <summary>
     /// Collection Model

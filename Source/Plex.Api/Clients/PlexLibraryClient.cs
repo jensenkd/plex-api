@@ -1,18 +1,20 @@
 namespace Plex.Api.Clients
 {
+    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using ApiModels.Libraries;
     using ApiModels.Libraries.Filters;
+    using Automapper;
     using Enums;
-    using Helpers;
     using Interfaces;
     using PlexModels;
     using PlexModels.Folders;
     using PlexModels.Hubs;
+    using PlexModels.Library.Collections;
     using PlexModels.Library.Search;
     using PlexModels.Library.Search.Plex.Api.PlexModels.Library.Search;
     using PlexModels.Media;
@@ -82,9 +84,7 @@ namespace Plex.Api.Clients
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"includeMeta", "1"},
-                {"X-Plex-Container-Start", "0"},
-                {"X-Plex-Container-Size", "0"}
+                {"includeMeta", "1"}, {"X-Plex-Container-Start", "0"}, {"X-Plex-Container-Size", "0"}
             };
 
             var items = await this.FetchWithWrapper<FilterFieldContainer>(plexServerHost,
@@ -99,9 +99,7 @@ namespace Plex.Api.Clients
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"query", title},
-                {"includeCollections", "1"},
-                {"includeExternalMedia", "1"}
+                {"query", title}, {"includeCollections", "1"}, {"includeExternalMedia", "1"}
             };
 
             return await this.FetchWithWrapper<HubMediaContainer>(plexServerHost, "hubs/search", authToken,
@@ -110,14 +108,12 @@ namespace Plex.Api.Clients
 
         /// <inheritdoc/>
         public async Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title,
-            string libraryKey, string sort, SearchType? libraryType, List<FilterRequest> filters = null, int start = 0,
+            string libraryKey, string sort, SearchType libraryType, List<FilterRequest> filters = null, int start = 0,
             int count = 100)
         {
-            var queryParams = new Dictionary<string, string>();
-
-            if (libraryType.HasValue)
+            var queryParams = new Dictionary<string, string>
             {
-                queryParams.Add("type", ((int)libraryType).ToString());
+                {"type", ((int)libraryType).ToString()}
             };
 
             if (!string.IsNullOrEmpty(title))
@@ -134,10 +130,10 @@ namespace Plex.Api.Clients
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
                     .AddPlexToken(authToken)
                     .AddQueryParams(queryParams)
+                    .AddFilterFields(filters)
                     .AddQueryParams(ClientUtilities.GetLibraryFlagFields())
                     .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddQueryParams(ClientUtilities.GetClientLimitHeaders(start, count))
-                    .AddFilterFields(filters)
                     .AcceptJson()
                     .Build();
 
@@ -191,9 +187,144 @@ namespace Plex.Api.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<FilterContainer> GetLibraryFilters(string authToken, string plexServerHost, string librarykey) =>
-            await this.FetchWithWrapper<FilterContainer>(plexServerHost, $"library/sections/{librarykey}/filters", authToken,
+        public async Task<FilterContainer>
+            GetLibraryFilters(string authToken, string plexServerHost, string librarykey) =>
+            await this.FetchWithWrapper<FilterContainer>(plexServerHost, $"library/sections/{librarykey}/filters",
+                authToken,
                 HttpMethod.Get);
+
+         /// <inheritdoc/>
+        public async Task<CollectionContainer> GetCollectionsAsync(string authToken, string plexServerHost, string key)
+        {
+            var queryParams =
+                new Dictionary<string, string> {{"includeCollections", "1"}, {"includeExternalMedia", "true"}};
+
+            var apiRequest = new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/collections",
+                    HttpMethod.Get)
+                .AddQueryParams(queryParams)
+                .AddPlexToken(authToken)
+                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AcceptJson()
+                .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<CollectionContainer>>(apiRequest);
+
+            return wrapper.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task UpdateCollectionAsync(string authToken, string plexServerHost, string libraryKey, CollectionModel collectionModel)
+        {
+            if (authToken == null)
+            {
+                throw new ArgumentNullException(nameof(authToken));
+            }
+
+            if (plexServerHost == null)
+            {
+                throw new ArgumentNullException(nameof(plexServerHost));
+            }
+
+            if (libraryKey == null)
+            {
+                throw new ArgumentNullException(nameof(libraryKey));
+            }
+
+            if (collectionModel == null)
+            {
+                throw new ArgumentNullException(nameof(collectionModel));
+            }
+
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .AddQueryParams(new Dictionary<string, string>()
+                    {
+                        {"type", "18"},
+                        {"id", collectionModel.RatingKey},
+                        {"includeExternalMedia", "1"},
+                        {"title.value", collectionModel.Title},
+                        {"titleSort.value", collectionModel.TitleSort},
+                        {"summary.value", collectionModel.Summary},
+                        {"contentRating.value", collectionModel.ContentRating},
+                        {"title.locked", "1"},
+                        {"titleSort.locked", "1"},
+                        {"contentRating.locked", "1"},
+                    })
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task<CollectionModel> GetCollectionAsync(string authToken, string plexServerHost, string libraryKey)
+        {
+            var queryParams =
+                new Dictionary<string, string> {{"includeCollections", "1"}, {"includeExternalMedia", "true"}};
+
+            var apiRequest = new ApiRequestBuilder(plexServerHost, "library/metadata/" + libraryKey, HttpMethod.Get)
+                .AddPlexToken(authToken)
+                .AddQueryParams(queryParams)
+                .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AcceptJson()
+                .Build();
+
+            var container = await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
+
+            var collection =
+                ObjectMapper.Mapper.Map<Metadata, CollectionModel>(container.Media.FirstOrDefault());
+
+            return collection;
+        }
+
+        /// <inheritdoc/>
+        public async Task<MediaContainer> GetCollectionItemsAsync(string authToken, string plexServerHost, string collectionKey) =>
+            await this.FetchWithWrapper<MediaContainer>(plexServerHost, "library/metadata/" + collectionKey + "/children",
+                authToken, HttpMethod.Get);
+
+        /// <inheritdoc/>
+        public async Task AddCollectionToLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .AddQueryParams(new Dictionary<string, string>()
+                    {
+                        {"type", "1"},
+                        {"id", ratingKey},
+                        {"includeExternalMedia", "1"},
+                        {"collection[0].tag.tag", collectionName},
+                        {"collection.locked", "1"},
+                    })
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteCollectionFromLibraryItemAsync(string authToken, string plexServerHost, string libraryKey, string ratingKey, string collectionName)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, "library/sections/" + libraryKey + "/all", HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .AddJsonBody(new Dictionary<string, string>()
+                    {
+                        {"type", "1"},
+                        {"id", ratingKey},
+                        {"includeExternalMedia", "1"},
+                        {"collection.locked", "1"},
+                        {"collection[0].tag.tag-", collectionName},
+                    })
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
 
 
         /// <summary>
