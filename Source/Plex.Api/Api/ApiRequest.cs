@@ -81,7 +81,7 @@ namespace Plex.Api.Api
 
                 if (!string.IsNullOrEmpty(this.Endpoint))
                 {
-                    uriBuilder.Append(this.Endpoint.StartsWith("/") ? this.Endpoint.Skip(1) : this.Endpoint);
+                    uriBuilder.Append(this.Endpoint.StartsWith("/") ? this.Endpoint.Substring(1) : this.Endpoint);
                 }
 
                 this.AddQueryParams(uriBuilder);

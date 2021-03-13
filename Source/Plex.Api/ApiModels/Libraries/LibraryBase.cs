@@ -10,7 +10,6 @@ namespace Plex.Api.ApiModels.Libraries
     using Helpers.Mappings;
     using PlexModels.Hubs;
     using PlexModels.Library.Search;
-    using PlexModels.Library.Search.Plex.Api.PlexModels.Library.Search;
     using PlexModels.Media;
 
     /// <summary>
@@ -19,31 +18,37 @@ namespace Plex.Api.ApiModels.Libraries
     public class LibraryBase
     {
         /// <summary>
-        ///
+        /// Filters
         /// </summary>
-        public readonly IPlexServerClient PlexServerClient;
+        private List<FilterModel> _filters;
 
         /// <summary>
         ///
         /// </summary>
-        public readonly IPlexLibraryClient PlexLibraryClient;
+        public readonly IPlexServerClient _plexServerClient;
 
         /// <summary>
         ///
         /// </summary>
-        protected readonly Server Server;
+        public readonly IPlexLibraryClient _plexLibraryClient;
 
         /// <summary>
         ///
+        /// </summary>
+        protected readonly Server _server;
+
+        /// <summary>
+        /// This will become the Base Object for All Plex Libraries.
+        /// When we instantiate a library, we will pull all the Filter Fields, Sorts and Operators
         /// </summary>
         /// <param name="plexServerClient"></param>
         /// <param name="plexLibraryClient"></param>
         /// <param name="server"></param>
         public LibraryBase(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, Server server)
         {
-            this.PlexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
-            this.PlexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
-            this.Server = server ?? throw new ArgumentNullException(nameof(server));
+            this._plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
+            this._plexLibraryClient = plexLibraryClient ?? throw new ArgumentNullException(nameof(plexLibraryClient));
+            this._server = server ?? throw new ArgumentNullException(nameof(server));
         }
 
         public bool HasFilters { get; }
@@ -77,31 +82,101 @@ namespace Plex.Api.ApiModels.Libraries
         public DateTime UpdatedAt { get; set; }
 
         public List<string> Locations { get; set; }
-        public List<Filter> Filters { get; set; }
+
+
+
 
         /// <summary>
-        /// Get Filters available for this Library
+        /// Library Filter Fields
         /// </summary>
-        /// <returns>List of FilterField</returns>
-        private async Task<FilterContainer> GetFilters()
+        public List<FilterModel> FilterFields
         {
-            var filterContainer = await this.PlexLibraryClient.GetLibraryFilters(this.Server.AccessToken, this.Server.Uri.ToString(),
-                this.Key);
+            get
+            {
+                if (this._filters != null)
+                {
+                    return this._filters;
+                }
 
-            return filterContainer;
+                var filterContainer = this._plexLibraryClient.GetFilterFields(this._server.AccessToken, this._server.Uri.ToString(),
+                    this.Key).Result;
+
+                this._filters = LibraryFilterMapper.GetFilterModelsFromFilterContainer(filterContainer);
+
+                return this._filters;
+            }
         }
 
         /// <summary>
-        /// Get Filters available for this Library
+        /// Get Filter Values for given FieldType and FieldKey
         /// </summary>
-        /// <returns>List of FilterField</returns>
-        public async Task<List<FilterModel>> FilterFields()
+        /// <param name="fieldType">Field Type (movie, library, artist, album)</param>
+        /// <param name="fieldKey">Field Key (ex: genre, year)</param>
+        /// <param name="title">Title of Field Value</param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
+        public async Task<List<FilterValue>> GetFilterValues(string fieldType, string fieldKey, string title)
         {
-             var filterFieldContainer = await this.PlexLibraryClient.GetFilterFields(this.Server.AccessToken, this.Server.Uri.ToString(),
-                this.Key);
+            // // Check to see if these values are already in cache.
+            // if (this._filterValues.ContainsKey(fieldType + "_" + fieldKey))
+            // {
+            //     if (!string.IsNullOrEmpty(title))
+            //     {
+            //         return this._filterValues[fieldType + "_" + fieldKey]
+            //             .Where(c=>c.Title.Contains(title))
+            //             .ToList();
+            //     }
+            //     return this._filterValues[fieldType + "_" + fieldKey];
+            // }
 
-            return LibraryFilterMapper.GetFilterModelsFromFilterContainer(filterFieldContainer);
+            // Get Filter
+            var filterField  = this.FilterFields
+                .SingleOrDefault(g=> g.Type == fieldType);
+
+            if (filterField == null)
+            {
+                throw new ApplicationException("Invalid Filter FieldType: " + fieldType);
+            }
+
+            if (filterField.FilterFields == null || !filterField.FilterFields.Any())
+            {
+                throw new ApplicationException("Invalid Filter FieldKey: " + fieldKey);
+            }
+
+            var item = filterField.FilterFields
+                .SingleOrDefault(t => t.FieldKey == fieldKey);
+
+            if (item == null)
+            {
+                throw new ApplicationException("Invalid Filter FieldKey: " + fieldKey);
+            }
+
+            var filterValueContainer = await this._plexLibraryClient.GetLibraryFilterValues(this._server.AccessToken,
+                this._server.Uri.ToString(), this.Key, item.UriKey);
+
+           // this._filterValues.Add(fieldType + "_" + fieldKey, filterValueContainer.FilterValues);
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                return filterValueContainer.FilterValues
+                    .Where(c=>c.Title.Contains(title))
+                    .ToList();
+            }
+
+            return filterValueContainer.FilterValues;
         }
+
+        // /// <summary>
+        // /// Get Filters available for this Library
+        // /// </summary>
+        // /// <returns>List of FilterField</returns>
+        // public async Task<List<FilterModel>> FilterFields()
+        // {
+        //      var filterFieldContainer = await this.PlexLibraryClient.GetFilterFields(this.Server.AccessToken, this.Server.Uri.ToString(),
+        //         this.Key);
+        //
+        //     return LibraryFilterMapper.GetFilterModelsFromFilterContainer(filterFieldContainer);
+        // }
 
         /// <summary>
         /// Matching Library Items with Metadata
@@ -133,10 +208,11 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
         public async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType? libraryType,
-            Dictionary<string, string> filters = null, int start = 0, int count = 100)
+            List<FilterRequest> filters = null, int start = 0, int count = 100)
         {
+            // TODO Validate Operators if used
             var librarySummaryContainer =
-                await this.PlexLibraryClient.LibrarySearch(this.Server.AccessToken, this.Server.Uri.ToString(),
+                await this._plexLibraryClient.LibrarySearch(this._server.AccessToken, this._server.Uri.ToString(),
                 title, this.Key, sort, libraryType, filters, start, count);
 
             if (librarySummaryContainer != null && librarySummaryContainer.Size > 0)
@@ -145,8 +221,8 @@ namespace Plex.Api.ApiModels.Libraries
                 {
                     for (var i = 0; i < librarySummaryContainer.Media.Count; i++)
                     {
-                        var mediaContainer = await this.PlexLibraryClient.GetItem(this.Server.AccessToken,
-                            this.Server.Uri.ToString(),
+                        var mediaContainer = await this._plexLibraryClient.GetItem(this._server.AccessToken,
+                            this._server.Uri.ToString(),
                             librarySummaryContainer.Media[i].RatingKey);
                         librarySummaryContainer.Media[i] = mediaContainer.Media.First();
                     }
@@ -178,8 +254,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="count">Max number of items to return</param>
         /// <returns></returns>
         protected async Task<MediaContainer> RecentlyAdded(SearchType libraryType, int start, int count) =>
-            await this.PlexServerClient.GetLibraryRecentlyAddedAsync(this.Server.AccessToken,
-                this.Server.Uri.ToString(), libraryType, this.Key, start, count);
+            await this._plexServerClient.GetLibraryRecentlyAddedAsync(this._server.AccessToken,
+                this._server.Uri.ToString(), libraryType, this.Key, start, count);
 
         /// <summary>
         /// Return list of Hubs on this library along with their Metadata items
@@ -187,27 +263,27 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="count">Max count of items on each hub</param>
         /// <returns></returns>
         public async Task<HubMediaContainer> Hubs(int count = 10) =>
-            await this.PlexServerClient.GetLibraryHubAsync(this.Server.AccessToken, this.Server.Uri.ToString(),
+            await this._plexServerClient.GetLibraryHubAsync(this._server.AccessToken, this._server.Uri.ToString(),
                 this.Key, count);
 
         /// <summary>
         /// Empty Trash for this Library
         /// </summary>
         public async Task EmptyTrash() =>
-            await this.PlexLibraryClient.EmptyTrash(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
+            await this._plexLibraryClient.EmptyTrash(this._server.AccessToken, this._server.Uri.ToString(), this.Key);
 
         /// <summary>
         /// Scan for new items on this Library
         /// </summary>
         public async Task ScanForNewItems(bool forceMetadataRefresh) =>
-            await this.PlexLibraryClient.ScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key,
+            await this._plexLibraryClient.ScanForNewItems(this._server.AccessToken, this._server.Uri.ToString(), this.Key,
                 forceMetadataRefresh);
 
         /// <summary>
         /// Cancel running Scan on this library
         /// </summary>
         public async Task CancelScan() =>
-            await this.PlexLibraryClient.CancelScanForNewItems(this.Server.AccessToken, this.Server.Uri.ToString(),
+            await this._plexLibraryClient.CancelScanForNewItems(this._server.AccessToken, this._server.Uri.ToString(),
                 this.Key);
 
         /// <summary>
@@ -215,7 +291,7 @@ namespace Plex.Api.ApiModels.Libraries
         /// </summary>
         /// <returns>Size of library</returns>
         public async Task<int> Size() =>
-            await this.PlexLibraryClient.GetLibrarySize(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key);
+            await this._plexLibraryClient.GetLibrarySize(this._server.AccessToken, this._server.Uri.ToString(), this.Key);
 
         /// <summary>
         /// Get Folders for this Library
@@ -223,16 +299,16 @@ namespace Plex.Api.ApiModels.Libraries
         /// <returns>List of Folders</returns>
         public async Task<object> Folders()
         {
-            return await this.PlexLibraryClient.GetLibraryFolders(this.Server.AccessToken, this.Server.Uri.ToString(),
+            return await this._plexLibraryClient.GetLibraryFolders(this._server.AccessToken, this._server.Uri.ToString(),
                 this.Key);
         }
 
-        /// <summary>
-        /// Get Filter Type Values
-        /// </summary>
-        /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<FilterValueContainer> GetFilterValues(string fieldType) =>
-            await this.PlexLibraryClient.GetLibrarySearchFilters(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, fieldType);
+        // /// <summary>
+        // /// Get Filter Type Values
+        // /// </summary>
+        // /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
+        // /// <exception cref="NotImplementedException"></exception>
+        // public async Task<FilterValueContainer> GetFilterValues(string fieldType) =>
+        //     await this.PlexLibraryClient.GetLibraryFilterValues(this.Server.AccessToken, this.Server.Uri.ToString(), this.Key, fieldType);
     }
 }

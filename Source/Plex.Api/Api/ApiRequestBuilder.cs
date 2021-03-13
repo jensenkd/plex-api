@@ -1,8 +1,10 @@
 namespace Plex.Api.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using ApiModels.Libraries.Filters;
 
     /// <summary>
     /// Api Request Builder.
@@ -112,6 +114,52 @@ namespace Plex.Api.Api
             return this;
         }
 
+        /// <summary>
+        /// Add Filter Parameters
+        /// </summary>
+        /// <param name="filters">Field Filter Requests</param>
+        public ApiRequestBuilder AddFilterFields(List<FilterRequest> filters)
+        {
+            if (filters != null && filters.Any())
+            {
+                var queryParameters = this.queryParams ?? new Dictionary<string, string>();
+
+                foreach (var item in filters)
+                {
+                    switch (item.Operator)
+                    {
+                        case Operator.Is:
+                            queryParameters.Add(item.Field, string.Join(",", item.Values));
+                            break;
+                        case Operator.IsNot:
+                            queryParameters.Add(item.Field+"!", string.Join(",", item.Values));
+                            break;
+                        case Operator.GreaterThan:
+                            queryParameters.Add(item.Field+">>", string.Join(",", item.Values));
+                            break;
+                        case Operator.LessThan:
+                            queryParameters.Add(item.Field+"<<", string.Join(",", item.Values));
+                            break;
+                        case Operator.Contains:
+                            queryParameters.Add(item.Field+"=", string.Join(",", item.Values));
+                            break;
+                        case Operator.NotContains:
+                            queryParameters.Add(item.Field+"!=", string.Join(",", item.Values));
+                            break;
+                        case Operator.BeginsWith:
+                            queryParameters.Add(item.Field+"<", string.Join(",", item.Values));
+                            break;
+                        case Operator.EndsWith:
+                            queryParameters.Add(item.Field+">", string.Join(",", item.Values));
+                            break;
+                        default:
+                            throw new ApplicationException("Invalid Operator requested.");
+                    }
+                }
+            }
+            return this;
+        }
+
         private void AddSingleHeader(string key, string value)
         {
             var headers = this.requestHeaders ?? new Dictionary<string, string>();
@@ -152,5 +200,7 @@ namespace Plex.Api.Api
         public ApiRequest Build() =>
             new ApiRequest(this.endpoint, this.baseUri, this.httpMethod, this.requestHeaders, this.contentHeaders, this.Body,
                 this.queryParams);
+
+
     }
 }

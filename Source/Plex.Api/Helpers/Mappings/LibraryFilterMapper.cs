@@ -1,5 +1,6 @@
 namespace Plex.Api.Helpers.Mappings
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using ApiModels.Libraries.Filters;
@@ -37,13 +38,19 @@ namespace Plex.Api.Helpers.Mappings
                 {
                     foreach (var field in fieldType.Filters)
                     {
+                        var fieldMatch = fieldType.Fields.SingleOrDefault(c => c.Key.Contains(field.FilterName));
+                        if (fieldMatch == null)
+                        {
+                            throw new ApplicationException("Where is this field: " + field.FilterName);
+                        }
+
                         var filterField = new FilterFieldModel
                         {
                             Title =  field.Title,
                             Type = field.Type,
                             UriKey = field.Key,
                             FieldKey = field.FilterName,
-                            Operators = operatorDictionary[field.FilterType]
+                            Operators = operatorDictionary[fieldMatch.Type]
                         };
                         filterModel.FilterFields.Add(filterField);
                     }

@@ -1,9 +1,39 @@
 namespace Plex.Api.PlexModels.Library.Search
 {
+    using System;
     using System.Text.Json.Serialization;
+    using ApiModels.Libraries.Filters;
 
     public class FilterOperator
     {
+        public Operator Type
+        {
+            get
+            {
+                switch (this.Key)
+                {
+                    case "=":
+                        return Operator.Is;
+                    case "!=":
+                        return Operator.IsNot;
+                    case ">>":
+                        return Operator.GreaterThan;
+                    case "<<":
+                        return Operator.LessThan;
+                    case "==":
+                        return Operator.Contains;
+                    case "!==":
+                        return Operator.NotContains;
+                    case "<=":
+                        return Operator.BeginsWith;
+                    case ">=":
+                        return Operator.EndsWith;
+                    default:
+                        throw new ApplicationException("Non-Mapped Operator: " + this.Key);
+                }
+            }
+        }
+
         /// <summary>
         /// Key for the Operator (ex: =, !=, >).
         /// </summary>

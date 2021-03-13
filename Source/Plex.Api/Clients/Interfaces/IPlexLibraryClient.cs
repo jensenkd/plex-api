@@ -2,6 +2,7 @@ namespace Plex.Api.Clients.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ApiModels.Libraries.Filters;
     using Enums;
     using PlexModels.Folders;
     using PlexModels.Hubs;
@@ -88,7 +89,7 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns>MediaContainer</returns>
-        Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, SearchType? libraryType, Dictionary<string, string> filters = null, int start = 0, int count = 100);
+        Task<MediaContainer> LibrarySearch(string authToken, string plexServerHost, string title, string libraryKey, string sort, SearchType? libraryType, List<FilterRequest> filters = null, int start = 0, int count = 100);
 
         /// <summary>
         /// Get Item from Library
@@ -124,8 +125,8 @@ namespace Plex.Api.Clients.Interfaces
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         /// <param name="key">Library Key</param>
-        /// <param name="fieldType">Field Type value (genre, collection, title, etc..)</param>
-        Task<FilterValueContainer> GetLibrarySearchFilters(string authToken, string plexServerHost, string key, string fieldType);
+        /// <param name="filterUri">Field Type value (genre, collection, title, etc..)</param>
+        Task<FilterValueContainer> GetLibraryFilterValues(string authToken, string plexServerHost, string key, string filterUri);
 
         /// <summary>
         /// Get Filters for this Library

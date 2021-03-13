@@ -3,10 +3,6 @@ namespace Plex.Api.ApiModels.Libraries.Filters
     using System.Collections.Generic;
     using PlexModels.Library.Search;
 
-    public class FilterModelContainer
-    {
-    }
-
     /// <summary>
     /// Filter
     ///  "key": "/library/sections/1/all?type=1",

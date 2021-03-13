@@ -5,9 +5,8 @@ namespace Plex.Api.ApiModels.Libraries
     using System.Threading.Tasks;
     using Clients.Interfaces;
     using Enums;
+    using Filters;
     using PlexModels.Library;
-    using PlexModels.Library.Search;
-    using PlexModels.Library.Search.Plex.Api.PlexModels.Library.Search;
     using PlexModels.Media;
     using ResourceModels;
 
@@ -68,8 +67,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="ratingKey">Item Rating Key.</param>
         /// <param name="collectionName">Collection name to add to item.</param>
         public async void AddCollectionToItem(string ratingKey, string collectionName) =>
-            await this.PlexServerClient.AddCollectionToLibraryItemAsync(this.Server.AccessToken,
-                this.Server.Uri.ToString(), this.Key, ratingKey,
+            await this._plexServerClient.AddCollectionToLibraryItemAsync(this._server.AccessToken,
+                this._server.Uri.ToString(), this.Key, ratingKey,
                 collectionName);
 
         /// <summary>
@@ -78,8 +77,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="ratingKey">Item Rating Key.</param>
         /// <param name="collectionName">Collection name to remove from item.</param>
         public async void RemoveCollectionFromItem(string ratingKey, string collectionName) =>
-            await this.PlexServerClient.DeleteCollectionFromLibraryItemAsync(this.Server.AccessToken,
-                this.Server.Uri.ToString(), this.Key, ratingKey,
+            await this._plexServerClient.DeleteCollectionFromLibraryItemAsync(this._server.AccessToken,
+                this._server.Uri.ToString(), this.Key, ratingKey,
                 collectionName);
 
         /// <summary>
@@ -87,7 +86,7 @@ namespace Plex.Api.ApiModels.Libraries
         /// </summary>
         /// <param name="collectionModel">Collection Model</param>
         public async void UpdateCollection(CollectionModel collectionModel) =>
-            await this.PlexServerClient.UpdateCollectionAsync(this.Server.AccessToken, this.Server.Uri.ToString(),
+            await this._plexServerClient.UpdateCollectionAsync(this._server.AccessToken, this._server.Uri.ToString(),
                 this.Key, collectionModel);
 
         /// <summary>
@@ -98,5 +97,18 @@ namespace Plex.Api.ApiModels.Libraries
         /// <returns></returns>
         public async Task<MediaContainer> RecentlyAdded(int start = 0, int count = 100) =>
             await this.RecentlyAdded(SearchType.Movie, start, count);
+
+        /// <summary>
+        /// Search Movies.
+        /// </summary>
+        /// <param name="title">Title to search for</param>
+        /// <param name="sort">Sort order.</param>
+        /// <param name="filters">Filters</param>
+        /// <param name="start">Start Record</param>
+        /// <param name="count">Count to return</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> SearchMovies(string title, string sort, List<FilterRequest> filters,
+            int start = 0, int count = 100) =>
+            await this.Search(true, title, sort, SearchType.Movie, filters, start, count);
     }
 }
