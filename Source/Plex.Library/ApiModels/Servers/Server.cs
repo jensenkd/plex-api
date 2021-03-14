@@ -4,23 +4,23 @@ namespace Plex.Library.ApiModels.Servers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Api.Clients.Interfaces;
-    using Api.PlexModels.Account;
-    using Api.PlexModels.Hubs;
-    using Api.PlexModels.Media;
-    using Api.PlexModels.Providers;
-    using Api.PlexModels.Server;
-    using Api.PlexModels.Server.Activities;
-    using Api.PlexModels.Server.DeviceContainer;
-    using Api.PlexModels.Server.History;
-    using Api.PlexModels.Server.Playlists;
-    using Api.PlexModels.Server.Releases;
-    using Api.PlexModels.Server.Sessions;
-    using Api.PlexModels.Server.Statistics;
-    using Api.PlexModels.Server.Transcoders;
     using Automapper;
     using Libraries;
-    using LibraryFilter = Api.PlexModels.Library.LibraryFilter;
+    using ServerApi.Clients.Interfaces;
+    using ServerApi.PlexModels.Account;
+    using ServerApi.PlexModels.Hubs;
+    using ServerApi.PlexModels.Media;
+    using ServerApi.PlexModels.Providers;
+    using ServerApi.PlexModels.Server;
+    using ServerApi.PlexModels.Server.Activities;
+    using ServerApi.PlexModels.Server.Devices;
+    using ServerApi.PlexModels.Server.History;
+    using ServerApi.PlexModels.Server.Playlists;
+    using ServerApi.PlexModels.Server.Sessions;
+    using ServerApi.PlexModels.Server.Statistics;
+    using ServerApi.PlexModels.Server.Transcoders;
+    using ServerApi.PlexModels.Server.Updates;
+    using LibraryFilter = ServerApi.PlexModels.Library.LibraryFilter;
 
     public class Server
     {

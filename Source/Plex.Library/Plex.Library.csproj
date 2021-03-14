@@ -3,23 +3,22 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>True</IsPackable>
+    <Title>Plex Api</Title>
+    <PackageProjectUrl>https://github.com/jensenkd/plex-api</PackageProjectUrl>
+    <PackageLicense>https://github.com/jensenkd/plex-api/blob/master/LICENSE.md</PackageLicense>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <PackageId></PackageId>
-    <Description></Description>
-    <Authors></Authors>
+    <PackageId>Plex.Api</PackageId>
+    <Description>Library for interacting with Plex Media Servers </Description>
+    <Authors>Kevin Jensen</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>http</RepositoryUrl>
     <PackageTags>plex dotnet core api</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Plex.Api\Plex.Api.csproj" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_PackageFiles Include="$(OutputPath)\Plex.Api.dll">
+    <_PackageFiles Include="$(OutputPath)\Plex.ServerApi.dll">
       <BuildAction>None</BuildAction>
       <PackagePath>lib\net5.0</PackagePath>
     </_PackageFiles>
@@ -36,6 +35,10 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Plex.ServerApi\Plex.ServerApi.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ namespace Plex.Library.Automapper
     using System.Globalization;
     using ApiModels.Libraries;
     using AutoMapper;
+    using ServerApi.PlexModels.Library;
 
     /// <summary>
     /// Library Mapping Configuration Profile
@@ -15,7 +16,7 @@ namespace Plex.Library.Automapper
         /// </summary>
         public LibraryModelMapper()
         {
-            this.CreateMap<Api.PlexModels.Library.Library, MovieLibrary>()
+            this.CreateMap<Library, MovieLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
                         opt.MapFrom(src =>
@@ -32,7 +33,7 @@ namespace Plex.Library.Automapper
                             DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
                                 .ToString(CultureInfo.InvariantCulture)));
 
-            this.CreateMap<Api.PlexModels.Library.Library, MusicLibrary>()
+            this.CreateMap<Library, MusicLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
                         opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).
@@ -43,7 +44,7 @@ namespace Plex.Library.Automapper
                             DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
                                 .ToString(CultureInfo.InvariantCulture)));
 
-            this.CreateMap<Api.PlexModels.Library.Library, ShowLibrary>()
+            this.CreateMap<Library, ShowLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
                         opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).
@@ -54,7 +55,7 @@ namespace Plex.Library.Automapper
                             DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
                                 .ToString(CultureInfo.InvariantCulture)));
 
-            this.CreateMap<Api.PlexModels.Library.Library, PhotoLibrary>()
+            this.CreateMap<Library, PhotoLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
                         opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).

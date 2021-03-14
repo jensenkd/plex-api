@@ -12,7 +12,7 @@ namespace Plex.Library.Automapper
         /// </summary>
         public PlexAccountModelMapper()
         {
-            this.CreateMap<Api.PlexModels.Account.PlexAccount, PlexAccount>()
+            this.CreateMap<ServerApi.PlexModels.Account.PlexAccount, PlexAccount>()
                 .ForMember(x => x.RememberExpiresAt,
                     opt =>
                         opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.RememberExpiresAt).

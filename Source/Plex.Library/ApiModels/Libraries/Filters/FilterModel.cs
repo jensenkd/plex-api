@@ -1,7 +1,7 @@
 namespace Plex.Library.ApiModels.Libraries.Filters
 {
     using System.Collections.Generic;
-    using Api.PlexModels.Library.Search;
+    using ServerApi.PlexModels.Library.Search;
 
     /// <summary>
     /// Filter

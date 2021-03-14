@@ -1,8 +1,8 @@
 namespace Plex.Library.ApiModels.Libraries.Filters
 {
     using System;
-    using Api.PlexModels.Library;
-    using Api.PlexModels.Library.Search;
+    using ServerApi.PlexModels.Library;
+    using ServerApi.PlexModels.Library.Search;
 
     [Serializable]
     internal class InvalidOperatorException : Exception

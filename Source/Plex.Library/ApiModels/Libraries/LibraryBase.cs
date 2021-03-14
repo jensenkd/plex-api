@@ -4,15 +4,16 @@ namespace Plex.Library.ApiModels.Libraries
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Api.Clients.Interfaces;
-    using Api.Enums;
-    using Api.PlexModels.Hubs;
-    using Api.PlexModels.Library.Collections;
-    using Api.PlexModels.Library.Search;
-    using Api.PlexModels.Media;
     using Automapper;
     using Filters;
+    using ServerApi.Clients.Interfaces;
+    using ServerApi.Enums;
+    using ServerApi.PlexModels.Hubs;
+    using ServerApi.PlexModels.Library.Collections;
+    using ServerApi.PlexModels.Library.Search;
+    using ServerApi.PlexModels.Media;
     using Servers;
+    using Collection = ServerApi.PlexModels.Library.Collections.Collection;
 
     /// <summary>
     ///
@@ -271,7 +272,7 @@ namespace Plex.Library.ApiModels.Libraries
             var collectionContainer = await this._plexLibraryClient.GetCollectionsAsync(this._server.AccessToken, this._server.Uri.ToString(), this.Key, title);
 
             var collections =
-                ObjectMapper.Mapper.Map<List<Api.PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
+                ObjectMapper.Mapper.Map<List<Collection>, List<CollectionModel>>(collectionContainer.Collections);
 
             return collections;
         }
@@ -285,7 +286,7 @@ namespace Plex.Library.ApiModels.Libraries
             var collectionContainer = await this._plexLibraryClient.GetCollectionAsync(this._server.AccessToken, this._server.Uri.ToString(), collectionKey);
 
             var collections =
-                ObjectMapper.Mapper.Map<List<Api.PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
+                ObjectMapper.Mapper.Map<List<Collection>, List<CollectionModel>>(collectionContainer.Collections);
 
             return collections.SingleOrDefault();
         }

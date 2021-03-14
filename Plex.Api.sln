@@ -40,9 +40,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{0555
 		.github\SECURITY.md = .github\SECURITY.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.Api", "Source\Plex.Api\Plex.Api.csproj", "{D49F5A02-D549-4EF4-8776-89C35A71EB2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.ServerApi", "Source\Plex.ServerApi\Plex.ServerApi.csproj", "{D49F5A02-D549-4EF4-8776-89C35A71EB2D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.Api.Test", "Tests\Plex.Api.Test\Plex.Api.Test.csproj", "{528E66EB-2232-4534-A20D-9BC8A240BF2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.ServerApi.Test", "Tests\Plex.ServerApi.Test\Plex.ServerApi.Test.csproj", "{528E66EB-2232-4534-A20D-9BC8A240BF2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{EFE1E5ED-D337-4874-82EC-D9FA0BC7D3AB}"
 EndProject

@@ -1,9 +1,9 @@
 namespace Plex.Library.Automapper
 {
-    using Api.PlexModels.Library.Collections;
     using ApiModels.Libraries;
     using AutoMapper;
-    using Collection = Api.PlexModels.Library.Collections.Collection;
+    using ServerApi.PlexModels.Library.Collections;
+    using Collection = ServerApi.PlexModels.Library.Collections.Collection;
 
     /// <summary>
     ///

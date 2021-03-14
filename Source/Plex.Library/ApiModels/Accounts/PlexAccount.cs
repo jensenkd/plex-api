@@ -3,15 +3,15 @@ namespace Plex.Library.ApiModels.Accounts
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Clients.Interfaces;
-    using Api.PlexModels.Account;
-    using Api.PlexModels.Account.Announcements;
-    using Api.PlexModels.Account.Resources;
-    using Api.PlexModels.Account.User;
-    using Api.PlexModels.OAuth;
     using Automapper;
+    using ServerApi.Clients.Interfaces;
+    using ServerApi.PlexModels.Account;
+    using ServerApi.PlexModels.Account.Announcements;
+    using ServerApi.PlexModels.Account.Resources;
+    using ServerApi.PlexModels.Account.User;
+    using ServerApi.PlexModels.OAuth;
     using Servers;
-    using Subscription = Api.PlexModels.Account.Subscription;
+    using Subscription = ServerApi.PlexModels.Account.Subscription;
 
     /// <summary>
     /// Plex Account Object.  This is the entry point to Plex-Api.

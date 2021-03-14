@@ -2,9 +2,9 @@ namespace Plex.Library.Automapper
 {
     using System;
     using System.Globalization;
-    using Api.PlexModels.Account;
-    using Api.PlexModels.Server;
     using ApiModels.Servers;
+    using ServerApi.PlexModels.Account;
+    using ServerApi.PlexModels.Server;
     using Profile = AutoMapper.Profile;
 
     public class PlexServerModelMapper : Profile
