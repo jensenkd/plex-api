@@ -3,15 +3,15 @@ namespace Plex.Api.Test
     using System;
     using System.Linq;
     using Api;
-    using ApiModels;
-    using ApiModels.Accounts;
     using Clients;
     using Clients.Interfaces;
     using Factories;
+    using Library.ApiModels.Accounts;
+    using Library.ApiModels.Servers;
+    using Library.Factories;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Xunit;
 
     /// <summary>
     ///

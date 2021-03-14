@@ -1,6 +1,5 @@
 namespace Plex.Api.Test
 {
-    using ApiModels;
 
     public class TestConfiguration
     {

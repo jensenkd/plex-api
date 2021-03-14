@@ -3,7 +3,8 @@ namespace Plex.Api.PlexModels.Account
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
-    public class PlexAccount    {
+    public class PlexAccount
+    {
         [JsonPropertyName("id")]
         public int Id { get; set; }
 

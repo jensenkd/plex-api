@@ -2,7 +2,7 @@ namespace Plex.Api.Test.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
-    using ApiModels.Libraries;
+    using Library.ApiModels.Libraries;
     using PlexModels.Library;
     using Xunit;
     using Xunit.Abstractions;

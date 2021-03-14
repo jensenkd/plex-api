@@ -2,12 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
-    using ApiModels.Libraries;
-    using Automapper;
     using Enums;
     using Interfaces;
     using PlexModels;
@@ -25,7 +22,6 @@
     using PlexModels.Server.Sessions;
     using PlexModels.Server.Statistics;
     using PlexModels.Server.Transcoders;
-    using Metadata = PlexModels.Media.Metadata;
 
     /// <inheritdoc/>
     public class PlexServerClient : IPlexServerClient

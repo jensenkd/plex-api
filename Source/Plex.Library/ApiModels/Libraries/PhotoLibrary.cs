@@ -1,7 +1,7 @@
-namespace Plex.Api.ApiModels
+namespace Plex.Library.ApiModels.Libraries
 {
-    using Clients.Interfaces;
-    using Libraries;
+    using Api.Clients.Interfaces;
+    using Servers;
 
     public class PhotoLibrary : LibraryBase
     {

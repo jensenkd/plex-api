@@ -1,10 +1,8 @@
-namespace Plex.Api.Automapper
+namespace Plex.Library.Automapper
 {
     using System;
     using System.Globalization;
-    using ApiModels;
-    using PlexModels.Account;
-    using PlexAccount = ApiModels.Accounts.PlexAccount;
+    using ApiModels.Accounts;
     using Profile = AutoMapper.Profile;
 
     public class PlexAccountModelMapper : Profile
@@ -14,7 +12,7 @@ namespace Plex.Api.Automapper
         /// </summary>
         public PlexAccountModelMapper()
         {
-            this.CreateMap<PlexModels.Account.PlexAccount, PlexAccount>()
+            this.CreateMap<Api.PlexModels.Account.PlexAccount, PlexAccount>()
                 .ForMember(x => x.RememberExpiresAt,
                     opt =>
                         opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.RememberExpiresAt).

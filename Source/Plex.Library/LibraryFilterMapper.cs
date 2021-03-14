@@ -1,10 +1,10 @@
-namespace Plex.Api.Helpers.Mappings
+namespace Plex.Library
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Api.PlexModels.Library.Search;
     using ApiModels.Libraries.Filters;
-    using PlexModels.Library.Search;
 
     /// <summary>
     /// Class for Mapping Library Filter Model Objects

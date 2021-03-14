@@ -1,13 +1,13 @@
-namespace Plex.Api.ApiModels
+namespace Plex.Library.ApiModels.Libraries
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Clients.Interfaces;
-    using Enums;
-    using Libraries;
-    using Libraries.Filters;
-    using PlexModels.Media;
+    using Api.Clients.Interfaces;
+    using Api.Enums;
+    using Api.PlexModels.Library.Search;
+    using Api.PlexModels.Media;
+    using Servers;
 
     public class MusicLibrary : LibraryBase
     {

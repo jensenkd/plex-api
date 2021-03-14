@@ -1,4 +1,4 @@
-namespace Plex.Api.ApiModels.Libraries.Filters
+namespace Plex.Api.PlexModels.Library
 {
     public enum Operator
     {

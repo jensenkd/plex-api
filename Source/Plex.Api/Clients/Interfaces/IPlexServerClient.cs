@@ -1,9 +1,7 @@
 namespace Plex.Api.Clients.Interfaces
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using ApiModels.Libraries;
     using Enums;
     using PlexModels.Hubs;
     using PlexModels.Library;

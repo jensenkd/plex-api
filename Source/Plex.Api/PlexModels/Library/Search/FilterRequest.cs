@@ -1,6 +1,7 @@
-namespace Plex.Api.ApiModels.Libraries.Filters
+namespace Plex.Api.PlexModels.Library.Search
 {
     using System.Collections.Generic;
+    using global::Plex.Api.PlexModels.Library;
 
     public class FilterRequest
     {

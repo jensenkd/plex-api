@@ -2,7 +2,6 @@ namespace Plex.Api.PlexModels.Library.Search
 {
     using System;
     using System.Text.Json.Serialization;
-    using ApiModels.Libraries.Filters;
 
     public class FilterOperator
     {

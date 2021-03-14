@@ -1,17 +1,18 @@
-namespace Plex.Api.ApiModels.Libraries
+namespace Plex.Library.ApiModels.Libraries
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Api.Clients.Interfaces;
+    using Api.Enums;
+    using Api.PlexModels.Hubs;
+    using Api.PlexModels.Library.Collections;
+    using Api.PlexModels.Library.Search;
+    using Api.PlexModels.Media;
     using Automapper;
-    using Clients.Interfaces;
-    using Enums;
     using Filters;
-    using Helpers.Mappings;
-    using PlexModels.Hubs;
-    using PlexModels.Library.Search;
-    using PlexModels.Media;
+    using Servers;
 
     /// <summary>
     ///
@@ -176,23 +177,7 @@ namespace Plex.Api.ApiModels.Libraries
         /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
         /// <param name="libraryType">Filter results to a spcifiec libtype (movie, show, episode, artist,
         /// album, track; optional).</param>
-        /// <param name="filters">
-        /// Any of the available filters for the current library section. Partial string matches allowed. Multiple matches OR together.
-        /// Negative filtering also possible, just add an exclamation mark to the end of filter name, e.g. resolution!=1x1.
-        ///        unwatched: Display or hide unwatched content (True, False). [all]
-        ///        duplicate: Display or hide duplicate items (True, False). [movie]
-        ///        actor: List of actors to search ([actor_or_id, …]). [movie]
-        ///        collection: List of collections to search within ([collection_or_id, …]). [all]
-        ///        contentRating: List of content ratings to search within ([rating_or_key, …]). [movie,tv]
-        ///        country: List of countries to search within ([country_or_key, …]). [movie,music]
-        ///        decade: List of decades to search within ([yyy0, …]). [movie]
-        ///        director: List of directors to search ([director_or_id, …]). [movie]
-        ///        genre: List Genres to search within ([genere_or_id, …]). [all]
-        ///        network: List of TV networks to search within ([resolution_or_key, …]). [tv]
-        ///        resolution: List of video resolutions to search within ([resolution_or_key, …]). [movie]
-        ///        studio: List of studios to search within ([studio_or_key, …]). [music]
-        ///        year: List of years to search within ([yyyy, …]). [all]
-        /// </param>
+        /// <param name="filters">List of Field Filters</param>
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <exception cref="InvalidOperatorException">An invalid Filter Operator was used for a given Filter Field.</exception>
@@ -281,12 +266,12 @@ namespace Plex.Api.ApiModels.Libraries
         /// Get Library Collections
         /// </summary>
         /// <returns>List of Collection Models</returns>
-        protected async Task<List<CollectionModel>> GetCollections()
+        protected async Task<List<CollectionModel>> GetCollections(string title)
         {
-            var collectionContainer = await this._plexLibraryClient.GetCollectionsAsync(this._server.AccessToken, this._server.Uri.ToString(), this.Key, string.Empty);
+            var collectionContainer = await this._plexLibraryClient.GetCollectionsAsync(this._server.AccessToken, this._server.Uri.ToString(), this.Key, title);
 
             var collections =
-                ObjectMapper.Mapper.Map<List<PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
+                ObjectMapper.Mapper.Map<List<Api.PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
 
             return collections;
         }
@@ -300,7 +285,7 @@ namespace Plex.Api.ApiModels.Libraries
             var collectionContainer = await this._plexLibraryClient.GetCollectionAsync(this._server.AccessToken, this._server.Uri.ToString(), collectionKey);
 
             var collections =
-                ObjectMapper.Mapper.Map<List<PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
+                ObjectMapper.Mapper.Map<List<Api.PlexModels.Library.Collections.Collection>, List<CollectionModel>>(collectionContainer.Collections);
 
             return collections.SingleOrDefault();
         }

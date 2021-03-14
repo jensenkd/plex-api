@@ -1,9 +1,8 @@
-namespace Plex.Api.Factories
+namespace Plex.Library.Factories
 {
-    using ApiModels;
+    using Api.Clients.Interfaces;
+    using Api.Factories;
     using ApiModels.Accounts;
-    using Clients;
-    using Clients.Interfaces;
 
     public class PlexFactory : IPlexFactory
     {

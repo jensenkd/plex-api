@@ -4,7 +4,8 @@ namespace Plex.Api.Api
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using ApiModels.Libraries.Filters;
+    using PlexModels.Library;
+    using PlexModels.Library.Search;
 
     /// <summary>
     /// Api Request Builder.
@@ -129,10 +130,10 @@ namespace Plex.Api.Api
                     switch (item.Operator)
                     {
                         case Operator.Is:
-                            queryParameters.Add(item.Field, string.Join(",", item.Values));
+                            queryParameters.Add(item.Field+"%3d", string.Join(",", item.Values));
                             break;
                         case Operator.IsNot:
-                            queryParameters.Add(item.Field+"!", string.Join(",", item.Values));
+                            queryParameters.Add(item.Field+"!%3d", string.Join(",", item.Values));
                             break;
                         case Operator.GreaterThan:
                             queryParameters.Add(item.Field+">>", string.Join(",", item.Values));

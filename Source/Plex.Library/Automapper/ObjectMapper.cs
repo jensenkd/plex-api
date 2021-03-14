@@ -1,8 +1,8 @@
-using System;
-using AutoMapper;
-
-namespace Plex.Api.Automapper
+namespace Plex.Library.Automapper
 {
+    using System;
+    using AutoMapper;
+
     /// <summary>
     ///
     /// </summary>

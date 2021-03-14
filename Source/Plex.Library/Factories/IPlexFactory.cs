@@ -1,8 +1,10 @@
 namespace Plex.Api.Factories
 {
-    using ApiModels;
-    using ApiModels.Accounts;
+    using Library.ApiModels.Accounts;
 
+    /// <summary>
+    ///
+    /// </summary>
     public interface IPlexFactory
     {
         /// <summary>
@@ -19,13 +21,5 @@ namespace Plex.Api.Factories
         /// <param name="authToken"></param>
         /// <returns></returns>
         PlexAccount GetPlexAccount(string authToken);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="plexHostUrl"></param>
-        /// <param name="authToken"></param>
-        /// <returns></returns>
-        //Server GetPlexServer(string plexHostUrl, string authToken);
     }
 }

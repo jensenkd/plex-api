@@ -1,9 +1,12 @@
 namespace Plex.Api.Test.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using ApiModels.Libraries;
-    using ApiModels.Libraries.Filters;
+    using System.Threading.Tasks;
+    using Library.ApiModels.Libraries;
+    using PlexModels.Library;
+    using PlexModels.Library.Search;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -31,6 +34,7 @@ namespace Plex.Api.Test.Tests
                 this.output.WriteLine("Year: " + item.Year);
                 this.output.WriteLine("Rating: " + item.AudienceRating);
             }
+
             Assert.Equal(items.Size, count);
         }
 
@@ -50,6 +54,7 @@ namespace Plex.Api.Test.Tests
                 this.output.WriteLine("Year: " + item.Year);
                 this.output.WriteLine("Rating: " + item.AudienceRating);
             }
+
             Assert.NotNull(items);
             Assert.Equal(count, items.Media.Count);
         }
@@ -61,10 +66,7 @@ namespace Plex.Api.Test.Tests
 
             var requests = new List<FilterRequest>
             {
-                new()
-                {
-                    Field = "contentRating", Operator = Operator.Is, Values = new List<string> {"R", "G"}
-                }
+                new() {Field = "contentRating", Operator = Operator.Is, Values = new List<string> {"R", "G"}}
             };
 
             var results = await library.SearchMovies(string.Empty, "year:desc", requests, 0, 20);
@@ -80,23 +82,20 @@ namespace Plex.Api.Test.Tests
         public async void Test_MovieFilterValues()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-            var filterValues = await library.GetFilterValues("movie","genre", "Action");
+            var filterValues = await library.GetFilterValues("movie", "genre", "Action");
 
             Assert.NotNull(filterValues);
             Assert.True(filterValues.Count == 1);
         }
 
         [Fact]
-        public  void Test_MovieSearchByYear()
+        public void Test_MovieSearchByYear()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
 
             var filters = new List<FilterRequest>
             {
-                new()
-                {
-                    Field = "year", Operator = Operator.Is, Values = new List<string> {"2021"}
-                }
+                new() {Field = "year", Operator = Operator.Is, Values = new List<string> {"2021"}}
             };
 
             var movieContainer = library.SearchMovies(string.Empty, string.Empty, filters, 0, 20).Result;
@@ -112,13 +111,14 @@ namespace Plex.Api.Test.Tests
         public async void Test_AllMovies()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-            var items = await library.AllMovies("year:asc",  0, 10);
+            var items = await library.AllMovies("year:asc", 0, 10);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
                 this.output.WriteLine("Year: " + item.Year);
                 this.output.WriteLine("Rating: " + item.AudienceRating);
             }
+
             Assert.NotNull(items);
         }
 
@@ -126,136 +126,148 @@ namespace Plex.Api.Test.Tests
         public async void Test_SearchMovieWithSort()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-            var items = await library.SearchMovies(string.Empty,  "year:asc", null, 0, 10);
+            var items = await library.SearchMovies(string.Empty, "year:asc", null, 0, 10);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
                 this.output.WriteLine("Year: " + item.Year);
                 this.output.WriteLine("Rating: " + item.AudienceRating);
             }
+
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task Test_GetCollectionsAsync()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+            Assert.NotNull(library);
+
+            const string collectionName = "Test";
+            var collections = await library.Collections(collectionName);
+            foreach (var item in collections)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+            }
+
+            Assert.NotNull(collections);
+            Assert.True(collections.Count > 0);
+        }
+
+        [Fact]
+        public async void Test_GetCollectionAsync()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+            Assert.NotNull(library);
+
+            const string collectionKey = "112898";
+
+            var collection = await library.Collection(collectionKey);
+            Assert.NotNull(collection);
+            this.output.WriteLine("Title: " + collection.Title);
+            Assert.Equal("Poster", collection.Title);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task Test_AddCollectionToMovieAsync()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+            Assert.NotNull(library);
+
+            var movieKey = "8576";
+            const string collectionName = "Test";
+
+            // Add Collection to Movie
+            await library.AddCollectionToItem(movieKey, collectionName);
+
+            // Verify Collection was added
+            var items = await library.CollectionItemsByName(collectionName);
+
+            Assert.Contains(movieKey, items.Media.Select(c => c.RatingKey));
+        }
+
+        [Fact]
+        public async Task Test_RemoveCollectionFromMovieAsync()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+            Assert.NotNull(library);
+
+            var movieKey = "8576";
+            const string collectionName = "Test";
+
+            // Delete Collection to Movie
+            await library.RemoveCollectionFromItem(movieKey, collectionName);
+
+            // Verify Collection was removed
+            var items = await library.CollectionItemsByName(collectionName);
+
+            Assert.DoesNotContain(movieKey, items.Media.Select(c => c.RatingKey));
+        }
+
+
+        [Fact]
+        public async Task Test_GetCollectionChildrenByKey()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+            Assert.NotNull(library);
+
+            const string collectionKey = "113834";
+            var items = await library.CollectionItemsMetadataByKey(collectionKey);
+
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+
+            Assert.NotNull(items);
+        }
+
+        [Fact]
+        public async Task Test_GetCollectionChildrenByName()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+            Assert.NotNull(library);
+
+            const string collectionName = "Test";
+            var items = await library.CollectionItemsMetadataByName(collectionName);
+
+            foreach (var item in items.Media)
+            {
+                this.output.WriteLine("Title: " + item.Title);
+                this.output.WriteLine("Year: " + item.Year);
+                this.output.WriteLine("Rating: " + item.AudienceRating);
+            }
+
             Assert.NotNull(items);
         }
 
          [Fact]
-         public async System.Threading.Tasks.Task Test_GetCollectionsAsync()
+         public async void Test_UpdateCollectionAsync()
          {
              var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
              Assert.NotNull(library);
 
-             var collections = await library.Collections();
-             foreach (var item in collections)
-             {
-                 this.output.WriteLine("Title: " + item.Title);
-             }
+             const string collectionRatingKey = "113834";
+             var tempTitle = "Test-" + DateTime.Now.ToShortDateString();
 
-             Assert.NotNull(collections);
-             Assert.True(collections.Count > 0);
+             var collection = await library.Collection(collectionRatingKey);
+             var originalTitle = collection.Title;
+             this.output.WriteLine("Original Title: " + originalTitle);
+             collection.Title = tempTitle;
+             this.output.WriteLine("Updated Title:" + collection.Title);
+             library.UpdateCollection(collection);
+
+             var updatedCollection = await library.Collection(collectionRatingKey);
+             Assert.Equal(updatedCollection.Title, tempTitle);
+             this.output.WriteLine("Updated Title:" + updatedCollection.Title);
+             updatedCollection.Title = originalTitle;
+             library.UpdateCollection(updatedCollection);
+
+             var revertedCollection = await library.Collection(collectionRatingKey);
+             this.output.WriteLine("Original Title: " + revertedCollection.Title);
+             Assert.Equal(originalTitle, revertedCollection.Title);
          }
-
-         [Fact]
-         public async void Test_GetCollectionAsync()
-         {
-             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-             Assert.NotNull(library);
-
-             const string collectionKey = "112898";
-
-             var collection = await library.Collection(collectionKey);
-             Assert.NotNull(collection);
-             this.output.WriteLine("Title: " + collection.Title);
-             Assert.Equal("Poster", collection.Title);
-         }
-
-         [Fact]
-         public async System.Threading.Tasks.Task Test_AddCollectionToMovieAsync()
-         {
-             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-             Assert.NotNull(library);
-
-             var movieKey = "8576";
-             const string collectionName = "Test";
-
-             // Add Collection to Movie
-             await library.AddCollectionToItem(movieKey, collectionName);
-
-             // Verify Collection was added
-             var items = await library.GetCollectionItemsByName(collectionName);
-
-            Assert.NotNull(items);
-         }
-
-         // [Fact]
-         // public async System.Threading.Tasks.Task Test_RemoveCollectionFromMovieAsync()
-         // {
-         //     var plexApi = this.ServiceProvider.GetService<IPlexClient>();
-         //     var authKey = this.Configuration["Plex:AuthenticationKey"];
-         //
-         //     var libraryKey = "1";
-         //     var movieKey = "8576";
-         //     const string collectionName = "Test";
-         //
-         //     if (plexApi != null)
-         //     {
-         //         var servers = await plexApi.GetServersAsync(authKey, false);
-         //         var fullUri = servers[0].FullUri.ToString();
-         //
-         //         // Delete Collection to Movie
-         //         await plexApi.DeleteCollectionFromMovieAsync(authKey, fullUri, libraryKey, movieKey, collectionName);
-         //
-         //         // Verify Collection was added
-         //         var collections = await plexApi.GetCollectionTagsForMovieAsync(authKey, fullUri, movieKey);
-         //
-         //         Assert.True(collections == null || !collections.Contains(collectionName));
-         //     }
-         // }
-         //
-         // [Fact]
-         // public async System.Threading.Tasks.Task Test_GetCollectionChildrenAsync()
-         // {
-         //     var plexApi = this.ServiceProvider.GetService<IPlexClient>();
-         //     var authKey = this.Configuration["Plex:AuthenticationKey"];
-         //
-         //     if (plexApi != null)
-         //     {
-         //         var servers = await plexApi.GetServersAsync(authKey, false);
-         //         var fullUri = servers[0].FullUri.ToString();
-         //
-         //         var movies = await plexApi.GetChildrenMetadataAsync(authKey, fullUri, 112898);
-         //
-         //         Assert.True(movies.MediaContainer.Metadata.Count > 0);
-         //     }
-         // }
-         //
-         // [Fact]
-         // public async System.Threading.Tasks.Task Test_UpdateCollectionAsync()
-         // {
-         //     var plexApi = this.ServiceProvider.GetService<IPlexClient>();
-         //     var authKey = this.Configuration["Plex:AuthenticationKey"];
-         //
-         //     if (plexApi != null)
-         //     {
-         //         var servers = await plexApi.GetServersAsync(authKey, false);
-         //         var fullUri = servers[0].FullUri.ToString();
-         //
-         //         const string libraryKey = "1";
-         //         const string collectionRatingKey = "96453";
-         //         const string tempTitle = "TEST ME";
-         //
-         //         var collection = await plexApi.GetCollectionAsync(authKey, fullUri, collectionRatingKey);
-         //         var originalTitle = collection.Title;
-         //         collection.Title = tempTitle;
-         //         await plexApi.UpdateCollectionAsync(authKey, fullUri, libraryKey, collection);
-         //
-         //         var updatedCollection = await plexApi.GetCollectionAsync(authKey, fullUri, collectionRatingKey);
-         //         Assert.Equal(updatedCollection.Title, tempTitle);
-         //
-         //         updatedCollection.Title = originalTitle;
-         //         await plexApi.UpdateCollectionAsync(authKey, fullUri, libraryKey, updatedCollection);
-         //
-         //         var revertedCollection = await plexApi.GetCollectionAsync(authKey, fullUri, collectionRatingKey);
-         //         Assert.Equal(originalTitle, revertedCollection.Title);
-         //     }
-         //}
     }
 }
-

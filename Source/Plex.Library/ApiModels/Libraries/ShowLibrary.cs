@@ -1,11 +1,12 @@
-namespace Plex.Api.ApiModels.Libraries
+namespace Plex.Library.ApiModels.Libraries
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Clients.Interfaces;
-    using Enums;
-    using Filters;
-    using PlexModels.Media;
+    using Api.Clients.Interfaces;
+    using Api.Enums;
+    using Api.PlexModels.Library.Search;
+    using Api.PlexModels.Media;
+    using Servers;
 
     /// <summary>
     ///

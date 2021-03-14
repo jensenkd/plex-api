@@ -1,13 +1,16 @@
-namespace Plex.Api.ApiModels.Libraries
+namespace Plex.Library.ApiModels.Libraries
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Clients.Interfaces;
-    using Enums;
-    using Filters;
-    using PlexModels.Library;
-    using PlexModels.Media;
+    using Api.Clients.Interfaces;
+    using Api.Enums;
+    using Api.PlexModels.Library;
+    using Api.PlexModels.Library.Collections;
+    using Api.PlexModels.Library.Search;
+    using Api.PlexModels.Media;
+    using Servers;
 
     /// <summary>
     /// Movie Library
@@ -96,8 +99,8 @@ namespace Plex.Api.ApiModels.Libraries
         /// Get Movie Collections
         /// </summary>
         /// <returns></returns>
-        public async Task<List<CollectionModel>> Collections() =>
-            await this.GetCollections();
+        public async Task<List<CollectionModel>> Collections(string title) =>
+            await this.GetCollections(title);
 
         /// <summary>
         ///
@@ -121,7 +124,7 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="collectionKey">Collection Key (unique identifier)</param>
         /// <returns>List of Media Items</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<MediaContainer> GetCollectionItemsByKey(string collectionKey)
+        public async Task<MediaContainer> CollectionItemsByKey(string collectionKey)
         {
             if (string.IsNullOrEmpty(collectionKey))
             {
@@ -138,7 +141,7 @@ namespace Plex.Api.ApiModels.Libraries
         /// <param name="collectionName">Collection Name</param>
         /// <returns>List of Media Items</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<MediaContainer> GetCollectionItemsByName(string collectionName)
+        public async Task<MediaContainer> CollectionItemsByName(string collectionName)
         {
             if (string.IsNullOrEmpty(collectionName))
             {
@@ -147,6 +150,46 @@ namespace Plex.Api.ApiModels.Libraries
 
             return await this._plexLibraryClient.GetCollectionItemsByCollectionName(this._server.AccessToken,
                 this._server.Uri.ToString(), this.Key, collectionName);
+        }
+
+        /// <summary>
+        /// Get Metadata for items associated with a Collection by Collection Key
+        /// </summary>
+        /// <param name="collectionKey">Collection Key (unique identifier)</param>
+        /// <returns>List of Media Items</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<MediaContainer> CollectionItemsMetadataByKey(string collectionKey)
+        {
+            if (string.IsNullOrEmpty(collectionKey))
+            {
+                throw new ArgumentNullException(nameof(collectionKey));
+            }
+
+            return await this._plexLibraryClient.GetCollectionItemMetadataByKey(this._server.AccessToken,
+                this._server.Uri.ToString(), collectionKey);
+        }
+
+        /// <summary>
+        /// Get Metadata for items associated with a Collection by Collection Name
+        /// </summary>
+        /// <param name="collectionName">Collection Name</param>
+        /// <returns>List of Media Items</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<MediaContainer> CollectionItemsMetadataByName(string collectionName)
+        {
+            if (string.IsNullOrEmpty(collectionName))
+            {
+                throw new ArgumentNullException(nameof(collectionName));
+            }
+
+            var collections = await this.GetCollections(collectionName);
+            if (collections == null || !collections.Any())
+            {
+                throw new ApplicationException("No Collections available for : " + collectionName);
+            }
+
+            return await this._plexLibraryClient.GetCollectionItemMetadataByKey(this._server.AccessToken,
+                this._server.Uri.ToString(), collections.First().RatingKey);
         }
 
         /// <summary>
