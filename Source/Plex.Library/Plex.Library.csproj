@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <PackageVersion />
+    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
@@ -11,12 +10,19 @@
     <Description></Description>
     <Authors></Authors>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl></RepositoryUrl>
+    <RepositoryUrl>http</RepositoryUrl>
     <PackageTags>plex dotnet core api</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Plex.Api\Plex.Api.csproj" />
+    <ProjectReference Include="..\Plex.Api\Plex.Api.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_PackageFiles Include="$(OutputPath)\Plex.Api.dll">
+      <BuildAction>None</BuildAction>
+      <PackagePath>lib\net5.0</PackagePath>
+    </_PackageFiles>
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
