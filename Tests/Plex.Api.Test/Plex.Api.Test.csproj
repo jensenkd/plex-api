@@ -3,12 +3,8 @@
   <PropertyGroup Label="Build">
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>28d1554b-79da-4a82-b7f7-4779a8c8ae95</UserSecretsId>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
-
-  <ItemGroup Label="Project References">
-    <ProjectReference Include="..\..\Source\Plex.Api\Plex.Api.csproj" />
-    <ProjectReference Include="..\..\Source\Plex.Library\Plex.Library.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
@@ -17,6 +13,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\Plex.Api\Plex.Api.csproj" />
+    <ProjectReference Include="..\..\Source\Plex.Library\Plex.Library.csproj" />
   </ItemGroup>
 
 </Project>

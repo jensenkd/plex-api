@@ -2,24 +2,10 @@
 
   <PropertyGroup Label="Build">
     <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup Label="Package">
-    <PackageId>Plex.Api</PackageId>
-    <Description>.net core sdk for Plex  </Description>
-    <Authors>Kevin Jensen</Authors> 
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/jensenkd/plex-api</RepositoryUrl>
-    <PackageTags>plex dotnet core api</PackageTags>
-  </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin\Debug\Plex.Api.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DocumentationFile>bin\Release\Plex.Api.xml</DocumentationFile>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />

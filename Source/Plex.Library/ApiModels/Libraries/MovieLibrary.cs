@@ -46,7 +46,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <summary>
         ///
         /// </summary>
-        public int ContentChangedAt { get; set; }
+        public long ContentChangedAt { get; set; }
 
         /// <summary>
         ///
