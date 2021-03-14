@@ -14,7 +14,7 @@ jobs:
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
     - name: Pack
-      run: dotnet pack ./Source/Plex.Library/Plex.Library.csproj --configuration Release /p:Version=${VERSION} --output .
+      run: dotnet pack ./Source/Plex.Library/Plex.Library.csproj --configuration Release /p:Version=${VERSION} -p:PackageID=Plex.Api --output .
     - name: Push to Github Packages
       run: dotnet nuget push Plex.Api.${VERSION}.nupkg -s https://nuget.pkg.github.com/jensenkd/index.json -k ${GITHUB_TOKEN}
     - name: Push to Nuget.Org
