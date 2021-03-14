@@ -13,7 +13,7 @@
     <Description>Library for interacting with Plex Media Servers </Description>
     <Authors>Kevin Jensen</Authors>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>http</RepositoryUrl>
+    <RepositoryUrl>https://github.com/jensenkd/plex-api</RepositoryUrl>
     <PackageTags>plex dotnet core api</PackageTags>
   </PropertyGroup>
 
