@@ -24,7 +24,7 @@ namespace Plex.ServerApi.PlexModels.Media
         /// The duration of the file in milliseconds.
         /// </summary>
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        public long Duration { get; set; }
 
         /// <summary>
         /// The path to this file on disk (ex: /media/Movies/Cars (2006)/Cars (2006).mkv)
@@ -36,7 +36,7 @@ namespace Plex.ServerApi.PlexModels.Media
         /// The size of the file in bytes (ex: 733884416).
         /// </summary>
         [JsonPropertyName("size")]
-        public object Size { get; set; }
+        public long Size { get; set; }
 
         /// <summary>
         /// The audio profile of the file.
