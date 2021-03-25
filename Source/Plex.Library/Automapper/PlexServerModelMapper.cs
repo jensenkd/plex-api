@@ -17,19 +17,18 @@ namespace Plex.Library.Automapper
             this.CreateMap<AccountServer, Server>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
-                        opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).
-                            DateTime.ToString(CultureInfo.InvariantCulture) ))
+                        opt.MapFrom(src =>
+                            DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).DateTime))
+
                 .ForMember(x => x.CreatedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)));
+                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime));
 
             this.CreateMap<PlexServer, Server>().ForMember(x => x.UpdatedAt,
                 opt =>
                     opt.MapFrom(src =>
-                        DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).DateTime
-                            .ToString(CultureInfo.InvariantCulture)));
+                        DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).DateTime));
 
             this.CreateMap<PlexServerDirectory, PlexServerDirectory>();
         }
