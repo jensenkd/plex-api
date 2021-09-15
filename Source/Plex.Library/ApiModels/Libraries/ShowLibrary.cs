@@ -28,7 +28,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Max number of items to return (Default 100)</param>
         /// <returns></returns>
         public async Task<MediaContainer> SearchShows(string title, string sort, List<FilterRequest> filters, int start = 0, int count = 100) =>
-            await this.Search(true, title, sort, SearchType.Show, filters, start, count);
+            await this.Search( title, sort, SearchType.Show, filters, start, count);
 
         /// <summary>
         /// Search Episodes
@@ -40,7 +40,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Max number of items to return (Default 100)</param>
         /// <returns></returns>
         public async Task<MediaContainer> SearchEpisodes(string title, string sort, List<FilterRequest> filters, int start = 0, int count = 100) =>
-            await this.Search(true, title, sort, SearchType.Episode, filters, start, count);
+            await this.Search( title, sort, SearchType.Episode, filters, start, count);
 
         /// <summary>
         /// Get Recently Added Shows
@@ -68,7 +68,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Max number of items to return (Default 100)</param>
         /// <returns></returns>
         public async Task<MediaContainer> AllShows(string sort, int start = 0, int count = 100) =>
-            await this.Search(true, string.Empty, sort, SearchType.Show, null, start, count);
+            await this.Search( string.Empty, sort, SearchType.Show, null, start, count);
 
         /// <summary>
         /// Get All Episodes
@@ -78,7 +78,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Max number of items to return (Default 100)</param>
         /// <returns></returns>
         public async Task<MediaContainer> AllEpisodes(string sort, int start = 0, int count = 100) =>
-            await this.Search(true, string.Empty, sort, SearchType.Episode, null, start, count);
+            await this.Search( string.Empty, sort, SearchType.Episode, null, start, count);
 
     }
 }

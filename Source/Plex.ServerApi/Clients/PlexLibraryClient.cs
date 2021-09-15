@@ -120,6 +120,9 @@ namespace Plex.ServerApi.Clients
                 queryParams.Add("sort", sort);
             }
 
+            // Include Guids now available PMS v1.24.3.5033
+            queryParams.Add("includeGuids", "1");
+
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{libraryKey}/all", HttpMethod.Get)
                     .AddPlexToken(authToken)

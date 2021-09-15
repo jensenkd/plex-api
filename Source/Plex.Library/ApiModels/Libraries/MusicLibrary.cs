@@ -69,7 +69,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <returns></returns>
         public async Task<MediaContainer> SearchArtists(string name, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
-            await this.Search(true, name, sort, SearchType.Artist, filters, start, count);
+            await this.Search(name, sort, SearchType.Artist, filters, start, count);
 
         /// <summary>
         /// Search for an Album.
@@ -82,7 +82,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <returns></returns>
         public async Task<MediaContainer> SearchAlbums(string title, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
-            await this.Search(true, title, sort, SearchType.Album, filters, start, count);
+            await this.Search( title, sort, SearchType.Album, filters, start, count);
 
         /// <summary>
         /// Search for a track.
@@ -95,7 +95,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <returns></returns>
         public async Task<MediaContainer> SearchTracks(string title, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
-            await this.Search(true, title, sort, SearchType.Track, filters, start, count);
+            await this.Search( title, sort, SearchType.Track, filters, start, count);
 
         /// <summary>
         /// Get All Artists
@@ -105,7 +105,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         public async Task<MediaContainer> AllArtists(string sort, int start = 0, int count = 100) =>
-            await this.Search(true, string.Empty, sort, SearchType.Artist, null, start, count);
+            await this.Search( string.Empty, sort, SearchType.Artist, null, start, count);
 
         /// <summary>
         /// Get All Albums
@@ -115,7 +115,7 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         public async Task<MediaContainer> AllAlbums(string sort, int start = 0, int count = 100) =>
-            await this.Search(true, string.Empty, sort, SearchType.Album, null, start, count);
+            await this.Search( string.Empty, sort, SearchType.Album, null, start, count);
 
         /// <summary>
         /// Get All Tracks
@@ -125,6 +125,6 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
         public async Task<MediaContainer> AllTracks(string sort, int start = 0, int count = 100) =>
-            await this.Search(true, string.Empty, sort, SearchType.Track, null, start, count);
+            await this.Search( string.Empty, sort, SearchType.Track, null, start, count);
     }
 }

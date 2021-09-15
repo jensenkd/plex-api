@@ -172,7 +172,6 @@ namespace Plex.Library.ApiModels.Libraries
         /// <summary>
         /// Matching Library Items with Metadata
         /// </summary>
-        /// <param name="includeExtendedMetadata"></param>
         /// <param name="title">General string query to search for (optional).</param>
         /// <param name="sort">column:dir; column can be any of {addedAt, originallyAvailableAt, lastViewedAt,
         /// titleSort, rating, mediaHeight, duration}. dir can be asc or desc (optional).</param>
@@ -183,27 +182,13 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <exception cref="InvalidOperatorException">An invalid Filter Operator was used for a given Filter Field.</exception>
         /// <returns>MediaContainer</returns>
-        protected async Task<MediaContainer> Search(bool includeExtendedMetadata, string title, string sort, SearchType libraryType,
+        protected async Task<MediaContainer> Search(string title, string sort, SearchType libraryType,
             List<FilterRequest> filters, int start, int count)
         {
             // TODO Validate Operators if used [InvalidOperatorException]
             var librarySummaryContainer =
                 await this._plexLibraryClient.LibrarySearch(this._server.AccessToken, this._server.Uri.ToString(),
                 title, this.Key, sort, libraryType, filters, start, count);
-
-            if (librarySummaryContainer != null && librarySummaryContainer.Size > 0)
-            {
-                if (includeExtendedMetadata)
-                {
-                    for (var i = 0; i < librarySummaryContainer.Media.Count; i++)
-                    {
-                        var mediaContainer = await this._plexLibraryClient.GetItem(this._server.AccessToken,
-                            this._server.Uri.ToString(),
-                            librarySummaryContainer.Media[i].RatingKey);
-                        librarySummaryContainer.Media[i] = mediaContainer.Media.First();
-                    }
-                }
-            }
 
             return librarySummaryContainer;
         }

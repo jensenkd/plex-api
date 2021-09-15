@@ -78,26 +78,22 @@ namespace Plex.Library.ApiModels.Libraries
         /// <param name="title">Title to search for</param>
         /// <param name="sort">Sort order.</param>
         /// <param name="filters">Filters</param>
-        /// <param name="includeExtendedMetadata">Include extended Metadata (IMDB ID/TMDB ID).
-        /// This is much slower because it has to make a single api call for every movie returned.</param>
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
-        public async Task<MediaContainer> SearchMovies(string title, string sort, List<FilterRequest> filters, bool includeExtendedMetadata,
+        public async Task<MediaContainer> SearchMovies(string title, string sort, List<FilterRequest> filters,
             int start = 0, int count = 100) =>
-            await this.Search(includeExtendedMetadata, title, sort, SearchType.Movie, filters, start, count);
+            await this.Search(title, sort, SearchType.Movie, filters, start, count);
 
         /// <summary>
         /// Get All Movies
         /// </summary>
-        /// <param name="includeExtendedMetadata">Include extended Metadata (IMDB ID/TMDB ID).
-        /// This is much slower because it has to make a single api call for every movie returned.</param>
         /// <param name="sort">Sort field:dir</param>
         /// <param name="start">Starting record (default 0)</param>
         /// <param name="count">Only return the specified number of results (default 100).</param>
         /// <returns></returns>
-        public async Task<MediaContainer> AllMovies(bool includeExtendedMetadata, string sort, int start = 0, int count = 100) =>
-            await this.Search(includeExtendedMetadata, string.Empty, sort, SearchType.Movie, null, start, count);
+        public async Task<MediaContainer> AllMovies(string sort, int start = 0, int count = 100) =>
+            await this.Search(string.Empty, sort, SearchType.Movie, null, start, count);
 
         /// <summary>
         /// Get Movie Collections

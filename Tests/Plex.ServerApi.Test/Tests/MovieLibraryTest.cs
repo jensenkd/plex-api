@@ -39,6 +39,19 @@ namespace Plex.ServerApi.Test.Tests
         }
 
         [Fact]
+        public async void Test_OnlyGettingMoviesBack()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
+
+            var movies = await library.AllMovies( string.Empty, 0, 4000);
+
+            foreach (var movie in movies.Media)
+            {
+                Assert.Equal("movie", movie.Type);
+            }
+        }
+
+        [Fact]
         public async void Test_SearchMovieByName()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
@@ -47,7 +60,7 @@ namespace Plex.ServerApi.Test.Tests
             const int start = 0;
             const int count = 8;
 
-            var items = await library.SearchMovies( title, "audienceRating:desc", null, false, start, count);
+            var items = await library.SearchMovies( title, "audienceRating:desc", null,  start, count);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -69,7 +82,7 @@ namespace Plex.ServerApi.Test.Tests
                 new() {Field = "contentRating", Operator = Operator.Is, Values = new List<string> {"R", "G"}}
             };
 
-            var results = await library.SearchMovies(string.Empty, "year:desc", requests, false, 0, 20);
+            var results = await library.SearchMovies(string.Empty, "year:desc", requests,  0, 20);
 
             foreach (var item in results.Media)
             {
@@ -98,7 +111,7 @@ namespace Plex.ServerApi.Test.Tests
                 new() {Field = "year", Operator = Operator.Is, Values = new List<string> {"2021"}}
             };
 
-            var movieContainer = library.SearchMovies(string.Empty, string.Empty, filters, false, 0, 20).Result;
+            var movieContainer = library.SearchMovies(string.Empty, string.Empty, filters,  0, 20).Result;
             foreach (var movie in movieContainer.Media)
             {
                 Assert.Contains(movie.Year.ToString(), filters[0].Values);
@@ -111,7 +124,7 @@ namespace Plex.ServerApi.Test.Tests
         public async void Test_AllMovies()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-            var items = await library.AllMovies(false, "year:asc", 0, 10);
+            var items = await library.AllMovies( "year:asc", 0, 10);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
@@ -126,7 +139,7 @@ namespace Plex.ServerApi.Test.Tests
         public async void Test_SearchMovieWithSort()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-            var items = await library.SearchMovies(string.Empty, "year:asc", null, false, 0, 10);
+            var items = await library.SearchMovies(string.Empty, "year:asc", null,  0, 10);
             foreach (var item in items.Media)
             {
                 this.output.WriteLine("Title: " + item.Title);
