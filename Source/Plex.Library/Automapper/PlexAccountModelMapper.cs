@@ -15,8 +15,7 @@ namespace Plex.Library.Automapper
             this.CreateMap<ServerApi.PlexModels.Account.PlexAccount, PlexAccount>()
                 .ForMember(x => x.RememberExpiresAt,
                     opt =>
-                        opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.RememberExpiresAt).
-                            DateTime.ToString(CultureInfo.InvariantCulture) ));
+                        opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.RememberExpiresAt).UtcDateTime));
         }
     }
 }
