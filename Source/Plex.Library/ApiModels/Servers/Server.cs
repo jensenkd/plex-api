@@ -2,6 +2,7 @@ namespace Plex.Library.ApiModels.Servers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Automapper;
@@ -22,11 +23,21 @@ namespace Plex.Library.ApiModels.Servers
     using ServerApi.PlexModels.Server.Updates;
     using LibraryFilter = ServerApi.PlexModels.Library.LibraryFilter;
 
+    /// <summary>
+    /// Plex Server Object
+    /// </summary>
     public class Server
     {
         private readonly IPlexServerClient plexServerClient;
         private readonly IPlexLibraryClient plexLibraryClient;
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="plexServerClient">Plex Server Client</param>
+        /// <param name="plexLibraryClient">Plex Library Client</param>
+        /// <param name="accountServer">Account Server Object</param>
+        /// <exception cref="ArgumentNullException">Invalid Account Server</exception>
         public Server(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, AccountServer accountServer)
         {
             this.plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
@@ -39,6 +50,7 @@ namespace Plex.Library.ApiModels.Servers
 
             // Map AccountServer to this Server Object (Mainly to get Access Token and Host)
             ObjectMapper.Mapper.Map(accountServer, this);
+
             var serverModel = plexServerClient.GetPlexServerInfo(this.AccessToken, this.Uri.ToString()).Result;
 
             ObjectMapper.Mapper.Map(serverModel, this);
@@ -373,6 +385,7 @@ namespace Plex.Library.ApiModels.Servers
         /// Get Libraries
         /// </summary>
         /// <param name="filter">Library Filter (Optional)</param>
+        /// <exception cref="ApplicationException">Invalid Library Exception</exception>
         /// <returns>List of Library Objects</returns>
         public async Task<List<LibraryBase>> Libraries(LibraryFilter filter = null)
         {
@@ -380,7 +393,7 @@ namespace Plex.Library.ApiModels.Servers
             var summary = await this.plexServerClient.GetLibrariesAsync(this.AccessToken, this.Uri.ToString());
             foreach (var library in summary.Libraries)
             {
-                switch (library.Type.ToUpper())
+                switch (library.Type.ToUpper(CultureInfo.InvariantCulture))
                 {
                     case "MOVIE":
                         var movieLibrary = new MovieLibrary(this.plexServerClient, this.plexLibraryClient, this);
@@ -546,10 +559,8 @@ namespace Plex.Library.ApiModels.Servers
         /// Downloads Server Logs
         /// </summary>
         /// <returns></returns>
-        public async Task<object> DownloadLogs()
-        {
-            return await this.plexServerClient.GetLogs(this.AccessToken, this.Uri.ToString());
-        }
+        public async Task<object> DownloadLogs() =>
+            await this.plexServerClient.GetLogs(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
         /// Get list of all release updates available for this Server
@@ -610,6 +621,10 @@ namespace Plex.Library.ApiModels.Servers
         public async Task<SessionContainer> Sessions() =>
             await this.plexServerClient.GetSessionsAsync(this.AccessToken, this.Uri.ToString());
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public async Task<PlaylistContainer> Playlists() =>
             await this.plexServerClient.GetPlaylists(this.AccessToken, this.Uri.ToString());
     }

@@ -5,6 +5,9 @@ namespace Plex.Library.Automapper
     using ApiModels.Accounts;
     using Profile = AutoMapper.Profile;
 
+    /// <summary>
+    ///
+    /// </summary>
     public class PlexAccountModelMapper : Profile
     {
         /// <summary>
