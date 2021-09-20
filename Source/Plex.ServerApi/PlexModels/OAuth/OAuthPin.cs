@@ -40,12 +40,12 @@
         /// <summary>
         /// Created At
         /// </summary>
-        public DateTime CreatedAt { get; set; }
+        public string CreatedAt { get; set; }
 
         /// <summary>
         /// Expires At
         /// </summary>
-        public DateTime ExpiresAt { get; set; }
+        public string ExpiresAt { get; set; }
 
         /// <summary>
         /// Auth Token
