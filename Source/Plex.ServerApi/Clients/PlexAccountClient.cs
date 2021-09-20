@@ -45,7 +45,6 @@ namespace Plex.ServerApi.Clients
             var apiRequest =
                 new ApiRequestBuilder(BaseUri, "pins", HttpMethod.Post)
                     .AcceptJson()
-                    .AddQueryParam("strong", "true")
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                     .Build();

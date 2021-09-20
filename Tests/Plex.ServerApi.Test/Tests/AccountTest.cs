@@ -49,18 +49,18 @@ namespace Plex.ServerApi.Test.Tests
             Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Email);
         }
 
-        // [Fact]
-        // public async void Test_GetAccessTokenFromOAuthPinAsync()
-        // {
-        //     var pin = "XXX";
-        //
-        //     var plexAccountClient = this.fixture.ServiceProvider.GetService<IPlexAccountClient>();
-        //     if (plexAccountClient != null)
-        //     {
-        //         var result1 = await plexAccountClient.GetAuthTokenFromOAuthPinAsync(pin);
-        //         Assert.NotNull(result1);
-        //     }
-        // }
+        [Fact]
+        public async void Test_GetAccessTokenFromOAuthPinAsync()
+        {
+            var plexAccountClient = this.fixture.ServiceProvider.GetService<IPlexAccountClient>();
+            if (plexAccountClient != null)
+            {
+                var pin = await plexAccountClient.CreateOAuthPinAsync(string.Empty);
+
+                var result1 = await plexAccountClient.GetAuthTokenFromOAuthPinAsync(pin.Code);
+                Assert.NotNull(result1);
+            }
+        }
 
         [Fact]
         public async void Test_SignInAsync()
