@@ -20,51 +20,45 @@ namespace Plex.Library.Automapper
                 .ForMember(x => x.UpdatedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)))
+                            DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).UtcDateTime))
                 .ForMember(x => x.ScannedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.ScannedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)))
+                            DateTimeOffset.FromUnixTimeSeconds(src.ScannedAt).UtcDateTime))
                 .ForMember(x => x.CreatedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)));
+                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).UtcDateTime));
 
             this.CreateMap<Library, MusicLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
-                        opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).
-                            DateTime.ToString(CultureInfo.InvariantCulture) ))
+                        opt.MapFrom(src =>
+                            DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).UtcDateTime))
                 .ForMember(x => x.CreatedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)));
+                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).UtcDateTime));
 
             this.CreateMap<Library, ShowLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
-                        opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).
-                            DateTime.ToString(CultureInfo.InvariantCulture) ))
+                        opt.MapFrom(src =>
+                            DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).UtcDateTime))
                 .ForMember(x => x.CreatedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)));
+                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).UtcDateTime));
 
             this.CreateMap<Library, PhotoLibrary>()
                 .ForMember(x => x.UpdatedAt,
                     opt =>
-                        opt.MapFrom(src => DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).
-                            DateTime.ToString(CultureInfo.InvariantCulture) ))
+                        opt.MapFrom(src =>
+                            DateTimeOffset.FromUnixTimeSeconds(src.UpdatedAt).UtcDateTime))
                 .ForMember(x => x.CreatedAt,
                     opt =>
                         opt.MapFrom(src =>
-                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).DateTime
-                                .ToString(CultureInfo.InvariantCulture)));
+                            DateTimeOffset.FromUnixTimeSeconds(src.CreatedAt).UtcDateTime));
         }
     }
 }
