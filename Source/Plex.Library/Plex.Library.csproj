@@ -41,4 +41,8 @@
     <ProjectReference Include="..\Plex.ServerApi\Plex.ServerApi.csproj" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <DocFileItem Remove="bin\Release\Plex.Api.xml" />
+  </ItemGroup>
+
 </Project>

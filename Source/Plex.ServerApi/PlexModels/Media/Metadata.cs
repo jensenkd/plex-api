@@ -95,7 +95,7 @@ namespace Plex.ServerApi.PlexModels.Media
         public string Art { get; set; }
 
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        public long Duration { get; set; }
 
         [JsonPropertyName("originallyAvailableAt")]
         public string OriginallyAvailableAt { get; set; }

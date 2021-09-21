@@ -15,7 +15,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ContentRating { get; set; }
 
         [JsonPropertyName("duration")]
-        public string Duration { get; set; }
+        public long Duration { get; set; }
 
         [JsonPropertyName("grandparentArt")]
         public string GrandparentArt { get; set; }
@@ -102,7 +102,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string UpdatedAt { get; set; }
 
         [JsonPropertyName("viewOffset")]
-        public string ViewOffset { get; set; }
+        public long ViewOffset { get; set; }
 
         [JsonPropertyName("year")]
         public string Year { get; set; }
