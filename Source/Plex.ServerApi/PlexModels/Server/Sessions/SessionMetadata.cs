@@ -2,6 +2,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
+    using Media;
 
     public class SessionMetadata
     {
@@ -15,7 +16,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ContentRating { get; set; }
 
         [JsonPropertyName("duration")]
-        public long Duration { get; set; }
+        public string Duration { get; set; }
 
         [JsonPropertyName("grandparentArt")]
         public string GrandparentArt { get; set; }
@@ -102,7 +103,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string UpdatedAt { get; set; }
 
         [JsonPropertyName("viewOffset")]
-        public long ViewOffset { get; set; }
+        public string ViewOffset { get; set; }
 
         [JsonPropertyName("year")]
         public string Year { get; set; }
@@ -130,6 +131,18 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
 
         [JsonPropertyName("Writer")]
         public List<Writer> Writer { get; set; }
+
+        [JsonPropertyName("Director")]
+        public List<Director> Director { get; set; }
+
+        [JsonPropertyName("Genre")]
+        public List<Genre> Genre { get; set; }
+
+        [JsonPropertyName("Role")]
+        public List<MediaRole> Role { get; set; }
+
+        [JsonPropertyName("Producer")]
+        public List<Producer> Producer { get; set; }
 
         [JsonPropertyName("TranscodeSession")]
         public TranscodeSession TranscodeSession { get; set; }
