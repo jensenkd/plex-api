@@ -4,8 +4,9 @@ namespace Plex.ServerApi.PlexModels.Media
 
     public class Director
     {
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonPropertyName("filter")]
         public string Filter { get; set; }

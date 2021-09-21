@@ -12,43 +12,50 @@ namespace Plex.ServerApi.PlexModels.Media
         /// <summary>
         /// The unique ID for this media on the server.
         /// </summary>
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// The duration of the media in milliseconds (ex: 6990483).
         /// </summary>
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        public long Duration { get; set; }
 
         /// <summary>
         /// The bitrate of the media (ex: 1624).
         /// </summary>
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("bitrate")]
-        public int Bitrate { get; set; }
+        public long Bitrate { get; set; }
 
         /// <summary>
         /// The width of the video in pixels (ex: 608).
         /// </summary>
         [JsonPropertyName("width")]
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         public int Width { get; set; }
 
         /// <summary>
         /// The height of the media in pixels (ex: 256).
         /// </summary>
         [JsonPropertyName("height")]
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         public int Height { get; set; }
 
         /// <summary>
         /// The aspect ratio of the media (ex: 2.35).
         /// </summary>
         [JsonPropertyName("aspectRatio")]
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         public double AspectRatio { get; set; }
 
         /// <summary>
         /// The number of audio channels of the media (ex: 6).
         /// </summary>
         [JsonPropertyName("audioChannels")]
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         public int AudioChannels { get; set; }
 
         /// <summary>

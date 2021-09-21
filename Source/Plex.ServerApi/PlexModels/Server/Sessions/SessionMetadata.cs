@@ -12,6 +12,13 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         [JsonPropertyName("art")]
         public string Art { get; set; }
 
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+        [JsonPropertyName("audienceRating")]
+        public double AudienceRating { get; set; }
+
+        [JsonPropertyName("audienceRatingImage")]
+        public string AudienceRatingImage { get; set; }
+
         [JsonPropertyName("contentRating")]
         public string ContentRating { get; set; }
 
@@ -89,6 +96,9 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
 
         [JsonPropertyName("summary")]
         public string Summary { get; set; }
+
+        [JsonPropertyName("tagline")]
+        public string Tagline { get; set; }
 
         [JsonPropertyName("thumb")]
         public string Thumb { get; set; }

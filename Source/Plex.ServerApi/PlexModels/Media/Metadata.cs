@@ -73,6 +73,7 @@ namespace Plex.ServerApi.PlexModels.Media
         [JsonPropertyName("summary")]
         public string Summary { get; set; }
 
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("audienceRating")]
         public double AudienceRating { get; set; }
 

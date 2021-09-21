@@ -11,8 +11,9 @@ namespace Plex.ServerApi.PlexModels.Media
         /// <summary>
         /// The unique ID for this media part on the server.
         /// </summary>
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// API URL (ex: /library/parts/46618/1389985872/file.mkv).

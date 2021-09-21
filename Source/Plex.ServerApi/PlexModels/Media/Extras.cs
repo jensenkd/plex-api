@@ -5,8 +5,9 @@ namespace Plex.ServerApi.PlexModels.Media
 
     public class Extras
     {
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("size")]
-        public int Size { get; set; }
+        public long Size { get; set; }
 
         [JsonPropertyName("Metadata")]
         public List<Metadata> Metadata { get; set; }

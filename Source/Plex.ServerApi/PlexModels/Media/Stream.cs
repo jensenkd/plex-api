@@ -4,7 +4,9 @@ namespace Plex.ServerApi.PlexModels.Media
 
     public class Stream
     {
-        [JsonPropertyName("id")] public int Id { get; set; }
+        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
 
         [JsonPropertyName("streamType")] public int StreamType { get; set; }
 
