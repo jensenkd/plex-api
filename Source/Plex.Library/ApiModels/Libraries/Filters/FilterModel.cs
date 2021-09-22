@@ -4,11 +4,6 @@ namespace Plex.Library.ApiModels.Libraries.Filters
     using ServerApi.PlexModels.Library.Search;
 
     /// <summary>
-    /// Filter
-    ///  "key": "/library/sections/1/all?type=1",
-    ///"type": "movie",
-    ///"title": "Movies",
-    ///"active": true,
     /// </summary>
     public class FilterModel
     {

@@ -96,7 +96,14 @@ namespace Plex.ServerApi.Clients
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"query", title}, {"includeCollections", "1"}, {"includeExternalMedia", "1"}
+                {"query", title},
+                {"includeCollections", "1"},
+                {"includeExternalMedia", "1"},
+                {"includePreferences", "1"},
+                {"includeExtras", "1"},
+                {"includeStations", "1"},
+                {"includeChapters", "1"},
+                {"includeGuids", "1"}
             };
 
             return await this.FetchWithWrapper<HubMediaContainer>(plexServerHost, "hubs/search", authToken,

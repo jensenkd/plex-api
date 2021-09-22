@@ -6,6 +6,7 @@ namespace Plex.ServerApi.Api
     using System.IO;
     using System.Net.Http;
     using System.Text.Json;
+    using System.Text.Json.Serialization;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
     using Microsoft.Extensions.Logging;
@@ -20,6 +21,8 @@ namespace Plex.ServerApi.Api
         {
             IgnoreNullValues = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = false,
+            NumberHandling = JsonNumberHandling.AllowReadingFromString
         };
 
         /// <summary>

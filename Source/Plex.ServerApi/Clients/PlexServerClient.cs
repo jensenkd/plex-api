@@ -209,9 +209,20 @@
         }
 
         /// <inheritdoc/>
-        public async Task<SessionContainer> GetSessionsAsync(string authToken, string plexServerHost) =>
-            await this.FetchWithWrapper<SessionContainer>(plexServerHost, "status/sessions",
-                authToken, HttpMethod.Get);
+        public async Task<SessionContainer> GetSessionsAsync(string authToken, string plexServerHost)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"includeExternalMedia", "1"},
+                {"includePreferences", "1"},
+                {"includeExtras", "1"},
+                {"includeStations", "1"},
+                {"includeChapters", "1"},
+                {"includeGuids", "1"}
+            };
+            return await this.FetchWithWrapper<SessionContainer>(plexServerHost, "status/sessions",
+                authToken, HttpMethod.Get, queryParams);
+        }
 
         /// <inheritdoc/>
         public Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey)

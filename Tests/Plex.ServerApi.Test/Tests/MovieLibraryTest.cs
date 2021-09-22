@@ -95,7 +95,7 @@ namespace Plex.ServerApi.Test.Tests
         public async void Test_MovieFilterValues()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
-            var filterValues = await library.GetFilterValues("movie", "genre", "Action");
+            var filterValues = await library.GetFilterValues("movie", "genre", "Action/Adventure");
 
             Assert.NotNull(filterValues);
             Assert.True(filterValues.Count == 1);

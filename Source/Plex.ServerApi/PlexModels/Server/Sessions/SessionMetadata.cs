@@ -88,6 +88,9 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         [JsonPropertyName("rating")]
         public string Rating { get; set; }
 
+        [JsonPropertyName("studio")]
+        public string Studio { get; set; }
+
         [JsonPropertyName("ratingKey")]
         public string RatingKey { get; set; }
 
@@ -156,5 +159,20 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
 
         [JsonPropertyName("TranscodeSession")]
         public TranscodeSession TranscodeSession { get; set; }
+
+        [JsonPropertyName("Guid")]
+        public List<ScrapingId> ScrapingIds { get; set; }
+
+        [JsonPropertyName("Collection")]
+        public List<Collection> Collections { get; set; }
+
+        [JsonPropertyName("Similar")]
+        public List<Similar> Similar { get; set; }
+
+        [JsonPropertyName("Chapter")]
+        public List<Chapter> Chapters { get; set; }
+
+        [JsonPropertyName("Extras")]
+        public Extras Extras { get; set; }
     }
 }
