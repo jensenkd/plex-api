@@ -191,6 +191,13 @@ namespace Plex.ServerApi.Test.Tests
         }
 
         [Fact]
+        public async void Text_GetCollectionItemsByCollectionKey()
+        {
+            const int collectionKey = 112898;
+
+        }
+
+        [Fact]
         public async void Test_ScrobbleItemAsync()
         {
             const string ratingKey = "92712";
