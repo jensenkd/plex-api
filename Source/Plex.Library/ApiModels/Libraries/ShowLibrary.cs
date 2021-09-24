@@ -43,6 +43,35 @@ namespace Plex.Library.ApiModels.Libraries
             await this.Search( title, sort, SearchType.Episode, filters, start, count);
 
         /// <summary>
+        /// Get Seasons for a Show
+        /// </summary>
+        /// <param name="showId">Rating Key for Show</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> Seasons(int showId)
+        {
+            var mediaContainer =
+                await this._plexServerClient.GetChildrenMetadataAsync(this._server.AccessToken,
+                    this._server.Uri.ToString(), showId);
+
+            return mediaContainer;
+        }
+
+        /// <summary>
+        /// Get Episodes for a Season for a Show
+        /// </summary>
+        /// <param name="seasonId">Rating Key for Show Season</param>
+        /// <returns></returns>
+        public async Task<MediaContainer> Episodes(int seasonId)
+        {
+            var mediaContainer =
+                await this._plexServerClient.GetChildrenMetadataAsync(this._server.AccessToken,
+                    this._server.Uri.ToString(), seasonId);
+
+            return mediaContainer;
+        }
+
+
+        /// <summary>
         /// Get Recently Added Shows
         /// </summary>
         /// <param name="start">Offset number to start with (0 is first record)</param>
