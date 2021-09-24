@@ -156,16 +156,6 @@ namespace Plex.ServerApi.Clients.Interfaces
         Task<MediaContainer> GetChildrenMetadataAsync(string authToken, string plexServerHost, int id);
 
         /// <summary>
-        /// Get Collection Items for a given Collection Id.
-        /// </summary>
-        /// <param name="authToken">Authentication Token.</param>
-        /// <param name="plexServerHost">Plex Host Uri.</param>
-        /// <param name="id">Collection Unique Identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<MediaContainer> GetCollectionItemsByCollectionIdAsync(string authToken, string plexServerHost, int id);
-
-
-        /// <summary>
         /// Marks the Item in plex as 'Played'.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>

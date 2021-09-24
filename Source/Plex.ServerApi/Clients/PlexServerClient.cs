@@ -182,21 +182,6 @@
         /// <inheritdoc/>
         public async Task<MediaContainer> GetChildrenMetadataAsync(string authToken, string plexServerHost, int id)
         {
-            var apiRequest =
-                new ApiRequestBuilder(plexServerHost, $"library/metadata/{id}/children", HttpMethod.Get)
-                    .AddPlexToken(authToken)
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AcceptJson()
-                    .Build();
-
-            var plexMediaContainer = await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
-
-            return plexMediaContainer;
-        }
-
-        /// <inheritdoc />
-        public async Task<MediaContainer> GetCollectionItemsByCollectionIdAsync(string authToken, string plexServerHost, int id)
-        {
             var queryParams = new Dictionary<string, string>
             {
                 {"includeExternalMedia", "1"},
@@ -205,20 +190,21 @@
                 {"includeExtras", "1"},
                 {"includeStations", "1"},
                 {"includeChapters", "1"},
-                {"includeGuids", "1"}
             };
 
-            var apiRequest =
-                new ApiRequestBuilder(plexServerHost, $"library/collections/{id}/children", HttpMethod.Get)
-                    .AddPlexToken(authToken)
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AddQueryParams(queryParams)
-                    .AcceptJson()
-                    .Build();
+            // var apiRequest =
+            //     new ApiRequestBuilder(plexServerHost, $"library/metadata/{id}/children", HttpMethod.Get)
+            //         .AddPlexToken(authToken)
+            //         .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+            //         .AcceptJson()
+            //         .Build();
 
-            var plexMediaContainer = await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
+            return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/metadata/{id}/children",
+                authToken, HttpMethod.Get, queryParams);
 
-            return plexMediaContainer;
+            // var plexMediaContainer = await this.apiService.InvokeApiAsync<MediaContainer>(apiRequest);
+            //
+            // return plexMediaContainer;
         }
 
         /// <inheritdoc/>

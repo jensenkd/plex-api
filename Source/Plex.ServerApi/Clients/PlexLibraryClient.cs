@@ -293,10 +293,24 @@ namespace Plex.ServerApi.Clients
 
         /// <inheritdoc/>
         public async Task<MediaContainer> GetCollectionItemsAsync(string authToken, string plexServerHost,
-            string collectionKey) =>
-            await this.FetchWithWrapper<MediaContainer>(plexServerHost,
+            string collectionKey)
+        {
+            var queryParams =
+                new Dictionary<string, string> {
+                    {"includeCollections", "1"},
+                    {"includeExternalMedia", "1"},
+                    {"includeExtras", "1"},
+                    {"includeGuids", "1"},
+                    {"skipRefresh", "1"},
+                    {"includePreferences", "1"},
+                    {"includeStations", "1"},
+                    {"includeChapters", "1"},
+                };
+
+            return await this.FetchWithWrapper<MediaContainer>(plexServerHost,
                 "library/metadata/" + collectionKey + "/children",
-                authToken, HttpMethod.Get);
+                authToken, HttpMethod.Get, queryParams);
+        }
 
         /// <inheritdoc/>
         public async Task<MediaContainer> GetCollectionItemsByCollectionName(string authToken, string plexServerHost,
