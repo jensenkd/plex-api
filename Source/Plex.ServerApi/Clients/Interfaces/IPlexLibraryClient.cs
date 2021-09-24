@@ -93,14 +93,22 @@ namespace Plex.ServerApi.Clients.Interfaces
             string sort, SearchType libraryType, List<FilterRequest> filters = null, int start = 0, int count = 100);
 
         /// <summary>
+        /// Get Extras for Item in Library
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        /// <param name="key">Library Item Key</param>
+        /// <returns></returns>
+        Task<MediaContainer> GetExtras(string authToken, string plexServerHost, string key);
+
+        /// <summary>
         /// Get Item from Library
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
-        /// <param name="key">Library Key</param>
+        /// <param name="key">Item Key</param>
         /// <returns></returns>
         Task<MediaContainer> GetItem(string authToken, string plexServerHost, string key);
-
 
         /// <summary>
         /// Get Total Size of the Library

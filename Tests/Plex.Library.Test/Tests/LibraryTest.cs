@@ -59,6 +59,19 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetExtrasForItem()
+        {
+            const string ratingKey = "9962";
+
+            var extrasContainer =
+                await this.plexLibraryClient.GetExtras(this.config.AuthenticationKey,
+                    this.config.Host, ratingKey);
+
+            Assert.NotNull(extrasContainer);
+            Assert.True(extrasContainer.Size > 0);
+        }
+
+        [Fact]
         public async void Test_GetGrandChildrenMetadata()
         {
             const int ratingKey = 92640;

@@ -162,6 +162,22 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<MediaContainer> GetExtras(string authToken, string plexServerHost, string key)
+        {
+            var apiRequest =
+                new ApiRequestBuilder(plexServerHost, $"library/metadata/{key}/extras", HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddQueryParams(ClientUtilities.GetLibraryFlagFields())
+                    .AddQueryParams(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<MediaContainer>>(apiRequest);
+
+            return wrapper.Container;
+        }
+
+        /// <inheritdoc/>
         public async Task<int> GetLibrarySize(string authToken, string plexServerHost, string key)
         {
             var apiRequest =
