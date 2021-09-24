@@ -20,6 +20,9 @@ namespace Plex.ServerApi.PlexModels.Media
         [JsonPropertyName("type")]
         public string Type { get; set; }
 
+        [JsonPropertyName("subtype")]
+        public string SubType { get; set; }
+
         [JsonPropertyName("title")]
         public string Title { get; set; }
 
