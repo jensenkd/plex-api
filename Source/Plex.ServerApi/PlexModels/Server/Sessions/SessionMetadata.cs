@@ -12,7 +12,6 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         [JsonPropertyName("art")]
         public string Art { get; set; }
 
-        [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
         [JsonPropertyName("audienceRating")]
         public double AudienceRating { get; set; }
 
@@ -143,22 +142,22 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string TitleSort { get; set; }
 
         [JsonPropertyName("Writer")]
-        public List<Writer> Writer { get; set; }
+        public List<Writer> Writers { get; set; }
 
         [JsonPropertyName("Director")]
-        public List<Director> Director { get; set; }
+        public List<Director> Directors { get; set; }
 
         [JsonPropertyName("Genre")]
-        public List<Genre> Genre { get; set; }
+        public List<Genre> Genres { get; set; }
 
         [JsonPropertyName("Role")]
-        public List<MediaRole> Role { get; set; }
+        public List<MediaRole> Roles { get; set; }
 
         [JsonPropertyName("Producer")]
-        public List<Producer> Producer { get; set; }
+        public List<Producer> Producers { get; set; }
 
         [JsonPropertyName("TranscodeSession")]
-        public TranscodeSession TranscodeSession { get; set; }
+        public TranscodeSession TranscodeSessions { get; set; }
 
         [JsonPropertyName("Guid")]
         public List<ScrapingId> ScrapingIds { get; set; }
@@ -171,8 +170,5 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
 
         [JsonPropertyName("Chapter")]
         public List<Chapter> Chapters { get; set; }
-
-        [JsonPropertyName("Extras")]
-        public Extras Extras { get; set; }
     }
 }

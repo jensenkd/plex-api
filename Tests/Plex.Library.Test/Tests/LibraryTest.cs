@@ -72,6 +72,19 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetSessionForPlayer()
+        {
+            const string playerId = "14vcldig9owi1e8dljnt68z3";
+
+            var sessionContainer =
+                await this.plexServerClient.GetSessionByPlayerIdAsync(this.config.AuthenticationKey,
+                    this.config.Host, playerId);
+
+            Assert.NotNull(sessionContainer);
+            Assert.True(sessionContainer.Size > 0);
+        }
+
+        [Fact]
         public async void Test_GetGrandChildrenMetadata()
         {
             const int ratingKey = 92640;
