@@ -45,13 +45,14 @@ namespace Plex.ServerApi.Clients
             var apiRequest =
                 new ApiRequestBuilder(BaseUri, "pins", HttpMethod.Post)
                     .AcceptJson()
+                    .AddQueryParam("strong", "true")
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                     .Build();
 
             var oAuthPin = await this.apiService.InvokeApiAsync<OAuthPin>(apiRequest);
             oAuthPin.Url =
-                $"https://app.plex.tv/auth#?context[device][product]={this.clientOptions.Product}&context[device][environment]=bundled&context[device][layout]=desktop&context[device][platform]={this.clientOptions.Platform}&context[device][device]={this.clientOptions.DeviceName}&clientID={this.clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
+                $"https://app.plex.tv/auth#?context[device][product]={this.clientOptions.Product}&context[device][environment]=bundled&context[device][layout]=web&context[device][platform]={this.clientOptions.Platform}&context[device][device]={this.clientOptions.DeviceName}&clientID={this.clientOptions.ClientId}&forwardUrl={redirectUrl}&code={oAuthPin.Code}";
 
             return oAuthPin;
         }
@@ -60,16 +61,10 @@ namespace Plex.ServerApi.Clients
         public async Task<OAuthPin> GetAuthTokenFromOAuthPinAsync(string pinId)
         {
             var apiRequest =
-                new ApiRequestBuilder("https://plex.tv/api/v2/pins/link", string.Empty,HttpMethod.Put)
-                    .AcceptJson()
-                    .AddJsonBody(new {Code = pinId})
-                    .AddRequestHeaders(new Dictionary<string, string>()
-                    {{
-                        "Content-Type", "application/x-www-form-urlencoded"
-                    }})
-                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
-                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
-                    .Build();
+               new ApiRequestBuilder(BaseUri, $"pins/{pinId}", HttpMethod.Get)
+                   .AcceptJson()
+                   .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                   .Build();
 
             var oauthPin = await this.apiService.InvokeApiAsync<OAuthPin>(apiRequest);
 

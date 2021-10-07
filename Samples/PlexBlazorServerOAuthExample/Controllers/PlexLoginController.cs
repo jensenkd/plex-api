@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Plex.ServerApi.Clients.Interfaces;
 using PlexBlazorServerOAuthExample.Services.Plex;
@@ -32,6 +32,8 @@ namespace PlexBlazorServerOAuthExample.Controllers
         [Route("PlexReturn")]
         public async Task<IActionResult> PlexReturn()
         {
+            var test = this.Request.Query;
+
             var oAuthId = _oAuthService.OAuthID.ToString();
             var oAuthPin = await _plexClient.GetAuthTokenFromOAuthPinAsync(oAuthId);
 
