@@ -1,0 +1,70 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
+@inject ProtectedLocalStorage BrowserStorage
+@inject ILogger<Pages.Index> Logger
+
+
+<div class="jumbotron">
+    <h1 class="display-4">Plex OAuth Example!</h1>
+    <p class="lead">This is a simple example of the Plex.Api OAuth flow in Blazor Server.</p>
+    <hr class="my-4">
+    @if (string.IsNullOrEmpty(PlexKey))
+    {
+        <p>You are currently not logged in, please click the login button below to initiate the login workflow.</p>
+        <a class="btn btn-primary btn-lg" href="#" onClick="window.open('api/PlexLogin','Plex Login','resizable,height=650,width=800'); return false;">Login</a>
+    }
+</div>
+
+
+
+@code {
+    string PlexKey = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Services.Plex.OAuthService.LoginEvent += NewLogin;
+        await base.OnInitializedAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ProtectedBrowserStorageResult<string> result;
+
+            try
+            {
+                result = await BrowserStorage.GetAsync<string>("PlexKey");
+            }
+            catch (Exception ex)
+            {
+                //Encryption doesn't match local storage, remove it to prevent future errors
+                Logger.LogWarning($"Encryption doesn't match local storage\r\n{ex}");
+                await BrowserStorage.DeleteAsync("PlexKey");
+                return;
+            }
+
+            if (result.Success)
+            {
+                PlexKey = result.Value;
+                await Changed();
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    async Task NewLogin(string plexKey)
+    {
+        PlexKey = plexKey;
+        await BrowserStorage.SetAsync("PlexKey", plexKey);
+        await Changed();
+    }
+
+    async Task Changed()
+    {
+        await InvokeAsync(() => { StateHasChanged(); });
+    }
+
+}

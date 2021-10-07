@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{719809C2-A551-4C4A-9EFD-B10FB5E35BC0}"
 EndProject
@@ -47,16 +47,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{EFE1E5ED-D337-4874-82EC-D9FA0BC7D3AB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{841C67EF-BBB2-4730-8E29-22FF3FD54306}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build.yml = .github\workflows\dotnet.yml
-		.github\workflows\release.yml = .github\workflows\release.yml
-		.github\workflows\pre-release.yml = .github\workflows\pre-release.yml
-		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
-	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plex.Library", "Source\Plex.Library\Plex.Library.csproj", "{820AA2CC-8529-43F1-9E25-6AB53A368D1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.Library", "Source\Plex.Library\Plex.Library.csproj", "{820AA2CC-8529-43F1-9E25-6AB53A368D1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plex.Library.Test", "Tests\Plex.Library.Test\Plex.Library.Test.csproj", "{26E41804-CA5F-4A99-993A-126287B57884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plex.Library.Test", "Tests\Plex.Library.Test\Plex.Library.Test.csproj", "{26E41804-CA5F-4A99-993A-126287B57884}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{DB90C6BE-7E69-4A0F-886A-5EDC88312422}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlexBlazorServerOAuthExample", "Samples\PlexBlazorServerOAuthExample\PlexBlazorServerOAuthExample.csproj", "{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +78,10 @@ Global
 		{26E41804-CA5F-4A99-993A-126287B57884}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26E41804-CA5F-4A99-993A-126287B57884}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26E41804-CA5F-4A99-993A-126287B57884}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +95,7 @@ Global
 		{841C67EF-BBB2-4730-8E29-22FF3FD54306} = {EFE1E5ED-D337-4874-82EC-D9FA0BC7D3AB}
 		{820AA2CC-8529-43F1-9E25-6AB53A368D1E} = {719809C2-A551-4C4A-9EFD-B10FB5E35BC0}
 		{26E41804-CA5F-4A99-993A-126287B57884} = {E1B24F25-B8A4-46EE-B7EB-7803DCFC543F}
+		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97} = {DB90C6BE-7E69-4A0F-886A-5EDC88312422}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73F36209-F8D6-4066-8951-D97729F773CF}
