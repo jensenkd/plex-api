@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Plex.Api\Plex.Api.csproj" />
     <ProjectReference Include="..\..\Source\Plex.Library\Plex.Library.csproj" />
     <ProjectReference Include="..\..\Source\Plex.ServerApi\Plex.ServerApi.csproj" />
   </ItemGroup>
