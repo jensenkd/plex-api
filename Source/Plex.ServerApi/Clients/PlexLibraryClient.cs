@@ -424,7 +424,7 @@ namespace Plex.ServerApi.Clients
                 };
 
             var apiRequest =
-                new ApiRequestBuilder(plexServerHost, $"player/playback/playMedia", HttpMethod.Post)
+                new ApiRequestBuilder(plexServerHost, $"player/playback/playMedia", HttpMethod.Get)
                     .AddPlexToken(authToken)
                     .AddQueryParams(queryParams)
                     .AddHeader("X-Plex-Target-Client-Identifier", playerIdentifier)

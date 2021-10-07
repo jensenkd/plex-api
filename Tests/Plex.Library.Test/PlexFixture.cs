@@ -39,7 +39,6 @@ namespace Plex.Library.Test
             services.AddTransient<IPlexAccountClient, PlexAccountClient>();
             services.AddTransient<IPlexLibraryClient, PlexLibraryClient>();
             services.AddTransient<IApiService, ApiService>();
-//            services.AddTransient<IPlexFactory, PlexFactory>();
             services.AddTransient<IPlexRequestsHttpClient, PlexRequestsHttpClient>();
 
 
