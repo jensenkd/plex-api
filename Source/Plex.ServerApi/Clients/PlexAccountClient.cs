@@ -60,9 +60,15 @@ namespace Plex.ServerApi.Clients
         public async Task<OAuthPin> GetAuthTokenFromOAuthPinAsync(string pinId)
         {
             var apiRequest =
-                new ApiRequestBuilder(BaseUri, $"pins/{pinId}", HttpMethod.Get)
+                new ApiRequestBuilder("https://plex.tv/api/v2/pins/link", string.Empty,HttpMethod.Put)
                     .AcceptJson()
+                    .AddJsonBody(new {Code = pinId})
+                    .AddRequestHeaders(new Dictionary<string, string>()
+                    {{
+                        "Content-Type", "application/x-www-form-urlencoded"
+                    }})
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                     .Build();
 
             var oauthPin = await this.apiService.InvokeApiAsync<OAuthPin>(apiRequest);
@@ -215,6 +221,19 @@ namespace Plex.ServerApi.Clients
             var devices = await this.apiService.InvokeApiAsync<List<Device>>(apiRequest);
 
             return devices;
+        }
+
+        public async Task<object> LinkDeviceToAccountByPin(string pinCode)
+        {
+            var apiRequest =
+                new ApiRequestBuilder("https://plex.tv/api/v2/pins/link", string.Empty,HttpMethod.Put)
+                    .AddContentHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddJsonBody(new {Code = pinCode})
+                    .AcceptJson()
+                    .Build();
+
+            return await this.apiService.InvokeApiAsync<object>(apiRequest);
         }
     }
 }

@@ -13,7 +13,10 @@ namespace Plex.ServerApi.PlexModels.Server.Devices
         [JsonPropertyName("platform")]
         public string Platform { get; set; }
 
+        [JsonPropertyName("clientIdentifier")]
+        public string ClientIdentifier { get; set; }
+
         [JsonPropertyName("createdAt")]
-        public int CreatedAt { get; set; }
+        public long CreatedAt { get; set; }
     }
 }

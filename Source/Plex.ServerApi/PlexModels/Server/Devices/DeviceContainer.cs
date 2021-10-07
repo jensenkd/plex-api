@@ -12,6 +12,6 @@ namespace Plex.ServerApi.PlexModels.Server.Devices
         public string Identifier { get; set; }
 
         [JsonPropertyName("Device")]
-        public List<Device> Device { get; set; }
+        public List<Device> Devices { get; set; }
     }
 }

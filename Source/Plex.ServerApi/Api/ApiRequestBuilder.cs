@@ -63,6 +63,18 @@ namespace Plex.ServerApi.Api
         /// <summary>
         ///
         /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ApiRequestBuilder AddContentHeader(string key, string value)
+        {
+            this.AddSingleContentHeader(key, value);
+            return this;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="authToken"></param>
         /// <returns></returns>
         public ApiRequestBuilder AddPlexToken(string authToken)
@@ -164,6 +176,13 @@ namespace Plex.ServerApi.Api
         private void AddSingleHeader(string key, string value)
         {
             var headers = this.requestHeaders ?? new Dictionary<string, string>();
+
+            headers.Add(key, value);
+        }
+
+        private void AddSingleContentHeader(string key, string value)
+        {
+            var headers = this.contentHeaders ?? new Dictionary<string, string>();
 
             headers.Add(key, value);
         }

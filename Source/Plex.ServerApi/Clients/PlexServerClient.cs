@@ -80,7 +80,8 @@
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> GetHomeRecentlyAddedAsync(string authToken, string plexServerHost, int start = 0, int count = 50)
+        public async Task<MediaContainer> GetHomeRecentlyAddedAsync(string authToken, string plexServerHost,
+            int start = 0, int count = 50)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"hubs/home/recentlyAdded", HttpMethod.Get)
@@ -95,7 +96,8 @@
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost, SearchType libraryType, string key, int start = 0, int count = 50)
+        public async Task<MediaContainer> GetLibraryRecentlyAddedAsync(string authToken, string plexServerHost,
+            SearchType libraryType, string key, int start = 0, int count = 50)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"library/sections/{key}/recentlyAdded", HttpMethod.Get)
@@ -111,7 +113,8 @@
         }
 
         /// <inheritdoc/>
-        public async Task<MediaContainer> GetHomeOnDeckAsync(string authToken, string plexServerHost, int start, int count)
+        public async Task<MediaContainer> GetHomeOnDeckAsync(string authToken, string plexServerHost, int start,
+            int count)
         {
             var apiRequest =
                 new ApiRequestBuilder(plexServerHost, $"hubs/home/onDeck", HttpMethod.Get)
@@ -142,23 +145,24 @@
         }
 
         /// <inheritdoc/>
-        public async Task<HubMediaContainer> GetLibraryHubAsync(string authToken, string plexServerHost, string key, int count = 10)
+        public async Task<HubMediaContainer> GetLibraryHubAsync(string authToken, string plexServerHost, string key,
+            int count = 10)
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"includeEmpty", "1"},
-                {"includeMeta", "1"},
-                {"includeFeatureTags", "1"},
-                {"includeTypeFirst", "1"},
-                {"includeStations", "1"},
-                {"includeExternalMedia", "1"},
-                {"includeExternalMetadata", "1"},
-                {"includeRecentChannels", "1"},
-                {"excludePlaylists", "1"},
-                {"count", count.ToString()}
+                { "includeEmpty", "1" },
+                { "includeMeta", "1" },
+                { "includeFeatureTags", "1" },
+                { "includeTypeFirst", "1" },
+                { "includeStations", "1" },
+                { "includeExternalMedia", "1" },
+                { "includeExternalMetadata", "1" },
+                { "includeRecentChannels", "1" },
+                { "excludePlaylists", "1" },
+                { "count", count.ToString() }
             };
 
-            return  await this.FetchWithWrapper<HubMediaContainer>(plexServerHost, $"hubs/sections/{key}",
+            return await this.FetchWithWrapper<HubMediaContainer>(plexServerHost, $"hubs/sections/{key}",
                 authToken, HttpMethod.Get, queryParams);
         }
 
@@ -167,12 +171,12 @@
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"includeExternalMedia", "1"},
-                {"skipRefresh", "1"},
-                {"includePreferences", "1"},
-                {"includeExtras", "1"},
-                {"includeStations", "1"},
-                {"includeChapters", "1"},
+                { "includeExternalMedia", "1" },
+                { "skipRefresh", "1" },
+                { "includePreferences", "1" },
+                { "includeExtras", "1" },
+                { "includeStations", "1" },
+                { "includeChapters", "1" },
             };
 
             return await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/metadata/{key}",
@@ -184,12 +188,12 @@
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"includeExternalMedia", "1"},
-                {"skipRefresh", "1"},
-                {"includePreferences", "1"},
-                {"includeExtras", "1"},
-                {"includeStations", "1"},
-                {"includeChapters", "1"},
+                { "includeExternalMedia", "1" },
+                { "skipRefresh", "1" },
+                { "includePreferences", "1" },
+                { "includeExtras", "1" },
+                { "includeStations", "1" },
+                { "includeChapters", "1" },
             };
 
             // var apiRequest =
@@ -226,19 +230,20 @@
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"includeExternalMedia", "1"},
-                {"includePreferences", "1"},
-                {"includeExtras", "1"},
-                {"includeStations", "1"},
-                {"includeChapters", "1"},
-                {"includeGuids", "1"}
+                { "includeExternalMedia", "1" },
+                { "includePreferences", "1" },
+                { "includeExtras", "1" },
+                { "includeStations", "1" },
+                { "includeChapters", "1" },
+                { "includeGuids", "1" }
             };
             return await this.FetchWithWrapper<SessionContainer>(plexServerHost, "status/sessions",
                 authToken, HttpMethod.Get, queryParams);
         }
 
         /// <inheritdoc/>
-        public Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost, string playerKey)
+        public Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost,
+            string playerKey)
             => throw new NotImplementedException();
 
         /// <inheritdoc/>
@@ -272,15 +277,16 @@
         }
 
         /// <inheritdoc/>
-        public async Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0, int count = 100, DateTime? minDate = null)
+        public async Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0,
+            int count = 100, DateTime? minDate = null)
         {
             var queryParams = new Dictionary<string, string>
             {
-                {"X-Plex-Container-Start", start.ToString()},
-                {"X-Plex-Container-Size", count.ToString()}
+                { "X-Plex-Container-Start", start.ToString() }, { "X-Plex-Container-Size", count.ToString() }
             };
 
-            return await this.FetchWithWrapper<HistoryMediaContainer>(plexServerHost, "status/sessions/history/all", authToken, HttpMethod.Get, queryParams);
+            return await this.FetchWithWrapper<HistoryMediaContainer>(plexServerHost, "status/sessions/history/all",
+                authToken, HttpMethod.Get, queryParams);
         }
 
         /// <inheritdoc/>
@@ -338,7 +344,8 @@
 
         /// <inheritdoc/>
         public async Task<TranscodeContainer> GetTranscodeSessions(string authToken, string plexServerHost) =>
-            await this.FetchWithWrapper<TranscodeContainer>(plexServerHost, "transcode/sessions", authToken, HttpMethod.Get);
+            await this.FetchWithWrapper<TranscodeContainer>(plexServerHost, "transcode/sessions", authToken,
+                HttpMethod.Get);
 
         /// <inheritdoc/>
         public async Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost) =>
@@ -349,8 +356,19 @@
             await this
                 .FetchWithWrapper<object>(plexServerHost, "logs", authToken, HttpMethod.Get);
 
+        public async Task<TransientTokenContainer> GetTransientToken(string authToken, string plexServerHost)
+        {
+            var queryParams =
+                new Dictionary<string, string> { { "type", "delegation" }, { "scope", "all" }, };
+
+            return await this
+                .FetchWithWrapper<TransientTokenContainer>(plexServerHost, "security/token", authToken, HttpMethod.Get,
+                    queryParams);
+        }
+
         /// <inheritdoc/>
-        public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync, bool allowCameraUpload,
+        public Task<object> InviteFriend(string authToken, string plexServerHost, string sections, bool allowSync,
+            bool allowCameraUpload,
             bool allowChannels, string filterMovies, string filterTelevision, string filterMusic) =>
             throw new NotImplementedException();
 

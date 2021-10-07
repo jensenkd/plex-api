@@ -57,7 +57,7 @@ namespace Plex.ServerApi.Test.Tests
             {
                 var pin = await plexAccountClient.CreateOAuthPinAsync(string.Empty);
 
-                var result1 = await plexAccountClient.GetAuthTokenFromOAuthPinAsync(pin.Code);
+                var result1 = await plexAccountClient.LinkDeviceToAccountByPin(pin.Code);
                 Assert.NotNull(result1);
             }
         }

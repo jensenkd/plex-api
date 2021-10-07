@@ -103,7 +103,7 @@ namespace Plex.ServerApi.Api
 
             if (!uriBuilder.ToString().Contains("?"))
             {
-                uriBuilder.Append("?");
+                uriBuilder.Append('?');
             }
 
             for (var i = 0; i < this.QueryParams.Count; i++)
@@ -116,7 +116,7 @@ namespace Plex.ServerApi.Api
 
                 if (!isLast)
                 {
-                    uriBuilder.Append("&");
+                    uriBuilder.Append('&');
                 }
             }
         }

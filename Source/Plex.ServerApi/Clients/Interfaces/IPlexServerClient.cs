@@ -251,5 +251,12 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Authentication Token.</param>
         /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
         Task<object> GetLogs(string authToken, string plexServerHost);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Instance.</param>
+        Task<TransientTokenContainer> GetTransientToken(string authToken, string plexServerHost);
     }
 }

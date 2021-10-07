@@ -9,6 +9,8 @@ namespace Plex.ServerApi.Clients.Interfaces
     using PlexModels.Library.Search;
     using PlexModels.Library.Search.Plex.Api.PlexModels.Library.Search;
     using PlexModels.Media;
+    using PlexModels.PlayQueues;
+    using PlexModels.Server;
 
     /// <summary>
     /// Inteface for Plex Library Client
@@ -230,5 +232,34 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <returns></returns>
         Task<MediaContainer> GetCollectionItemMetadataByKey(string authToken, string plexServerHost, string collectionKey);
 
+        /// <summary>
+        /// Creates a PlayQueue for a given library item.
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Host Instance.</param>
+        /// <param name="hostIdentifier">MachineIdentifier of the Plex Server Host Instance.</param>
+        /// <param name="type">Type of media (video, music).</param>
+        /// <param name="key">Rating Key of media item.</param>
+        /// <param name="isRepeat">If true, media items will repeat.</param>
+        /// <param name="isShuffle">If true, items will shuffle-play</param>
+        /// <param name="isContinous">If true, additional videos will play when this item completes</param>
+        /// <returns></returns>
+        Task<PlayQueueContainer> CreatePlayQueue(string authToken, string plexServerHost, string hostIdentifier, string type,
+            string key, bool isRepeat, bool isShuffle, bool isContinous);
+
+        /// <summary>
+        /// Send PlayQueue to player for playing
+        /// </summary>
+        /// <param name="hostIdentifier"></param>
+        /// <param name="playQueue">PlayQueue object containing media items to play</param>
+        /// <param name="type">Type of media (video, music).</param>
+        /// <param name="playerIdentifier">Player Identifier</param>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="plexServerHost">Full Uri of Plex Media Server Host Instance.</param>
+        /// <param name="transientToken">Transient Token</param>
+        /// <param name="offset">Offset in milliseconds to use in media playback</param>
+        /// <returns></returns>
+        Task SendPlayQueueToPlayer(string plexServerHost, string authToken, string hostIdentifier, PlayQueueContainer playQueue,
+            string type, string playerIdentifier, string transientToken, long offset);
     }
 }

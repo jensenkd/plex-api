@@ -1,5 +1,6 @@
 namespace Plex.ServerApi.Clients.Interfaces
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using PlexModels.Account;
@@ -107,5 +108,12 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Authentication Token.</param>
         /// <returns></returns>
         Task<List<Device>> GetDevices(string authToken);
+
+        /// <summary>
+        /// Link a device to Plex Account using Pin Auth
+        /// </summary>
+        /// <param name="pinCode"></param>
+        /// <returns></returns>
+        Task<object> LinkDeviceToAccountByPin(string pinCode);
     }
 }

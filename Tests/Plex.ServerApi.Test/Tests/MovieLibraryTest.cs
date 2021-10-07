@@ -151,7 +151,7 @@ namespace Plex.ServerApi.Test.Tests
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task Test_GetCollectionsAsync()
+        public async Task Test_GetCollectionsAsync()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "Movies") as MovieLibrary;
             Assert.NotNull(library);
