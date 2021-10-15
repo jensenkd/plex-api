@@ -1,8 +1,5 @@
 namespace Plex.Library.Test
 {
-    using System;
-    using Api.Factories;
-    using Factories;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -28,7 +25,8 @@ namespace Plex.Library.Test
                 Version = "v1",
             };
 
-            var testConfiguration = new TestConfiguration(configuration["Plex:Host"], configuration["Plex:AuthenticationKey"],configuration["Plex:Login"],
+            var testConfiguration = new TestConfiguration(configuration["Plex:Host"],
+                configuration["Plex:AuthenticationKey"],configuration["Plex:Login"],
                 configuration["Plex:Password"]);
 
             var services = new ServiceCollection();

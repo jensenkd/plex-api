@@ -19,7 +19,7 @@ namespace Plex.ServerApi.Test
     public class PlexFixture : IDisposable
     {
         public readonly ServiceProvider ServiceProvider;
-        public readonly IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
 
         public IPlexFactory PlexFactory { get; set; }
         public TestConfiguration TestConfiguration { get; set; }

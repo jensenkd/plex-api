@@ -1,6 +1,5 @@
 namespace Plex.ServerApi.Test
 {
-
     public class TestConfiguration
     {
         public string Login { get;   }

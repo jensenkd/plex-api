@@ -141,7 +141,7 @@ namespace Plex.Library.Test.Tests
                 .Where(c => c.Provides.Contains("player"));
 
             // 5. Get Player by name
-            var player = players.First(c => c.Name == "Galaxy S9+");
+            var player = players.First(c => c.Name == "Red Monkey Theater");
 
             // 6. Send Playqueue to player
             await this.plexLibraryClient.SendPlayQueueToPlayer(this.config.Host, this.config.AuthenticationKey,

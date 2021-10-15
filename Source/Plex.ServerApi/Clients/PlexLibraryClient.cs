@@ -370,9 +370,6 @@ namespace Plex.ServerApi.Clients
         public async Task<PlayQueueContainer> CreatePlayQueue(string authToken, string plexServerHost, string hostIdentifier, string type,
             string key, bool isRepeat, bool isShuffle, bool isContinous)
         {
-            https://192-168-10-9.4e73db465c2a4f20b720015fd39f9369.plex.direct:32400/playQueues/7714?repeat=0&own=1&includeChapters=1&includeMarkers=1&includeGeolocation=1&includeExternalMedia=1&X-Plex-Product=Plex Web&X-Plex-Version=4.63.0&X-Plex-Client-Identifier=oxxeocshgmmjbqd05tmrycuk&X-Plex-Platform=Microsoft Edge&X-Plex-Platform-Version=94.0&X-Plex-Sync-Version=2&X-Plex-Features=external-media,indirect-media&X-Plex-Model=bundled&X-Plex-Device=OSX&X-Plex-Device-Name=Microsoft Edge&X-Plex-Device-Screen-Resolution=1680x263,1920x1080&X-Plex-Token=htJScDGuakT9W8pxoCGz&X-Plex-Language=en&X-Plex-Drm=none&X-Plex-Text-Format=plain&X-Plex-Provider-Version=3.2
-
-
             var uri = "server://" + hostIdentifier + "/com.plexapp.plugins.library/library/metadata/" + key;
 
             var queryParams =
