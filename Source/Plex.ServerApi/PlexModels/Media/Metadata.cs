@@ -36,6 +36,9 @@ namespace Plex.ServerApi.PlexModels.Media
         [JsonPropertyName("parentIndex")]
         public int ParentIndex { get; set; }
 
+        [JsonPropertyName("userRating")]
+        public double UserRating { get; set; }
+        
         [JsonPropertyName("parentThumb")]
         public string ParentThumb { get; set; }
 
