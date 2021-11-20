@@ -10,7 +10,7 @@ namespace Plex.ServerApi.PlexModels.Account
         public bool Active { get; set; }
 
         [JsonPropertyName("subscribedAt")]
-        public DateTime SubscribedAt { get; set; }
+        public DateTime? SubscribedAt { get; set; }
 
         [JsonPropertyName("status")]
         public string Status { get; set; }
