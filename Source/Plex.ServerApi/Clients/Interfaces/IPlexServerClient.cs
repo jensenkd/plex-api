@@ -181,8 +181,9 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="start">Starting Record</param>
         /// <param name="count">Count of Records</param>
         /// <param name="minDate">Starting Date</param>
+        /// <param name="accountId">Account Identifier</param>
         /// <returns>MediaContainer</returns>
-        Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0, int count = 100, DateTime? minDate = null);
+        Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0, int count = 100, DateTime? minDate = null, int? accountId = null);
 
         /// <summary>
         /// Get Clients connected to a given Server

@@ -522,9 +522,10 @@ namespace Plex.Library.ApiModels.Servers
         /// <param name="start">Starting record</param>
         /// <param name="count">Only return the specified number of results (optional)</param>
         /// <param name="minDate">Min datetime to return results from.</param>
+        /// <param name="accountId">Account id to return results from.</param>
         /// <returns></returns>
-        public async Task<HistoryMediaContainer> PlayHistory(int start = 0, int count = 100, DateTime? minDate = null) =>
-            await this.plexServerClient.GetPlayHistory(this.AccessToken, this.Uri.ToString(), start, count, minDate);
+        public async Task<HistoryMediaContainer> PlayHistory(int start = 0, int count = 100, DateTime? minDate = null, int? accountId = null) =>
+            await this.plexServerClient.GetPlayHistory(this.AccessToken, this.Uri.ToString(), start, count, minDate, accountId);
 
         /// <summary>
         /// Get Devices connected to this Server

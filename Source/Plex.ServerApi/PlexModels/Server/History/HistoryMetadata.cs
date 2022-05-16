@@ -30,5 +30,11 @@ namespace Plex.ServerApi.PlexModels.Server.History
 
         [JsonPropertyName("accountID")]
         public int AccountId { get; set; }
+
+        [JsonPropertyName("parentKey")]
+        public string ParentKey { get; set; }
+
+        [JsonPropertyName("grandparentKey")]
+        public string GrandParentKey { get; set; }
     }
 }
