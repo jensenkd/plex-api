@@ -1,4 +1,4 @@
-﻿namespace Plex.ServerApi.Clients
+namespace Plex.ServerApi.Clients
 {
     using System;
     using System.Collections.Generic;
@@ -278,12 +278,24 @@
 
         /// <inheritdoc/>
         public async Task<HistoryMediaContainer> GetPlayHistory(string authToken, string plexServerHost, int start = 0,
-            int count = 100, DateTime? minDate = null)
+            int count = 100, DateTime? minDate = null, int? accountId = null)
         {
             var queryParams = new Dictionary<string, string>
             {
                 { "X-Plex-Container-Start", start.ToString() }, { "X-Plex-Container-Size", count.ToString() }
             };
+
+            if (minDate != null)
+            {
+                var dateTimeOffset = new DateTimeOffset(minDate.Value);
+                var unixMinDate = dateTimeOffset.ToUnixTimeSeconds();
+                queryParams.Add("viewedAt>", unixMinDate.ToString());
+            }
+
+            if (accountId != null)
+            {
+                queryParams.Add("accountID", accountId.ToString());
+            }
 
             return await this.FetchWithWrapper<HistoryMediaContainer>(plexServerHost, "status/sessions/history/all",
                 authToken, HttpMethod.Get, queryParams);
