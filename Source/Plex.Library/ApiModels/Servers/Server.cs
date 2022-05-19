@@ -627,5 +627,13 @@ namespace Plex.Library.ApiModels.Servers
         /// <returns></returns>
         public async Task<PlaylistContainer> Playlists() =>
             await this.plexServerClient.GetPlaylists(this.AccessToken, this.Uri.ToString());
+
+        /// <summary>
+        /// Get metadata for a given rating key.
+        /// </summary>
+        /// <param name="ratingKey">The rating key to get info from.</param>
+        /// <returns>A <see cref="MediaContainer"/> containing the media info.</returns>
+        public async Task<MediaContainer> Metadata(string ratingKey) =>
+            await this.plexServerClient.GetMediaMetadataAsync(this.AccessToken, this.Uri.ToString(), ratingKey);
     }
 }
