@@ -71,7 +71,7 @@ namespace Plex.Library.ApiModels.Libraries
             int start = 0, int count = 100) =>
             await this.Search(name, sort, SearchType.Artist, filters, start, count);
 
-        /// <summary>
+        /// <summary>0
         /// Search for an Album.
         /// </summary>
         /// <param name="title">Title to search for</param>

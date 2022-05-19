@@ -4,8 +4,8 @@ namespace Plex.ServerApi.PlexModels.Library
 
     public class LibraryFilter
     {
-        public List<string> Types = new List<string>();
-        public List<string> Keys = new List<string>();
-        public List<string> Titles = new List<string>();
+        public List<string> Types { get; set; } = new List<string>();
+        public List<string> Keys { get; set; } = new List<string>();
+        public List<string> Titles { get; set; } = new List<string>();
     }
 }

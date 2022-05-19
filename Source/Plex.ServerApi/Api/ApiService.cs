@@ -19,7 +19,7 @@ namespace Plex.ServerApi.Api
 
         private static readonly JsonSerializerOptions JsonSerializationSettings = new()
         {
-            IgnoreNullValues = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = false,
             NumberHandling = JsonNumberHandling.AllowReadingFromString

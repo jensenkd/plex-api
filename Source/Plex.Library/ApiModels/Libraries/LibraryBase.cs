@@ -28,12 +28,12 @@ namespace Plex.Library.ApiModels.Libraries
         /// <summary>
         ///
         /// </summary>
-        public readonly IPlexServerClient _plexServerClient;
+        protected readonly IPlexServerClient _plexServerClient;
 
         /// <summary>
         ///
         /// </summary>
-        public readonly IPlexLibraryClient _plexLibraryClient;
+        protected readonly IPlexLibraryClient _plexLibraryClient;
 
         /// <summary>
         ///
@@ -44,9 +44,9 @@ namespace Plex.Library.ApiModels.Libraries
         /// This will become the Base Object for All Plex Libraries.
         /// When we instantiate a library, we will pull all the Filter Fields, Sorts and Operators
         /// </summary>
-        /// <param name="plexServerClient"></param>
-        /// <param name="plexLibraryClient"></param>
-        /// <param name="server"></param>
+        /// <param name="plexServerClient">Plex Server Client</param>
+        /// <param name="plexLibraryClient">Plex Library Client</param>
+        /// <param name="server">Server Object</param>
         public LibraryBase(IPlexServerClient plexServerClient, IPlexLibraryClient plexLibraryClient, Server server)
         {
             this._plexServerClient = plexServerClient ?? throw new ArgumentNullException(nameof(plexServerClient));
