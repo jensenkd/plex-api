@@ -1,3 +1,0 @@
-#  If you find a security vulnerability, we hope you will be responsible and report it to us.
-# https://securitytxt.org/
-Contact: security@example.com
