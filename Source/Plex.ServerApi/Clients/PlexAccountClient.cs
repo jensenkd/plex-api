@@ -103,6 +103,28 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUUID)
+        {
+
+            var apiRequest =
+                new ApiRequestBuilder($"https://plex.tv/api/v2/home/users/{userUUID}/switch.json", string.Empty, HttpMethod.Post)
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddPlexToken(authToken)
+                    .AcceptJson()
+                    .Build();
+
+            var account = await this.apiService.InvokeApiAsync<PlexModels.Account.PlexAccount>(apiRequest);
+
+            if (account == null)
+            {
+                throw new ApplicationException("Switching User failed.");
+            }
+
+            return account;
+        }
+
+        /// <inheritdoc/>
         public async Task<PlexModels.Account.PlexAccount> GetPlexAccountAsync(string authToken)
         {
             var apiRequest = new ApiRequestBuilder(BaseUri + "user.json", string.Empty, HttpMethod.Get)

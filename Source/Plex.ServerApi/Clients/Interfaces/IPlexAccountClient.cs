@@ -115,5 +115,14 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="pinCode"></param>
         /// <returns></returns>
         Task<object> LinkDeviceToAccountByPin(string pinCode);
+
+
+        /// <summary>
+        /// Switch to the account of another Home User
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="userUUID">UUID of the home user to switch to.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUUID);
     }
 }

@@ -1,6 +1,7 @@
 namespace Plex.ServerApi.Test.Tests
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Clients.Interfaces;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
@@ -23,6 +24,19 @@ namespace Plex.ServerApi.Test.Tests
             var plexAccount = this.fixture.PlexFactory.GetPlexAccount(this.fixture.TestConfiguration.AccessToken);
             Assert.NotNull(plexAccount);
         }
+
+        [Fact]
+        public async Task Test_GetPlexHomeAccountAsync()
+        {
+            var plexAccount = this.fixture.PlexFactory.GetPlexAccount(this.fixture.TestConfiguration.AccessToken);
+            var user = (await plexAccount.Friends()).FirstOrDefault(x => x.Home);
+            Assert.NotNull(user);
+            var homeAccount = await plexAccount.GetPlexHomeAccountAsync(user.Uuid);
+            Assert.NotNull(homeAccount);
+            Assert.NotEqual(plexAccount.AuthToken, homeAccount.AuthToken);
+            Assert.NotEqual(plexAccount.Title, homeAccount.Title);
+        }
+
 
         [Fact]
         public void Test_GetPlexAccount()
