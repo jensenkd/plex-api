@@ -1,6 +1,5 @@
 namespace Plex.ServerApi.Clients.Interfaces
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using PlexModels.Account;
@@ -8,6 +7,7 @@ namespace Plex.ServerApi.Clients.Interfaces
     using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
+    using PlexModels.Watchlist;
     using User = Models.User;
 
     /// <summary>
@@ -115,5 +115,27 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="pinCode"></param>
         /// <returns></returns>
         Task<object> LinkDeviceToAccountByPin(string pinCode);
+
+        /// <summary>
+        /// Return list of Movie and Show items in the user's Watchlist.
+        /// Note: Objects returned are from Plex's online metadata service.  You will need to lookup items on the
+        /// Plex Server via metadataKey in order to get the matching item on the server.
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="filter">Comma delimited list of filters for the service</param>
+        /// <param name="sort">Field to sort by along with the direction.  Ex: 'titleSort:asc'
+        ///     Fields
+        ///     - watchlistedAt
+        ///     - titleSort
+        ///     - originallyAvailableAt
+        ///     - rating
+        ///
+        ///     Sort Direction
+        ///     - asc
+        ///     - desc
+        /// </param>
+        /// <param name="libraryType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
+        /// <returns>List of Movies or Shows</returns>
+        Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType);
     }
 }
