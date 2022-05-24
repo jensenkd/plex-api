@@ -147,19 +147,10 @@ namespace Plex.ServerApi.Test.Tests
         public async void Test_GetPlexAccountWatchlist_ShowsOnly()
         {
             this.output.WriteLine("Username: " + this.fixture.PlexAccount.Username);
-            Assert.NotNull(this.fixture.PlexAccount.Username);
-            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Username);
-            this.output.WriteLine("AuthToken: " + this.fixture.PlexAccount.AuthToken);
-            Assert.NotNull(this.fixture.PlexAccount.AuthToken);
-            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.AuthToken);
-            this.output.WriteLine("Email: " + this.fixture.PlexAccount.Email);
-            Assert.NotNull(this.fixture.PlexAccount.Email);
-            Assert.NotEqual(string.Empty, this.fixture.PlexAccount.Email);
-            foreach (var server in await this.fixture.PlexAccount.Servers())
-            {
-                this.output.WriteLine("Server Name: " + server.FriendlyName);
-                this.output.WriteLine("Server Host: " + server.Uri);
-            }
+
+            var watchlist = await this.fixture.PlexAccount.Watchlist(string.Empty, string.Empty, "show");
+
+            Assert.NotEmpty(watchlist);
         }
 
         [Fact]
