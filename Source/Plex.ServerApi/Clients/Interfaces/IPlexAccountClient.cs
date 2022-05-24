@@ -117,6 +117,14 @@ namespace Plex.ServerApi.Clients.Interfaces
         Task<object> LinkDeviceToAccountByPin(string pinCode);
 
         /// <summary>
+        /// Switch to the account of another Home User
+        /// </summary>
+        /// <param name="authToken">Authentication Token.</param>
+        /// <param name="userUUID">UUID of the home user to switch to.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUUID);
+
+        /// <summary>
         /// Return list of Movie and Show items in the user's Watchlist.
         /// Note: Objects returned are from Plex's online metadata service.  You will need to lookup items on the
         /// Plex Server via metadataKey in order to get the matching item on the server.
@@ -137,5 +145,6 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="libraryType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
         /// <returns>List of Movies or Shows</returns>
         Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType);
+
     }
 }

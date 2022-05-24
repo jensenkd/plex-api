@@ -118,7 +118,7 @@ namespace Plex.Library.ApiModels.Accounts
         public bool HomeAdmin { get; set; }
         public int MaxHomeSize { get; set; }
         public int CertificateVersion { get; set; }
-        public DateTime RememberExpiresAt { get; set; }
+        public DateTime? RememberExpiresAt { get; set; }
         public object AdsConsent { get; set; }
         public object AdsConsentSetAt { get; set; }
         public object AdsConsentReminderAt { get; set; }
@@ -245,6 +245,26 @@ namespace Plex.Library.ApiModels.Accounts
         /// <returns>UserContainer Object</returns>
         public async Task<UserContainer> Users() =>
             await this.plexAccountClient.GetUsers(this.AuthToken);
+
+
+
+        /// <summary>
+        /// Returns a list of all User objects connected to your account.
+        /// This includes both friends and pending invites. You can reference the user.Friend to
+        /// distinguish between the two.
+        /// </summary>
+        /// <returns>UserContainer Object</returns>
+        public async Task<PlexAccount> GetPlexHomeAccountAsync(string userUUID)
+        {
+            var account = await this.plexAccountClient.GetPlexHomeAccountAsync(this.AuthToken, userUUID);
+            if (account == null)
+            {
+                return null;
+            }
+
+            return new PlexAccount(this.plexAccountClient, this.plexServerClient, this.plexLibraryClient, account.AuthToken);
+        }
+
 
         /// <summary>
         /// Opt in or out of sharing stuff with plex.
