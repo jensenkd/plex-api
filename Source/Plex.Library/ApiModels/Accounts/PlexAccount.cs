@@ -2,6 +2,7 @@ namespace Plex.Library.ApiModels.Accounts
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Automapper;
     using ServerApi.Clients.Interfaces;
@@ -10,6 +11,7 @@ namespace Plex.Library.ApiModels.Accounts
     using ServerApi.PlexModels.Account.Resources;
     using ServerApi.PlexModels.Account.User;
     using ServerApi.PlexModels.OAuth;
+    using ServerApi.PlexModels.Watchlist;
     using Servers;
     using Subscription = ServerApi.PlexModels.Account.Subscription;
 
@@ -194,6 +196,39 @@ namespace Plex.Library.ApiModels.Accounts
         /// <returns>List of Friend Objects</returns>
         public async Task<List<Friend>> Friends() =>
             await this.plexAccountClient.GetFriendsAsync(this.AuthToken);
+
+        /// <summary>
+        /// Return list of Movie and Show items in the user's Watchlist.
+        /// Note: Objects returned are from Plex's online metadata service.  You will need to lookup items on the
+        /// Plex Server via metadataKey in order to get the matching item on the server.
+        /// </summary>
+        /// <param name="filter">Comma delimited list of filters for the service</param>
+        /// <param name="sort">Field to sort by along with the direction.  Ex: 'titleSort:asc'
+        ///     Fields
+        ///     - watchlistedAt
+        ///     - titleSort
+        ///     - originallyAvailableAt
+        ///     - rating
+        ///
+        ///     Sort Direction
+        ///     - asc
+        ///     - desc
+        /// </param>
+        /// <param name="libraryType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
+        /// <returns>List of Movies or Shows</returns>
+        public async Task<WatchlistMetadataContainer[]> Watchlist(string filter, string sort, string libraryType)
+        {
+            var watchlist = await this.plexAccountClient.GetWatchList(this.AuthToken, filter, sort, libraryType);
+
+            if (watchlist.Size > 0 && watchlist.MediaContainers.Any())
+            {
+                return watchlist.MediaContainers;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// Get Announcements for Plex Account

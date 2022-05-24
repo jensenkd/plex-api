@@ -6,11 +6,13 @@ namespace Plex.ServerApi.Clients
     using System.Threading.Tasks;
     using Api;
     using Interfaces;
+    using PlexModels;
     using PlexModels.Account;
     using PlexModels.Account.Announcements;
     using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
+    using PlexModels.Watchlist;
     using PlexAccount = Models.PlexAccount;
     using User = Models.User;
 
@@ -251,6 +253,45 @@ namespace Plex.ServerApi.Clients
                     .Build();
 
             return await this.apiService.InvokeApiAsync<object>(apiRequest);
+        }
+
+        public async Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"includeCollections", "1"},
+                {"includeExternalMedia", "1"}
+            };
+
+            if (!string.IsNullOrEmpty(libraryType))
+            {
+                queryParams.Add("libType", libraryType);
+            }
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                queryParams.Add("sort", sort);
+            }
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                queryParams.Add("filter", filter);
+            }
+            else
+            {
+                queryParams.Add("filter", "all");
+            }
+
+            var apiRequest =
+                new ApiRequestBuilder("https://metadata.provider.plex.tv/library/sections/watchlist", string.Empty, HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddQueryParams(queryParams)
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<WatchlistContainer>>(apiRequest);
+            return wrapper.Container;
         }
     }
 }
