@@ -72,6 +72,10 @@ namespace Plex.ServerApi.Api
             {
                 await this.LogApiUnsuccessfulAsync(request, httpResponse);
             }
+            else
+            {
+                await this.LogApiSuccessfulAsync(request, httpResponse);
+            }
 
             var contentResponse = await httpResponse.Content.ReadAsStringAsync();
 
@@ -139,6 +143,14 @@ namespace Plex.ServerApi.Api
 
             //TODO Enable retries and handle different response status codes accordingly
             throw new ApplicationException("Unsuccessful response from 3rd Party API");
+        }
+
+        private async Task LogApiSuccessfulAsync(ApiRequest request, HttpResponseMessage httpResponse)
+        {
+            this.logger.LogInformation($"StatusCode: {httpResponse.StatusCode}. Request Uri: {request.FullUri}");
+
+            var rawResponse = await httpResponse.Content.ReadAsStringAsync();
+            this.logger.LogInformation(rawResponse);
         }
     }
 }
