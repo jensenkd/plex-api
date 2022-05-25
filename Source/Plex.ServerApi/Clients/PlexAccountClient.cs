@@ -9,6 +9,7 @@ namespace Plex.ServerApi.Clients
     using PlexModels;
     using PlexModels.Account;
     using PlexModels.Account.Announcements;
+    using PlexModels.Account.Discover;
     using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
@@ -242,6 +243,7 @@ namespace Plex.ServerApi.Clients
             return devices;
         }
 
+        /// <inheritdoc/>
         public async Task<object> LinkDeviceToAccountByPin(string pinCode)
         {
             var apiRequest =
@@ -255,6 +257,7 @@ namespace Plex.ServerApi.Clients
             return await this.apiService.InvokeApiAsync<object>(apiRequest);
         }
 
+        /// <inheritdoc/>
         public async Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType)
         {
             var queryParams = new Dictionary<string, string>
@@ -292,6 +295,115 @@ namespace Plex.ServerApi.Clients
 
             var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<WatchlistContainer>>(apiRequest);
             return wrapper.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task<object> GetHistory(string authToken, int maxResults = 999999)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+
+                {"includeMetadata", "1"},
+                {"includeExternalMedia", "1"}
+            };
+
+            var apiRequest =
+                new ApiRequestBuilder("https://metadata.provider.plex.tv/library/sections/watchlist", string.Empty, HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddQueryParams(queryParams)
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<WatchlistContainer>>(apiRequest);
+            return wrapper.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task<DiscoverSearchContainer> SearchDiscover(string authToken, string query, int limit = 30)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"query", query},
+                {"limit", limit.ToString()},
+                {"searchTypes", "movies,tv"},
+                {"includeMetadata", "1"}
+            };
+
+            var apiRequest =
+                new ApiRequestBuilder("https://metadata.provider.plex.tv/library/search", string.Empty, HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddQueryParams(queryParams)
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<DiscoverSearchContainer>>(apiRequest);
+            return wrapper.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task<WatchlistUserState> OnWatchlist(string authToken, string ratingKey)
+        {
+            var apiRequest =
+                new ApiRequestBuilder($"https://metadata.provider.plex.tv/library/metadata/{ratingKey}/userState", string.Empty, HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AcceptJson()
+                    .Build();
+
+            var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<WatchlistUserStateContainer>>(apiRequest);
+
+            return wrapper.Container.UserState;
+        }
+
+        /// <inheritdoc/>
+        public async Task AddToWatchlist(string authToken, string ratingKey)
+        {
+            if (string.IsNullOrEmpty(ratingKey))
+            {
+                throw new ApplicationException("RatingKey is required");
+            }
+
+            var queryParams = new Dictionary<string, string>
+            {
+                {"ratingKey", ratingKey}
+            };
+
+            var apiRequest =
+                new ApiRequestBuilder($"https://metadata.provider.plex.tv/actions/addToWatchlist", string.Empty, HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddQueryParams(queryParams)
+                    .AcceptJson()
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task RemoveFromWatchlist(string authToken, string ratingKey)
+        {
+
+            if (string.IsNullOrEmpty(ratingKey))
+            {
+                throw new ApplicationException("RatingKey is required");
+            }
+
+            var queryParams = new Dictionary<string, string>
+            {
+                {"ratingKey", ratingKey}
+            };
+
+            var apiRequest =
+                new ApiRequestBuilder($"https://metadata.provider.plex.tv/actions/removeFromWatchlist", string.Empty, HttpMethod.Put)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddQueryParams(queryParams)
+                    .AcceptJson()
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
         }
     }
 }

@@ -1,11 +1,11 @@
-namespace Plex.ServerApi.Test.Tests
-{
-    using System.Linq;
-    using Library.ApiModels.Libraries;
-    using Xunit;
-    using Xunit.Abstractions;
+namespace Plex.ServerApi.Test.Tests;
 
-    public class TvLibraryTest : IClassFixture<PlexFixture>
+using System.Linq;
+using Library.ApiModels.Libraries;
+using Xunit;
+using Xunit.Abstractions;
+
+public class TvLibraryTest : IClassFixture<PlexFixture>
     {
         private readonly PlexFixture fixture;
         private readonly ITestOutputHelper output;
@@ -59,4 +59,3 @@ namespace Plex.ServerApi.Test.Tests
             }
         }
     }
-}

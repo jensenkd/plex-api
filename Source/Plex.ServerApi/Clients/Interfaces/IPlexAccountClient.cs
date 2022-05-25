@@ -1,9 +1,11 @@
 namespace Plex.ServerApi.Clients.Interfaces
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using PlexModels.Account;
     using PlexModels.Account.Announcements;
+    using PlexModels.Account.Discover;
     using PlexModels.Account.Resources;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
@@ -146,5 +148,20 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <returns>List of Movies or Shows</returns>
         Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType);
 
+        Task<object> GetHistory(string authToken, int maxResults = 999999);
+
+        /// <summary>
+        /// Search for Movies and TV shows in Discover
+        /// </summary>
+        /// <param name="query">Search Query</param>
+        /// <param name="limit">Limit number of items to return. Default is 30</param>
+        /// <returns>List of Discover objects</returns>
+        Task<DiscoverSearchContainer> SearchDiscover(string authToken, string query, int limit = 30);
+
+        Task<WatchlistUserState> OnWatchlist(string authToken,string ratingKey);
+
+        Task AddToWatchlist(string authToken, string ratingKey);
+
+        Task RemoveFromWatchlist(string authToken, string ratingKey);
     }
 }

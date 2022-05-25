@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Helpers\Mappings" />
-    <Folder Include="PlexModels\Resources" />
   </ItemGroup>
 
 </Project>
