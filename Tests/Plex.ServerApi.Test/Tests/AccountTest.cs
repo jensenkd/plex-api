@@ -3,6 +3,7 @@ namespace Plex.ServerApi.Test.Tests
     using System.Linq;
     using System.Threading.Tasks;
     using Clients.Interfaces;
+    using Enums;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
     using Xunit.Abstractions;
@@ -138,7 +139,7 @@ namespace Plex.ServerApi.Test.Tests
         {
             this.output.WriteLine("Username: " + this.fixture.PlexAccount.Username);
 
-            var watchlist = await this.fixture.PlexAccount.Watchlist(string.Empty, string.Empty, string.Empty);
+            var watchlist = await this.fixture.PlexAccount.Watchlist(string.Empty, string.Empty, null);
 
             Assert.NotEmpty(watchlist);
         }
@@ -148,7 +149,7 @@ namespace Plex.ServerApi.Test.Tests
         {
             this.output.WriteLine("Username: " + this.fixture.PlexAccount.Username);
 
-            var watchlist = await this.fixture.PlexAccount.Watchlist(string.Empty, string.Empty, "show");
+            var watchlist = await this.fixture.PlexAccount.Watchlist(string.Empty, string.Empty, SearchType.Show);
 
             Assert.NotEmpty(watchlist);
         }

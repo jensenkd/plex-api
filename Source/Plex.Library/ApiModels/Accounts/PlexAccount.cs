@@ -6,6 +6,7 @@ namespace Plex.Library.ApiModels.Accounts
     using System.Threading.Tasks;
     using Automapper;
     using ServerApi.Clients.Interfaces;
+    using ServerApi.Enums;
     using ServerApi.PlexModels.Account;
     using ServerApi.PlexModels.Account.Announcements;
     using ServerApi.PlexModels.Account.Resources;
@@ -216,7 +217,7 @@ namespace Plex.Library.ApiModels.Accounts
         /// </param>
         /// <param name="libraryType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
         /// <returns>List of Movies or Shows</returns>
-        public async Task<WatchlistMetadataContainer[]> Watchlist(string filter, string sort, string libraryType)
+        public async Task<WatchlistMetadataContainer[]> Watchlist(string filter, string sort, SearchType? libraryType)
         {
             var watchlist = await this.plexAccountClient.GetWatchList(this.AuthToken, filter, sort, libraryType);
 

@@ -283,7 +283,8 @@ namespace Plex.ServerApi.Clients
         {
             var queryParams = new Dictionary<string, string>
             {
-                { "X-Plex-Container-Start", start.ToString() }, { "X-Plex-Container-Size", count.ToString() }
+                { "X-Plex-Container-Start", start.ToString() },
+                { "X-Plex-Container-Size", count.ToString() }
             };
 
             if (minDate != null)

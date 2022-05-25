@@ -2,6 +2,7 @@ namespace Plex.Library.Test.Tests
 {
     using Microsoft.Extensions.DependencyInjection;
     using ServerApi.Clients.Interfaces;
+    using ServerApi.Enums;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -24,7 +25,7 @@ namespace Plex.Library.Test.Tests
         [Fact]
         public async void Test_GetWatchlist()
         {
-            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, string.Empty);
+            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, null);
 
             Assert.NotNull(mediaContainer);
         }
@@ -33,9 +34,9 @@ namespace Plex.Library.Test.Tests
         public async void Test_OnWatchlist()
         {
             const string ratingKey = "5d776b329ab5440021508861";
-            var userState = await this.plexAccountClient.OnWatchlist(this.config.AuthenticationKey, ratingKey);
+            var isOnWatchlist = await this.plexAccountClient.OnWatchlist(this.config.AuthenticationKey, ratingKey);
 
-            Assert.NotNull(userState);
+            Assert.True(isOnWatchlist);
         }
 
         [Fact]
@@ -55,17 +56,23 @@ namespace Plex.Library.Test.Tests
         [Fact]
         public async void Test_GetWatchlist_Shows_Only()
         {
-            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, "show");
+            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, SearchType.Show);
 
-            Assert.NotNull(mediaContainer);
+            foreach (var movie in mediaContainer.MediaContainers[0].Metadata)
+            {
+                Assert.Equal("show", movie.Type);
+            }
         }
 
         [Fact]
         public async void Test_GetWatchlist_Movies_Only()
         {
-            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, "movie");
+            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, SearchType.Movie);
 
-            Assert.NotNull(mediaContainer);
+            foreach (var movie in mediaContainer.MediaContainers[0].Metadata)
+            {
+                Assert.Equal("movie", movie.Type);
+            }
         }
 
         [Fact]

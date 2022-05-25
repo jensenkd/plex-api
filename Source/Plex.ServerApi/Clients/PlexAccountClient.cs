@@ -5,6 +5,7 @@ namespace Plex.ServerApi.Clients
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
+    using Enums;
     using Interfaces;
     using PlexModels;
     using PlexModels.Account;
@@ -106,11 +107,11 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUUID)
+        public async Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUuid)
         {
 
             var apiRequest =
-                new ApiRequestBuilder($"https://plex.tv/api/v2/home/users/{userUUID}/switch.json", string.Empty, HttpMethod.Post)
+                new ApiRequestBuilder($"https://plex.tv/api/v2/home/users/{userUuid}/switch.json", string.Empty, HttpMethod.Post)
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                     .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
                     .AddPlexToken(authToken)
@@ -258,7 +259,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType)
+        public async Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, SearchType? searchType)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -266,9 +267,9 @@ namespace Plex.ServerApi.Clients
                 {"includeExternalMedia", "1"}
             };
 
-            if (!string.IsNullOrEmpty(libraryType))
+            if (searchType.HasValue)
             {
-                queryParams.Add("libType", libraryType);
+                queryParams.Add("type", ((int)searchType.Value).ToString());
             }
 
             if (!string.IsNullOrEmpty(sort))
@@ -279,10 +280,6 @@ namespace Plex.ServerApi.Clients
             if (!string.IsNullOrEmpty(filter))
             {
                 queryParams.Add("filter", filter);
-            }
-            else
-            {
-                queryParams.Add("filter", "all");
             }
 
             var apiRequest =
@@ -343,7 +340,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<WatchlistUserState> OnWatchlist(string authToken, string ratingKey)
+        public async Task<bool> OnWatchlist(string authToken, string ratingKey)
         {
             var apiRequest =
                 new ApiRequestBuilder($"https://metadata.provider.plex.tv/library/metadata/{ratingKey}/userState", string.Empty, HttpMethod.Get)
@@ -354,7 +351,7 @@ namespace Plex.ServerApi.Clients
 
             var wrapper = await this.apiService.InvokeApiAsync<GenericWrapper<WatchlistUserStateContainer>>(apiRequest);
 
-            return wrapper.Container.UserState;
+            return wrapper.Container.UserState is {WatchlistedAt: > 0};
         }
 
         /// <inheritdoc/>

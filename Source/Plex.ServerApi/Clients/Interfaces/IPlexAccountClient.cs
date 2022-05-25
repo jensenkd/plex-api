@@ -3,6 +3,7 @@ namespace Plex.ServerApi.Clients.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Enums;
     using PlexModels.Account;
     using PlexModels.Account.Announcements;
     using PlexModels.Account.Discover;
@@ -122,9 +123,9 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// Switch to the account of another Home User
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
-        /// <param name="userUUID">UUID of the home user to switch to.</param>
+        /// <param name="userUuid">UUID of the home user to switch to.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUUID);
+        Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUuid);
 
         /// <summary>
         /// Return list of Movie and Show items in the user's Watchlist.
@@ -144,24 +145,41 @@ namespace Plex.ServerApi.Clients.Interfaces
         ///     - asc
         ///     - desc
         /// </param>
-        /// <param name="libraryType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
+        /// <param name="searchType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
         /// <returns>List of Movies or Shows</returns>
-        Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, string libraryType);
-
-        Task<object> GetHistory(string authToken, int maxResults = 999999);
+        Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, SearchType? searchType);
 
         /// <summary>
         /// Search for Movies and TV shows in Discover
         /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
         /// <param name="query">Search Query</param>
         /// <param name="limit">Limit number of items to return. Default is 30</param>
         /// <returns>List of Discover objects</returns>
         Task<DiscoverSearchContainer> SearchDiscover(string authToken, string query, int limit = 30);
 
-        Task<WatchlistUserState> OnWatchlist(string authToken,string ratingKey);
+        /// <summary>
+        /// Returns True or False depending on if Item is on Watchlist
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="ratingKey">Item Rating Key</param>
+        /// <returns></returns>
+        Task<bool> OnWatchlist(string authToken,string ratingKey);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="ratingKey">Item Rating Key</param>
+        /// <returns></returns>
         Task AddToWatchlist(string authToken, string ratingKey);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="ratingKey">Item Rating Key</param>
+        /// <returns></returns>
         Task RemoveFromWatchlist(string authToken, string ratingKey);
     }
 }
