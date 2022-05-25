@@ -194,6 +194,7 @@ namespace Plex.ServerApi.Clients
                 { "includeExtras", "1" },
                 { "includeStations", "1" },
                 { "includeChapters", "1" },
+                { "includeGuids", "1" }
             };
 
             // var apiRequest =
