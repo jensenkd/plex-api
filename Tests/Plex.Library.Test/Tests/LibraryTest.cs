@@ -4,7 +4,6 @@ namespace Plex.Library.Test.Tests
     using Microsoft.Extensions.DependencyInjection;
     using ServerApi.Clients.Interfaces;
     using ServerApi.PlexModels.Library.Search;
-    using ServerApi.PlexModels.PlayQueues;
     using Xunit;
     using Xunit.Abstractions;
 
