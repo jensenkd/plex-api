@@ -8,6 +8,7 @@ namespace Plex.ServerApi.Clients.Interfaces
     using PlexModels.Account.Announcements;
     using PlexModels.Account.Discover;
     using PlexModels.Account.Resources;
+    using PlexModels.Account.SharedItems;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
     using PlexModels.Watchlist;
@@ -181,5 +182,12 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="ratingKey">Item Rating Key</param>
         /// <returns></returns>
         Task RemoveFromWatchlist(string authToken, string ratingKey);
+
+        /// <summary>
+        /// Get Shared Items for Admin Account
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <returns>List of Shared Items and the Users associated</returns>
+        Task<List<SharedItemContainer>> GetSharedItems(string authToken);
     }
 }

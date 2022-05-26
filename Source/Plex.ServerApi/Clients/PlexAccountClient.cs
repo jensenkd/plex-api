@@ -12,6 +12,7 @@ namespace Plex.ServerApi.Clients
     using PlexModels.Account.Announcements;
     using PlexModels.Account.Discover;
     using PlexModels.Account.Resources;
+    using PlexModels.Account.SharedItems;
     using PlexModels.Account.User;
     using PlexModels.OAuth;
     using PlexModels.Watchlist;
@@ -401,6 +402,28 @@ namespace Plex.ServerApi.Clients
                     .Build();
 
             await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<SharedItemContainer>> GetSharedItems(string authToken)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"includeItems", "true"}
+            };
+
+            var apiRequest =
+                new ApiRequestBuilder("https://plex.tv/api/v2/shared_sources/owned", string.Empty, HttpMethod.Get)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AddQueryParams(queryParams)
+                    .AcceptJson()
+                    .Build();
+
+            var items = await this.apiService.InvokeApiAsync<List<SharedItemContainer>>(apiRequest);
+
+            return items;
         }
     }
 }

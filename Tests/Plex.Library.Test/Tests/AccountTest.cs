@@ -31,6 +31,14 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetAccountSharedItems()
+        {
+            var sharedItems = await this.plexAccountClient.GetSharedItems(this.config.AuthenticationKey);
+
+            Assert.NotEmpty(sharedItems);
+        }
+
+        [Fact]
         public async void Test_OnWatchlist()
         {
             const string ratingKey = "5d776b329ab5440021508861";
