@@ -189,5 +189,22 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Plex Auth Token</param>
         /// <returns>List of Shared Items and the Users associated</returns>
         Task<List<SharedItemContainer>> GetSharedItems(string authToken);
+
+        /// <summary>
+        /// Remove Shared Item for Admin Account
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="sharedItemId">Shared Item Identifier</param>
+        /// <returns></returns>
+        Task RemoveSharedItem(string authToken, int sharedItemId);
+
+        /// <summary>
+        /// Add Shared items from Admin Account to another user
+        /// </summary>
+        /// <param name="authToken">Plex Auth Token</param>
+        /// <param name="sharedUserId">User Id to share with</param>
+        /// <param name="sharedItems">Items to share</param>
+        /// <returns></returns>
+        Task AddSharedItems(string authToken, int sharedUserId,  List<SharedItemModelRequest> sharedItems);
     }
 }

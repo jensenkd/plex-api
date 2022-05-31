@@ -110,7 +110,6 @@ namespace Plex.ServerApi.Clients
         /// <inheritdoc/>
         public async Task<PlexModels.Account.PlexAccount> GetPlexHomeAccountAsync(string authToken, string userUuid)
         {
-
             var apiRequest =
                 new ApiRequestBuilder($"https://plex.tv/api/v2/home/users/{userUuid}/switch.json", string.Empty, HttpMethod.Post)
                     .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
@@ -424,6 +423,43 @@ namespace Plex.ServerApi.Clients
             var items = await this.apiService.InvokeApiAsync<List<SharedItemContainer>>(apiRequest);
 
             return items;
+        }
+
+        /// <inheritdoc/>
+        public async Task RemoveSharedItem(string authToken, int sharedItemId)
+        {
+            var apiRequest =
+                new ApiRequestBuilder($"https://plex.tv/api/v2/shared_sources/{sharedItemId}", string.Empty,
+                        HttpMethod.Delete)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task AddSharedItems(string authToken, int sharedUserId, List<SharedItemModelRequest> sharedItems)
+        {
+            var queryParams =
+                new Dictionary<string, string>
+                {
+                    { "invitedId", sharedUserId.ToString() },
+                    { "items", System.Text.Json.JsonSerializer.Serialize(sharedItems) }
+                };
+
+            var apiRequest =
+                new ApiRequestBuilder($"https://plex.tv/api/v2/shared_sources", string.Empty,
+                        HttpMethod.Post)
+                    .AddPlexToken(authToken)
+                    .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                    .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                    .AcceptJson()
+                    .Build();
+
+            await this.apiService.InvokeApiAsync(apiRequest);
         }
     }
 }

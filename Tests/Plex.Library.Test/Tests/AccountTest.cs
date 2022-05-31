@@ -1,8 +1,10 @@
 namespace Plex.Library.Test.Tests
 {
+    using System.Collections.Generic;
     using Microsoft.Extensions.DependencyInjection;
     using ServerApi.Clients.Interfaces;
     using ServerApi.Enums;
+    using ServerApi.PlexModels.Account.SharedItems;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -34,8 +36,31 @@ namespace Plex.Library.Test.Tests
         public async void Test_GetAccountSharedItems()
         {
             var sharedItems = await this.plexAccountClient.GetSharedItems(this.config.AuthenticationKey);
-
             Assert.NotEmpty(sharedItems);
+        }
+
+
+        [Fact]
+        public async void Test_RemoveSharedItem()
+        {
+            const int sharedItemId = 30279190;
+            await this.plexAccountClient.RemoveSharedItem(this.config.AuthenticationKey, sharedItemId);
+        }
+
+        [Fact]
+        public async void Test_AddSharedItem()
+        {
+            var request = new List<SharedItemModelRequest>
+            {
+                new()
+                {
+                    Uri = "server://31a76d623a6ec28b1619bd7679650d84d9552728/com.plexapp.plugins.library/library/metadata/350061",
+                    Title = "The Northman",
+                    Type = "movie"
+                }
+            };
+
+            await this.plexAccountClient.AddSharedItems(this.config.AuthenticationKey, 20071940, request);
         }
 
         [Fact]
