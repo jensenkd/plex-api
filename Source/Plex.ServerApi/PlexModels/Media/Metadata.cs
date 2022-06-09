@@ -83,8 +83,17 @@ namespace Plex.ServerApi.PlexModels.Media
         [JsonPropertyName("audienceRating")]
         public double AudienceRating { get; set; }
 
+        [JsonPropertyName("leafCount")]
+        public int LeafCount { get; set; }
+
+        [JsonPropertyName("childCount")]
+        public int ChildCount { get; set; }
+
         [JsonPropertyName("viewCount")]
         public int ViewCount { get; set; }
+
+        [JsonPropertyName("viewedLeafCount")]
+        public int ViewedLeafCount { get; set; }
 
         [JsonPropertyName("lastViewedAt")]
         public long LastViewedAt { get; set; }

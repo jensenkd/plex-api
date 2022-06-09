@@ -17,6 +17,29 @@ public class TvLibraryTest : IClassFixture<PlexFixture>
         }
 
         [Fact]
+        public async System.Threading.Tasks.Task Test_GetShows()
+        {
+            var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "TV Shows") as ShowLibrary;
+            Assert.NotNull(library);
+
+
+            var shows = await library.AllShows("");
+            Assert.NotNull(shows);
+            Assert.True(shows.Media.Count > 0);
+
+            var show = shows.Media.First();
+            Assert.NotNull(show);
+
+            Assert.True(show.ChildCount > 0);
+            Assert.True(show.LeafCount > 0);
+            if (show.ViewCount > 0)
+            {
+                Assert.True(show.ViewedLeafCount > 0);
+            }
+        }
+
+
+        [Fact]
         public async System.Threading.Tasks.Task Test_GetSeasonsForShow()
         {
             var library = this.fixture.Server.Libraries().Result.Single(c => c.Title == "TV Shows") as ShowLibrary;
