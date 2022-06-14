@@ -19,6 +19,42 @@ namespace Plex.ServerApi.PlexModels.Account.User
         public int Id { get; set; }
 
         /// <summary>
+        /// User's Plex account UUID.
+        /// </summary>
+        [XmlAttribute(AttributeName = "uuid")]
+        public string Uuid { get; set; }
+
+        /// <summary>
+        /// Is User Account Admin.
+        /// </summary>
+        [XmlAttribute(AttributeName = "admin")]
+        public int IsAdmin { get; set; }
+
+        /// <summary>
+        /// Is User Account Guest.
+        /// </summary>
+        [XmlAttribute(AttributeName = "guest")]
+        public int IsGuest { get; set; }
+
+        /// <summary>
+        /// Is User Account Restricted.
+        /// </summary>
+        [XmlAttribute(AttributeName = "restricted")]
+        public int IsRestricted { get; set; }
+
+        /// <summary>
+        /// Restricted Profile if user is restricted
+        /// </summary>
+        [XmlAttribute(AttributeName = "restrictedProfile")]
+        public string RestrictedProfile { get; set; }
+
+        /// <summary>
+        /// Does the user have a password
+        /// </summary>
+        [XmlAttribute(AttributeName = "hasPassword")]
+        public bool HasPassword { get; set; }
+
+        /// <summary>
         /// Seems to be an alias for username.
         /// </summary>
         [XmlAttribute(AttributeName = "title")]
@@ -37,12 +73,6 @@ namespace Plex.ServerApi.PlexModels.Account.User
         public string Email { get; set; }
 
         /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "recommendationsPlaylistId")]
-        public string RecommendationsPlaylistId { get; set; }
-
-        /// <summary>
         /// Link to the users avatar.
         /// </summary>
         [XmlAttribute(AttributeName = "thumb")]
@@ -53,83 +83,5 @@ namespace Plex.ServerApi.PlexModels.Account.User
         /// </summary>
         [XmlAttribute(AttributeName = "protected")]
         public int Protected { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "home")]
-        public int Home { get; set; }
-
-        /// <summary>
-        /// True if this user can use Tuners.
-        /// </summary>
-        [XmlAttribute(AttributeName = "allowTuners")]
-        public int AllowTuners { get; set; }
-
-        /// <summary>
-        /// True if this user can sync.
-        /// </summary>
-        [XmlAttribute(AttributeName = "allowSync")]
-        public int AllowSync { get; set; }
-
-        /// <summary>
-        /// True if this user can upload images.
-        /// </summary>
-        [XmlAttribute(AttributeName = "allowCameraUpload")]
-        public int AllowCameraUpload { get; set; }
-
-        /// <summary>
-        /// True if this user has access to channels.
-        /// </summary>
-        [XmlAttribute(AttributeName = "allowChannels")]
-        public int AllowChannels { get; set; }
-
-        /// <summary>
-        /// True if this user has admin to Subtitles
-        /// </summary>
-        [XmlAttribute(AttributeName = "allowSubtitleAdmin")]
-        public int AllowSubtitleAdmin { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "filterAll")]
-        public string FilterAll { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "filterMovies")]
-        public string FilterMovies { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "filterMusic")]
-        public string FilterMusic { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "filterPhotos")]
-        public string FilterPhotos { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "filterTelevision")]
-        public string FilterTelevision { get; set; }
-
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        [XmlAttribute(AttributeName = "restricted")]
-        public int Restricted { get; set; }
-
-        /// <summary>
-        /// Servers shared between user and friend
-        /// </summary>
-        [XmlElement(ElementName = "Server")]
-        public List<UserSharedServer> SharedServers { get; set; }
     }
 }

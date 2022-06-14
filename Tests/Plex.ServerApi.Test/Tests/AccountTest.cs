@@ -72,7 +72,7 @@ namespace Plex.ServerApi.Test.Tests
             {
                 var pin = await plexAccountClient.CreateOAuthPinAsync(string.Empty);
 
-                var result1 = await plexAccountClient.LinkDeviceToAccountByPin(pin.Code);
+                var result1 = await plexAccountClient.LinkDeviceToAccountByPinAsync(pin.Code);
                 Assert.NotNull(result1);
             }
         }
@@ -184,7 +184,7 @@ namespace Plex.ServerApi.Test.Tests
         [Fact]
         public async void Test_Get_UsersAsync()
         {
-            var users = await this.fixture.PlexAccount.Users();
+            var users = await this.fixture.PlexAccount.HomeUsers();
             Assert.NotNull(users);
         }
 

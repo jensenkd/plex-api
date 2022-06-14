@@ -27,7 +27,7 @@ namespace Plex.Library.Test.Tests
         [Fact]
         public async void Test_GetWatchlist()
         {
-            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, null);
+            var mediaContainer = await this.plexAccountClient.GetWatchListAsync(this.config.AuthenticationKey, string.Empty, string.Empty, null);
 
             Assert.NotNull(mediaContainer);
         }
@@ -35,7 +35,7 @@ namespace Plex.Library.Test.Tests
         [Fact]
         public async void Test_GetAccountSharedItems()
         {
-            var sharedItems = await this.plexAccountClient.GetSharedItems(this.config.AuthenticationKey);
+            var sharedItems = await this.plexAccountClient.GetSharedItemsAsync(this.config.AuthenticationKey);
             Assert.NotEmpty(sharedItems);
         }
 
@@ -44,7 +44,7 @@ namespace Plex.Library.Test.Tests
         public async void Test_RemoveSharedItem()
         {
             const int sharedItemId = 30279190;
-            await this.plexAccountClient.RemoveSharedItem(this.config.AuthenticationKey, sharedItemId);
+            await this.plexAccountClient.RemoveSharedItemAsync(this.config.AuthenticationKey, sharedItemId);
         }
 
         [Fact]
@@ -60,14 +60,14 @@ namespace Plex.Library.Test.Tests
                 }
             };
 
-            await this.plexAccountClient.AddSharedItems(this.config.AuthenticationKey, 20071940, request);
+            await this.plexAccountClient.AddSharedItemsAsync(this.config.AuthenticationKey, 20071940, request);
         }
 
         [Fact]
         public async void Test_OnWatchlist()
         {
             const string ratingKey = "5d776b329ab5440021508861";
-            var isOnWatchlist = await this.plexAccountClient.OnWatchlist(this.config.AuthenticationKey, ratingKey);
+            var isOnWatchlist = await this.plexAccountClient.OnWatchlistAsync(this.config.AuthenticationKey, ratingKey);
 
             Assert.True(isOnWatchlist);
         }
@@ -76,20 +76,20 @@ namespace Plex.Library.Test.Tests
         public async void Test_AddToWatchlist()
         {
             const string ratingKey = "5d776b329ab5440021508861";
-            await this.plexAccountClient.AddToWatchlist(this.config.AuthenticationKey, ratingKey);
+            await this.plexAccountClient.AddToWatchlistAsync(this.config.AuthenticationKey, ratingKey);
         }
 
         [Fact]
         public async void Test_RemoveFromWatchlist()
         {
             const string ratingKey = "5d776b329ab5440021508861";
-            await this.plexAccountClient.RemoveFromWatchlist(this.config.AuthenticationKey, ratingKey);
+            await this.plexAccountClient.RemoveFromWatchlistAsync(this.config.AuthenticationKey, ratingKey);
         }
 
         [Fact]
         public async void Test_GetWatchlist_Shows_Only()
         {
-            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, SearchType.Show);
+            var mediaContainer = await this.plexAccountClient.GetWatchListAsync(this.config.AuthenticationKey, string.Empty, string.Empty, SearchType.Show);
 
             foreach (var movie in mediaContainer.MediaContainers[0].Metadata)
             {
@@ -100,7 +100,7 @@ namespace Plex.Library.Test.Tests
         [Fact]
         public async void Test_GetWatchlist_Movies_Only()
         {
-            var mediaContainer = await this.plexAccountClient.GetWatchList(this.config.AuthenticationKey, string.Empty, string.Empty, SearchType.Movie);
+            var mediaContainer = await this.plexAccountClient.GetWatchListAsync(this.config.AuthenticationKey, string.Empty, string.Empty, SearchType.Movie);
 
             foreach (var movie in mediaContainer.MediaContainers[0].Metadata)
             {
@@ -111,7 +111,7 @@ namespace Plex.Library.Test.Tests
         [Fact]
         public async void Test_SearchDiscover()
         {
-            var searchResults = await this.plexAccountClient.SearchDiscover(this.config.AuthenticationKey, "NBA");
+            var searchResults = await this.plexAccountClient.SearchDiscoverAsync(this.config.AuthenticationKey, "NBA");
 
             Assert.NotNull(searchResults);
         }

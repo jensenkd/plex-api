@@ -198,6 +198,13 @@ namespace Plex.Library.ApiModels.Accounts
         public async Task<List<Friend>> Friends() =>
             await this.plexAccountClient.GetFriendsAsync(this.AuthToken);
 
+        // CreateHomeUser()
+        // CreateExistingUser()
+        // RemoveFriend()
+        // RemoveHomeUser()
+        // UpdateFriend()
+        // GetUser(string username)
+
         /// <summary>
         /// Return list of Movie and Show items in the user's Watchlist.
         /// Note: Objects returned are from Plex's online metadata service.  You will need to lookup items on the
@@ -219,7 +226,7 @@ namespace Plex.Library.ApiModels.Accounts
         /// <returns>List of Movies or Shows</returns>
         public async Task<WatchlistMetadataContainer[]> Watchlist(string filter, string sort, SearchType? libraryType)
         {
-            var watchlist = await this.plexAccountClient.GetWatchList(this.AuthToken, filter, sort, libraryType);
+            var watchlist = await this.plexAccountClient.GetWatchListAsync(this.AuthToken, filter, sort, libraryType);
 
             if (watchlist.Size > 0 && watchlist.MediaContainers.Any())
             {
@@ -239,13 +246,11 @@ namespace Plex.Library.ApiModels.Accounts
             await this.plexAccountClient.GetPlexAnnouncementsAsync(this.AuthToken);
 
         /// <summary>
-        /// Returns a list of all User objects connected to your account.
-        /// This includes both friends and pending invites. You can reference the user.Friend to
-        /// distinguish between the two.
+        /// Returns a list of Home Users for Account
         /// </summary>
         /// <returns>UserContainer Object</returns>
-        public async Task<UserContainer> Users() =>
-            await this.plexAccountClient.GetUsers(this.AuthToken);
+        public async Task<UserContainer> HomeUsers() =>
+            await this.plexAccountClient.GetHomeUsersAsync(this.AuthToken);
 
 
 
@@ -255,9 +260,9 @@ namespace Plex.Library.ApiModels.Accounts
         /// distinguish between the two.
         /// </summary>
         /// <returns>UserContainer Object</returns>
-        public async Task<PlexAccount> GetPlexHomeAccountAsync(string userUUID)
+        public async Task<PlexAccount> GetPlexHomeAccountAsync(string userUuid)
         {
-            var account = await this.plexAccountClient.GetPlexHomeAccountAsync(this.AuthToken, userUUID);
+            var account = await this.plexAccountClient.GetPlexHomeAccountAsync(this.AuthToken, userUuid);
             if (account == null)
             {
                 return null;
@@ -275,22 +280,16 @@ namespace Plex.Library.ApiModels.Accounts
         /// <param name="library">Opt out of Library statistics</param>
         /// <returns></returns>
         public async Task OptOut(bool playback, bool library) =>
-            await this.plexAccountClient.OptOut(this.AuthToken, playback, library);
+            await this.plexAccountClient.OptOutAsync(this.AuthToken, playback, library);
 
         /// <summary>
         /// Get Account Devices
         /// </summary>
         /// <returns>List of Device objects</returns>
         public async Task<List<Device>> Devices() =>
-            await this.plexAccountClient.GetDevices(this.AuthToken);
+            await this.plexAccountClient.GetDevicesAsync(this.AuthToken);
 
 
-        // CreateHomeUser()
-        // CreateExistingUser()
-        // RemoveFriend()
-        // RemoveHomeUser()
-        // UpdateFriend()
-        // GetUser(string username)
 
         // AddWebhook(string url);
         // DeleteWebhook(string url);

@@ -23,5 +23,8 @@ namespace Plex.ServerApi.PlexModels.Account.User
 
         [XmlAttribute(AttributeName="size")]
         public int Size { get; set; }
+
+        [XmlAttribute(AttributeName="guestUserID")]
+        public int GuestUserId { get; set; }
     }
 }

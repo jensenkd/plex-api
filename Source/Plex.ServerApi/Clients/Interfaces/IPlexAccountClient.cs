@@ -88,13 +88,13 @@ namespace Plex.ServerApi.Clients.Interfaces
         Task<List<Friend>> GetFriendsAsync(string authToken);
 
         /// <summary>
-        /// Returns a list of all User objects connected to your account.
+        /// Returns a list of User objects connected to your account.
         /// This includes both friends and pending invites. You can reference the User.Friend to
         /// distinguish between the two.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>List of Users</returns>
-        Task<UserContainer> GetUsers(string authToken);
+        Task<UserContainer> GetHomeUsersAsync(string authToken);
 
         /// <summary>
         /// Opt in or out of sharing stuff with plex.
@@ -104,21 +104,21 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="playback">Opt out of playback</param>
         /// <param name="library">Opt out of Library statistics</param>
         /// <returns></returns>
-        Task OptOut(string authToken, bool playback, bool library);
+        Task OptOutAsync(string authToken, bool playback, bool library);
 
         /// <summary>
         /// Returns a list of all Device objects connected to the account.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns></returns>
-        Task<List<Device>> GetDevices(string authToken);
+        Task<List<Device>> GetDevicesAsync(string authToken);
 
         /// <summary>
         /// Link a device to Plex Account using Pin Auth
         /// </summary>
         /// <param name="pinCode"></param>
         /// <returns></returns>
-        Task<object> LinkDeviceToAccountByPin(string pinCode);
+        Task<object> LinkDeviceToAccountByPinAsync(string pinCode);
 
         /// <summary>
         /// Switch to the account of another Home User
@@ -148,7 +148,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// </param>
         /// <param name="searchType">Library Type (either 'movie' or 'show').  Empty string will return all items.</param>
         /// <returns>List of Movies or Shows</returns>
-        Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, SearchType? searchType);
+        Task<WatchlistContainer> GetWatchListAsync(string authToken, string filter, string sort, SearchType? searchType);
 
         /// <summary>
         /// Search for Movies and TV shows in Discover
@@ -157,7 +157,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="query">Search Query</param>
         /// <param name="limit">Limit number of items to return. Default is 30</param>
         /// <returns>List of Discover objects</returns>
-        Task<DiscoverSearchContainer> SearchDiscover(string authToken, string query, int limit = 30);
+        Task<DiscoverSearchContainer> SearchDiscoverAsync(string authToken, string query, int limit = 30);
 
         /// <summary>
         /// Returns True or False depending on if Item is on Watchlist
@@ -165,7 +165,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Plex Auth Token</param>
         /// <param name="ratingKey">Item Rating Key</param>
         /// <returns></returns>
-        Task<bool> OnWatchlist(string authToken,string ratingKey);
+        Task<bool> OnWatchlistAsync(string authToken,string ratingKey);
 
         /// <summary>
         ///
@@ -173,7 +173,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Plex Auth Token</param>
         /// <param name="ratingKey">Item Rating Key</param>
         /// <returns></returns>
-        Task AddToWatchlist(string authToken, string ratingKey);
+        Task AddToWatchlistAsync(string authToken, string ratingKey);
 
         /// <summary>
         ///
@@ -181,14 +181,14 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Plex Auth Token</param>
         /// <param name="ratingKey">Item Rating Key</param>
         /// <returns></returns>
-        Task RemoveFromWatchlist(string authToken, string ratingKey);
+        Task RemoveFromWatchlistAsync(string authToken, string ratingKey);
 
         /// <summary>
         /// Get Shared Items for Admin Account
         /// </summary>
         /// <param name="authToken">Plex Auth Token</param>
         /// <returns>List of Shared Items and the Users associated</returns>
-        Task<List<SharedItemContainer>> GetSharedItems(string authToken);
+        Task<List<SharedItemContainer>> GetSharedItemsAsync(string authToken);
 
         /// <summary>
         /// Remove Shared Item for Admin Account
@@ -196,7 +196,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="authToken">Plex Auth Token</param>
         /// <param name="sharedItemId">Shared Item Identifier</param>
         /// <returns></returns>
-        Task RemoveSharedItem(string authToken, int sharedItemId);
+        Task RemoveSharedItemAsync(string authToken, int sharedItemId);
 
         /// <summary>
         /// Add Shared items from Admin Account to another user
@@ -205,6 +205,6 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="sharedUserId">User Id to share with</param>
         /// <param name="sharedItems">Items to share</param>
         /// <returns></returns>
-        Task AddSharedItems(string authToken, int sharedUserId,  List<SharedItemModelRequest> sharedItems);
+        Task AddSharedItemsAsync(string authToken, int sharedUserId,  List<SharedItemModelRequest> sharedItems);
     }
 }

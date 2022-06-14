@@ -196,9 +196,9 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<UserContainer> GetUsers(string authToken)
+        public async Task<UserContainer> GetHomeUsersAsync(string authToken)
         {
-            var apiRequest = new ApiRequestBuilder("https://plex.tv/api/users", string.Empty, HttpMethod.Get)
+            var apiRequest = new ApiRequestBuilder("https://plex.tv/home/users", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                 .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
@@ -209,7 +209,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task OptOut(string authToken, bool playback, bool library)
+        public async Task OptOutAsync(string authToken, bool playback, bool library)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -229,7 +229,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<List<Device>> GetDevices(string authToken)
+        public async Task<List<Device>> GetDevicesAsync(string authToken)
         {
             var apiRequest =
                 new ApiRequestBuilder("https://plex.tv/devices.json",string.Empty, HttpMethod.Get)
@@ -245,7 +245,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<object> LinkDeviceToAccountByPin(string pinCode)
+        public async Task<object> LinkDeviceToAccountByPinAsync(string pinCode)
         {
             var apiRequest =
                 new ApiRequestBuilder("https://plex.tv/api/v2/pins/link", string.Empty,HttpMethod.Put)
@@ -259,7 +259,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<WatchlistContainer> GetWatchList(string authToken, string filter, string sort, SearchType? searchType)
+        public async Task<WatchlistContainer> GetWatchListAsync(string authToken, string filter, string sort, SearchType? searchType)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -295,7 +295,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<object> GetHistory(string authToken, int maxResults = 999999)
+        public async Task<object> GetHistoryAsync(string authToken, int maxResults = 999999)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -317,7 +317,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<DiscoverSearchContainer> SearchDiscover(string authToken, string query, int limit = 30)
+        public async Task<DiscoverSearchContainer> SearchDiscoverAsync(string authToken, string query, int limit = 30)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -340,7 +340,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<bool> OnWatchlist(string authToken, string ratingKey)
+        public async Task<bool> OnWatchlistAsync(string authToken, string ratingKey)
         {
             var apiRequest =
                 new ApiRequestBuilder($"https://metadata.provider.plex.tv/library/metadata/{ratingKey}/userState", string.Empty, HttpMethod.Get)
@@ -355,7 +355,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task AddToWatchlist(string authToken, string ratingKey)
+        public async Task AddToWatchlistAsync(string authToken, string ratingKey)
         {
             if (string.IsNullOrEmpty(ratingKey))
             {
@@ -379,7 +379,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task RemoveFromWatchlist(string authToken, string ratingKey)
+        public async Task RemoveFromWatchlistAsync(string authToken, string ratingKey)
         {
 
             if (string.IsNullOrEmpty(ratingKey))
@@ -404,7 +404,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<List<SharedItemContainer>> GetSharedItems(string authToken)
+        public async Task<List<SharedItemContainer>> GetSharedItemsAsync(string authToken)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -426,7 +426,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task RemoveSharedItem(string authToken, int sharedItemId)
+        public async Task RemoveSharedItemAsync(string authToken, int sharedItemId)
         {
             var apiRequest =
                 new ApiRequestBuilder($"https://plex.tv/api/v2/shared_sources/{sharedItemId}", string.Empty,
@@ -441,7 +441,7 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task AddSharedItems(string authToken, int sharedUserId, List<SharedItemModelRequest> sharedItems)
+        public async Task AddSharedItemsAsync(string authToken, int sharedUserId, List<SharedItemModelRequest> sharedItems)
         {
             var queryParams =
                 new Dictionary<string, string>
