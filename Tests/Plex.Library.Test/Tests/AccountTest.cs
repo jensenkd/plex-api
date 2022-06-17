@@ -25,6 +25,22 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetAccountFriends()
+        {
+            var friends = await this.plexAccountClient.GetFriendsAsync(this.config.AuthenticationKey);
+
+            Assert.NotEmpty(friends);
+        }
+
+        [Fact]
+        public async void Test_GetHomeUsers()
+        {
+            var homeUserContainer = await this.plexAccountClient.GetHomeUsersAsync(this.config.AuthenticationKey);
+
+            Assert.NotNull(homeUserContainer);
+        }
+
+        [Fact]
         public async void Test_GetWatchlist()
         {
             var mediaContainer = await this.plexAccountClient.GetWatchListAsync(this.config.AuthenticationKey, string.Empty, string.Empty, null);

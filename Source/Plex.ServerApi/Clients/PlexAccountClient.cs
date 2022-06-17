@@ -189,6 +189,7 @@ namespace Plex.ServerApi.Clients
             var apiRequest = new ApiRequestBuilder(BaseUri + "friends.json", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
+                .AcceptJson()
                 .Build();
 
             var friends = await this.apiService.InvokeApiAsync<List<Friend>>(apiRequest);
@@ -196,15 +197,16 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<UserContainer> GetHomeUsersAsync(string authToken)
+        public async Task<HomeUserContainer> GetHomeUsersAsync(string authToken)
         {
-            var apiRequest = new ApiRequestBuilder("https://plex.tv/home/users", string.Empty, HttpMethod.Get)
+            var apiRequest = new ApiRequestBuilder(BaseUri + "home/users", string.Empty, HttpMethod.Get)
                 .AddPlexToken(authToken)
                 .AddRequestHeaders(ClientUtilities.GetClientIdentifierHeader(this.clientOptions.ClientId))
                 .AddRequestHeaders(ClientUtilities.GetClientMetaHeaders(this.clientOptions))
+                .AcceptJson()
                 .Build();
 
-            var container = await this.apiService.InvokeApiAsync<UserContainer>(apiRequest);
+            var container = await this.apiService.InvokeApiAsync<HomeUserContainer>(apiRequest);
             return container;
         }
 

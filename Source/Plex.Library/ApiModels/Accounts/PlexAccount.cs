@@ -249,10 +249,8 @@ namespace Plex.Library.ApiModels.Accounts
         /// Returns a list of Home Users for Account
         /// </summary>
         /// <returns>UserContainer Object</returns>
-        public async Task<UserContainer> HomeUsers() =>
+        public async Task<HomeUserContainer> HomeUsers() =>
             await this.plexAccountClient.GetHomeUsersAsync(this.AuthToken);
-
-
 
         /// <summary>
         /// Returns a list of all User objects connected to your account.
@@ -288,9 +286,7 @@ namespace Plex.Library.ApiModels.Accounts
         /// <returns>List of Device objects</returns>
         public async Task<List<Device>> Devices() =>
             await this.plexAccountClient.GetDevicesAsync(this.AuthToken);
-
-
-
+        
         // AddWebhook(string url);
         // DeleteWebhook(string url);
         // SetWebhooks(string[] urls);

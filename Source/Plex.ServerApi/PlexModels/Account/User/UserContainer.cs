@@ -1,30 +1,21 @@
-namespace Plex.ServerApi.PlexModels.Account.User
+namespace Plex.ServerApi.PlexModels.Account.User;
+
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+public class HomeUserContainer
 {
-    using System.Collections.Generic;
-    using System.Xml.Serialization;
+    public int Id { get; set; }
+    public string Name { get; set; }
 
-    [XmlRoot(ElementName="MediaContainer")]
-    public class UserContainer
-    {
-        [XmlElement(ElementName="User")]
-        public List<User> User { get; set; }
+    [JsonPropertyName(("guestUserID"))]
+    public int GuestUserId { get; set; }
 
-        [XmlAttribute(AttributeName="friendlyName")]
-        public string FriendlyName { get; set; }
+    [JsonPropertyName(("guestUserUUID"))]
+    public string GuestUserUuid { get; set; }
 
-        [XmlAttribute(AttributeName="identifier")]
-        public string Identifier { get; set; }
+    public bool GuestEnabled { get; set; }
+    public bool Subscription { get; set; }
 
-        [XmlAttribute(AttributeName="machineIdentifier")]
-        public string MachineIdentifier { get; set; }
-
-        [XmlAttribute(AttributeName="totalSize")]
-        public int TotalSize { get; set; }
-
-        [XmlAttribute(AttributeName="size")]
-        public int Size { get; set; }
-
-        [XmlAttribute(AttributeName="guestUserID")]
-        public int GuestUserId { get; set; }
-    }
+    public List<HomeUser> Users { get; set; }
 }

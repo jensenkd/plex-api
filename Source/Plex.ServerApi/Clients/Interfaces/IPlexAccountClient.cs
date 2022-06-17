@@ -94,7 +94,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>List of Users</returns>
-        Task<UserContainer> GetHomeUsersAsync(string authToken);
+        Task<HomeUserContainer> GetHomeUsersAsync(string authToken);
 
         /// <summary>
         /// Opt in or out of sharing stuff with plex.
