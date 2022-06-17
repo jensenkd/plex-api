@@ -125,18 +125,18 @@ namespace Plex.Library.Test.Tests
             Assert.True(playQueueContainer.Size > 0);
 
             // 1. Get All Active Resources tied to Plex Account
-            var resourceContainer = await this.plexAccountClient.GetResourcesAsync(this.config.AuthenticationKey);
+            var resources = await this.plexAccountClient.GetResourcesAsync(this.config.AuthenticationKey);
 
             // 2. Get Server we want to use
-            var plexServer = resourceContainer.Resources
-                .First(c => c.Name == "Plex Media Server" && c.Provides.Contains("server"));
+            var plexServer = resources.
+                First(c => c.Name == "Plex Media Server" && c.Provides.Contains("server"));
 
             // 3. Get Transient Token from Server
             var token = await this.plexServerClient.GetTransientToken(this.config.AuthenticationKey,
                 this.config.Host);
 
             // 4. Get List of players that support 'player'.
-            var players = resourceContainer.Resources
+            var players = resources
                 .Where(c => c.Provides.Contains("player"));
 
             // 5. Get Player by name

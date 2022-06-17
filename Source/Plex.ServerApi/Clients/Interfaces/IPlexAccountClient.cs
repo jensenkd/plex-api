@@ -63,7 +63,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<ResourceContainer> GetResourcesAsync(string authToken);
+        Task<List<Resource>> GetResourcesAsync(string authToken);
 
         /// <summary>
         /// http://[PMS_IP_Address]:32400/library/sections?X-Plex-Token=YourTokenGoesHere

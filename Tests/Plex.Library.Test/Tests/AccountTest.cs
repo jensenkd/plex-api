@@ -41,6 +41,14 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetAccountResources()
+        {
+            var resources = await this.plexAccountClient.GetResourcesAsync(this.config.AuthenticationKey);
+
+            Assert.NotNull(resources);
+        }
+
+        [Fact]
         public async void Test_GetWatchlist()
         {
             var mediaContainer = await this.plexAccountClient.GetWatchListAsync(this.config.AuthenticationKey, string.Empty, string.Empty, null);

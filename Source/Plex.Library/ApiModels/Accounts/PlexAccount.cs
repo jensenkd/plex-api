@@ -188,7 +188,7 @@ namespace Plex.Library.ApiModels.Accounts
         /// Return list of Resources for Plex Account
         /// </summary>
         /// <returns>List of Resource Objects</returns>
-        public async Task<ResourceContainer> Resources() =>
+        public async Task<List<Resource>> Resources() =>
             await this.plexAccountClient.GetResourcesAsync(this.AuthToken);
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Plex.Library.ApiModels.Accounts
         /// <returns>List of Device objects</returns>
         public async Task<List<Device>> Devices() =>
             await this.plexAccountClient.GetDevicesAsync(this.AuthToken);
-        
+
         // AddWebhook(string url);
         // DeleteWebhook(string url);
         // SetWebhooks(string[] urls);

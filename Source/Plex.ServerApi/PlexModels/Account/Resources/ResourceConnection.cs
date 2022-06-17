@@ -1,23 +1,15 @@
-namespace Plex.ServerApi.PlexModels.Account.Resources
-{
-    using System.Xml.Serialization;
+namespace Plex.ServerApi.PlexModels.Account.Resources;
 
-    [XmlRoot(ElementName="Connection")]
-    public class ResourceConnection {
+using System.Text.Json.Serialization;
 
-        [XmlAttribute(AttributeName="protocol")]
-        public string Protocol { get; set; }
+public class ResourceConnection {
 
-        [XmlAttribute(AttributeName="address")]
-        public string Address { get; set; }
-
-        [XmlAttribute(AttributeName="port")]
-        public int Port { get; set; }
-
-        [XmlAttribute(AttributeName="uri")]
-        public string Uri { get; set; }
-
-        [XmlAttribute(AttributeName="local")]
-        public int Local { get; set; }
-    }
+    public string Protocol { get; set; }
+    public string Address { get; set; }
+    public int Port { get; set; }
+    public string Uri { get; set; }
+    public bool Local { get; set; }
+    public bool Relay { get; set; }
+    [JsonPropertyName("IPv6")]
+    public bool IpV6 { get; set; }
 }

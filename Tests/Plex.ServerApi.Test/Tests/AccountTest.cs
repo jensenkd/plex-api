@@ -157,8 +157,8 @@ namespace Plex.ServerApi.Test.Tests
         [Fact]
         public async void Test_Get_Resources()
         {
-            var resourceContainer = await this.fixture.PlexAccount.Resources();
-             foreach (var resource in resourceContainer.Resources)
+            var resources = await this.fixture.PlexAccount.Resources();
+             foreach (var resource in resources)
              {
                  var name = string.IsNullOrEmpty(resource.Name) ? "Unkown" : resource.Name;
                  if (resource.Connections.Any())
@@ -171,7 +171,7 @@ namespace Plex.ServerApi.Test.Tests
                      this.output.WriteLine("No Connections");
                  }
             }
-            Assert.NotNull(resourceContainer);
+            Assert.NotNull(resources);
         }
 
         [Fact]
