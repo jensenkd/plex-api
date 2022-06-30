@@ -5,8 +5,8 @@ namespace Plex.ServerApi.PlexModels.Server.History
 
     public class HistoryMediaContainer
     {
-        [JsonPropertyName("size")]
         public int Size { get; set; }
+        public int TotalSize { get; set; }
 
         [JsonPropertyName("Metadata")]
         public List<HistoryMetadata> HistoryMetadata { get; set; }
