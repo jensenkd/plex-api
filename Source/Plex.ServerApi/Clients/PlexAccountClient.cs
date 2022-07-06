@@ -160,7 +160,7 @@ public class PlexAccountClient : IPlexAccountClient
     {
         var queryParams = new Dictionary<string, string>
         {
-            {"includeHttps", "1"}, {"includeRelay", "1"}
+            {"includeHttps", "1"}, {"includeRelay", "1"}, {"includeIPv6", "1"}
         };
 
         var apiRequest = new ApiRequestBuilder(BaseUri + "resources", "", HttpMethod.Get)
