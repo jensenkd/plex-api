@@ -33,12 +33,15 @@ namespace Plex.ServerApi.PlexModels.Media
         [JsonPropertyName("parentGuid")]
         public string ParentGuid { get; set; }
 
+        [JsonPropertyName("parentRatingKey")]
+        public string ParentRatingKey { get; set; }
+
         [JsonPropertyName("parentIndex")]
         public int ParentIndex { get; set; }
 
         [JsonPropertyName("userRating")]
         public double UserRating { get; set; }
-        
+
         [JsonPropertyName("parentThumb")]
         public string ParentThumb { get; set; }
 
