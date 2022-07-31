@@ -213,6 +213,9 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<MediaContainer> GetMediaPosterAsync(string authToken, string plexServerHost, string key) => await this.FetchWithWrapper<MediaContainer>(plexServerHost, $"library/metadata/{key}/posters", authToken, HttpMethod.Get);
+
+        /// <inheritdoc/>
         public async Task<PlexServer> GetPlexServerInfo(string authToken, string plexServerHost)
         {
             var apiRequest = new ApiRequestBuilder(plexServerHost, string.Empty, HttpMethod.Get)
