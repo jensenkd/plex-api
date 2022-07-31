@@ -110,6 +110,12 @@ namespace Plex.ServerApi.PlexModels.Media
         [JsonPropertyName("thumb")]
         public string Thumb { get; set; }
 
+        [JsonPropertyName("selected")]
+        public bool Selected { get; set; }
+
+        [JsonPropertyName("provider")]
+        public string Provider { get; set; }
+
         [JsonPropertyName("art")]
         public string Art { get; set; }
 
