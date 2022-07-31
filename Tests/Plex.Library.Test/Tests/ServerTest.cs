@@ -47,5 +47,18 @@ namespace Plex.Library.Test.Tests
             Assert.True(server.Size > 0);
         }
 
+        [Fact]
+        public async void Test_GetPosterArt()
+        {
+            var server = await this.plexServerClient.GetPlexServerInfo(this.config.AuthenticationKey,
+                this.config.Host);
+
+            var history = await this.plexServerClient.GetMediaPostersAsync(this.config.AuthenticationKey,
+                this.config.Host, "288449");
+
+            Assert.NotNull(server);
+            Assert.True(server.Size > 0);
+        }
+
     }
 }

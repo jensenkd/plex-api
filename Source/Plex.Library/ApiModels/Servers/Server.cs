@@ -643,6 +643,6 @@ namespace Plex.Library.ApiModels.Servers
         /// <param name="ratingKey">The rating key to get poster from.</param>
         /// <returns>A <see cref="MediaContainer"/> containing the media info.</returns>
         public async Task<MediaContainer> Posters(string ratingKey) =>
-            await this.plexServerClient.GetMediaPosterAsync(this.AccessToken, this.Uri.ToString(), ratingKey);
+            await this.plexServerClient.GetMediaPostersAsync(this.AccessToken, this.Uri.ToString(), ratingKey);
     }
 }

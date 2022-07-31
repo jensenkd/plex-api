@@ -162,7 +162,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="plexServerHost">Plex Host Uri.</param>
         /// <param name="key">Rating Key.</param>
         /// <returns></returns>
-        Task<MediaContainer> GetMediaPosterAsync(string authToken, string plexServerHost, string key);
+        Task<MediaContainer> GetMediaPostersAsync(string authToken, string plexServerHost, string key);
 
         /// <summary>
         /// Marks the Item in plex as 'Played'.
