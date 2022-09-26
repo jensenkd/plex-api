@@ -7,7 +7,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
     public class SessionMetadata
     {
         [JsonPropertyName("addedAt")]
-        public string AddedAt { get; set; }
+        public long AddedAt { get; set; }
 
         [JsonPropertyName("art")]
         public string Art { get; set; }
