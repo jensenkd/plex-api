@@ -5,10 +5,10 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
     public class Stream
     {
         [JsonPropertyName("bitDepth")]
-        public string BitDepth { get; set; }
+        public int BitDepth { get; set; }
 
         [JsonPropertyName("bitrate")]
-        public string Bitrate { get; set; }
+        public long Bitrate { get; set; }
 
         [JsonPropertyName("chromaLocation")]
         public string ChromaLocation { get; set; }
@@ -20,7 +20,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string Codec { get; set; }
 
         [JsonPropertyName("default")]
-        public string Default { get; set; }
+        public bool Default { get; set; }
 
         [JsonPropertyName("displayTitle")]
         public string DisplayTitle { get; set; }
@@ -29,19 +29,19 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ExtendedDisplayTitle { get; set; }
 
         [JsonPropertyName("frameRate")]
-        public string FrameRate { get; set; }
+        public float FrameRate { get; set; }
 
         [JsonPropertyName("hasScalingMatrix")]
         public string HasScalingMatrix { get; set; }
 
         [JsonPropertyName("height")]
-        public string Height { get; set; }
+        public int Height { get; set; }
 
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
         [JsonPropertyName("index")]
-        public string Index { get; set; }
+        public int Index { get; set; }
 
         [JsonPropertyName("language")]
         public string Language { get; set; }
@@ -62,10 +62,10 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ScanType { get; set; }
 
         [JsonPropertyName("streamType")]
-        public string StreamType { get; set; }
+        public int StreamType { get; set; }
 
         [JsonPropertyName("width")]
-        public string Width { get; set; }
+        public int Width { get; set; }
 
         [JsonPropertyName("location")]
         public string Location { get; set; }
@@ -74,13 +74,13 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string AudioChannelLayout { get; set; }
 
         [JsonPropertyName("channels")]
-        public string Channels { get; set; }
+        public int Channels { get; set; }
 
         [JsonPropertyName("samplingRate")]
-        public string SamplingRate { get; set; }
+        public long SamplingRate { get; set; }
 
         [JsonPropertyName("selected")]
-        public string Selected { get; set; }
+        public bool Selected { get; set; }
 
         [JsonPropertyName("decision")]
         public string Decision { get; set; }

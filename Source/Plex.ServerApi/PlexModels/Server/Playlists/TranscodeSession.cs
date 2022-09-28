@@ -14,7 +14,7 @@ namespace Plex.ServerApi.PlexModels.Server.Playlists
         public bool Complete { get; set; }
 
         [JsonPropertyName("progress")]
-        public string Progress { get; set; }
+        public double Progress { get; set; }
 
         [JsonPropertyName("size")]
         public int Size { get; set; }

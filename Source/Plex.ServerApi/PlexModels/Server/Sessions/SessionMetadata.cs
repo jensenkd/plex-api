@@ -22,7 +22,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ContentRating { get; set; }
 
         [JsonPropertyName("duration")]
-        public string Duration { get; set; }
+        public long Duration { get; set; }
 
         [JsonPropertyName("grandparentArt")]
         public string GrandparentArt { get; set; }
@@ -49,7 +49,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string Guid { get; set; }
 
         [JsonPropertyName("index")]
-        public string Index { get; set; }
+        public int Index { get; set; }
 
         [JsonPropertyName("key")]
         public string Key { get; set; }
@@ -70,7 +70,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ParentGuid { get; set; }
 
         [JsonPropertyName("parentIndex")]
-        public string ParentIndex { get; set; }
+        public int ParentIndex { get; set; }
 
         [JsonPropertyName("parentKey")]
         public string ParentKey { get; set; }
@@ -112,10 +112,10 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string Type { get; set; }
 
         [JsonPropertyName("updatedAt")]
-        public string UpdatedAt { get; set; }
+        public long UpdatedAt { get; set; }
 
         [JsonPropertyName("viewOffset")]
-        public string ViewOffset { get; set; }
+        public long ViewOffset { get; set; }
 
         [JsonPropertyName("year")]
         public string Year { get; set; }
@@ -136,7 +136,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ChapterSource { get; set; }
 
         [JsonPropertyName("lastViewedAt")]
-        public string LastViewedAt { get; set; }
+        public long LastViewedAt { get; set; }
 
         [JsonPropertyName("titleSort")]
         public string TitleSort { get; set; }
