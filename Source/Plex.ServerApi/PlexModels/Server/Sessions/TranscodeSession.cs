@@ -14,13 +14,13 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public bool Complete { get; set; }
 
         [JsonPropertyName("progress")]
-        public string Progress { get; set; }
+        public double Progress { get; set; }
 
         [JsonPropertyName("size")]
         public int Size { get; set; }
 
         [JsonPropertyName("speed")]
-        public string Speed { get; set; }
+        public float Speed { get; set; }
 
         [JsonPropertyName("duration")]
         public int Duration { get; set; }
@@ -65,12 +65,12 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public bool TranscodeHwFullPipeline { get; set; }
 
         [JsonPropertyName("timeStamp")]
-        public string TimeStamp { get; set; }
+        public double TimeStamp { get; set; }
 
         [JsonPropertyName("maxOffsetAvailable")]
-        public string MaxOffsetAvailable { get; set; }
+        public double MaxOffsetAvailable { get; set; }
 
         [JsonPropertyName("minOffsetAvailable")]
-        public string MinOffsetAvailable { get; set; }
+        public double MinOffsetAvailable { get; set; }
     }
 }

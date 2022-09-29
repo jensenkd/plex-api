@@ -9,7 +9,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string Container { get; set; }
 
         [JsonPropertyName("duration")]
-        public string Duration { get; set; }
+        public long Duration { get; set; }
 
         [JsonPropertyName("file")]
         public string File { get; set; }
@@ -21,7 +21,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string Key { get; set; }
 
         [JsonPropertyName("size")]
-        public string Size { get; set; }
+        public int Size { get; set; }
 
         [JsonPropertyName("videoProfile")]
         public string VideoProfile { get; set; }
@@ -39,18 +39,18 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string AudioProfile { get; set; }
 
         [JsonPropertyName("bitrate")]
-        public string Bitrate { get; set; }
+        public int Bitrate { get; set; }
 
         [JsonPropertyName("height")]
-        public string Height { get; set; }
+        public int Height { get; set; }
 
         [JsonPropertyName("optimizedForStreaming")]
-        public string OptimizedForStreaming { get; set; }
+        public bool OptimizedForStreaming { get; set; }
 
         [JsonPropertyName("protocol")]
         public string Protocol { get; set; }
 
         [JsonPropertyName("width")]
-        public string Width { get; set; }
+        public int Width { get; set; }
     }
 }

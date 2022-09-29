@@ -9,22 +9,22 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string AspectRatio { get; set; }
 
         [JsonPropertyName("audioChannels")]
-        public string AudioChannels { get; set; }
+        public int AudioChannels { get; set; }
 
         [JsonPropertyName("audioCodec")]
         public string AudioCodec { get; set; }
 
         [JsonPropertyName("bitrate")]
-        public string Bitrate { get; set; }
+        public int Bitrate { get; set; }
 
         [JsonPropertyName("container")]
         public string Container { get; set; }
 
         [JsonPropertyName("duration")]
-        public string Duration { get; set; }
+        public int Duration { get; set; }
 
         [JsonPropertyName("height")]
-        public string Height { get; set; }
+        public int Height { get; set; }
 
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -42,7 +42,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string VideoResolution { get; set; }
 
         [JsonPropertyName("width")]
-        public string Width { get; set; }
+        public int Width { get; set; }
 
         [JsonPropertyName("selected")]
         public bool Selected { get; set; }
@@ -54,7 +54,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string AudioProfile { get; set; }
 
         [JsonPropertyName("optimizedForStreaming")]
-        public string OptimizedForStreaming { get; set; }
+        public bool OptimizedForStreaming { get; set; }
 
         [JsonPropertyName("protocol")]
         public string Protocol { get; set; }
