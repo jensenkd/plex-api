@@ -32,7 +32,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public float FrameRate { get; set; }
 
         [JsonPropertyName("hasScalingMatrix")]
-        public string HasScalingMatrix { get; set; }
+        public bool HasScalingMatrix { get; set; }
 
         [JsonPropertyName("height")]
         public int Height { get; set; }
@@ -50,13 +50,13 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string LanguageCode { get; set; }
 
         [JsonPropertyName("level")]
-        public string Level { get; set; }
+        public int Level { get; set; }
 
         [JsonPropertyName("profile")]
         public string Profile { get; set; }
 
         [JsonPropertyName("refFrames")]
-        public string RefFrames { get; set; }
+        public int RefFrames { get; set; }
 
         [JsonPropertyName("scanType")]
         public string ScanType { get; set; }
