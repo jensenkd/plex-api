@@ -21,7 +21,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string Key { get; set; }
 
         [JsonPropertyName("size")]
-        public int Size { get; set; }
+        public long Size { get; set; }
 
         [JsonPropertyName("videoProfile")]
         public string VideoProfile { get; set; }

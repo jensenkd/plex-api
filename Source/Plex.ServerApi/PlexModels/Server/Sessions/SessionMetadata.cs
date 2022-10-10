@@ -85,7 +85,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public string ParentTitle { get; set; }
 
         [JsonPropertyName("rating")]
-        public string Rating { get; set; }
+        public double Rating { get; set; }
 
         [JsonPropertyName("studio")]
         public string Studio { get; set; }
@@ -118,7 +118,7 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         public long ViewOffset { get; set; }
 
         [JsonPropertyName("year")]
-        public string Year { get; set; }
+        public int Year { get; set; }
 
         [JsonPropertyName("Media")]
         public List<Medium> Media { get; set; }
