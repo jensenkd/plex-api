@@ -368,6 +368,39 @@ namespace Plex.ServerApi.Clients
         public async Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost) =>
             await this.FetchWithWrapper<PlaylistContainer>(plexServerHost, "playlists", authToken, HttpMethod.Get);
 
+
+        /// <inheritdoc/>
+        public async Task<PlaylistContainer> CreatePlaylist(string authToken, string plexServerHost, string hostIdentifier, string title, string listType, IEnumerable<string> itemRatingsKeys)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { "type", listType },
+                { "uri", $"server://{hostIdentifier}/com.plexapp.plugins.library/library/metadata/{string.Join(',', itemRatingsKeys)}" },
+                { "title", title },
+                { "smart", "0" },
+            };
+
+
+            return await this.FetchWithWrapper<PlaylistContainer>(plexServerHost, "playlists", authToken, HttpMethod.Post, queryParams);
+        }
+
+        /// <inheritdoc/>
+        public async Task<PlaylistContainer> AddPlaylistItems(string authToken, string plexServerHost, string hostIdentifier, PlaylistMetadata playlist, IEnumerable<string> itemRatingsKeys)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { "uri", $"server://{hostIdentifier}/com.plexapp.plugins.library/library/metadata/{string.Join(',', itemRatingsKeys)}" },
+            };
+
+
+            return await this.FetchWithWrapper<PlaylistContainer>(plexServerHost, playlist.Key, authToken, HttpMethod.Put, queryParams);
+        }
+
+        /// <inheritdoc/>
+        public async Task<MediaContainer> GetPlaylistItems(string authToken, string plexServerHost, PlaylistMetadata playlist) =>
+            await this.FetchWithWrapper<MediaContainer>(plexServerHost, playlist.Key, authToken, HttpMethod.Get);
+
+
         /// <inheritdoc/>
         public async Task<object> GetLogs(string authToken, string plexServerHost) =>
             await this
