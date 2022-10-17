@@ -1,0 +1,19 @@
+[*.cs]
+
+# IDE0065: Misplaced using directive
+csharp_using_directive_placement = outside_namespace
+
+# IDE0160: Convert to block scoped namespace
+csharp_style_namespace_declarations = file_scoped
+
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = none
+
+# IDE0009: Member access should be qualified.
+dotnet_style_qualification_for_field = false
+
+# CA1848: Use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = silent
+
+# IDE0009: Member access should be qualified.
+dotnet_style_qualification_for_method = false

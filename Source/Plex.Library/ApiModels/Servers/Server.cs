@@ -630,6 +630,33 @@ namespace Plex.Library.ApiModels.Servers
             await this.plexServerClient.GetPlaylists(this.AccessToken, this.Uri.ToString());
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="listType"></param>
+        /// <param name="itemRatingKeys"></param>
+        /// <returns></returns>
+        public async Task<PlaylistContainer> CreatePlaylist(string title, string listType, IEnumerable<string> itemRatingKeys) =>
+            await this.plexServerClient.CreatePlaylist(this.AccessToken, this.Uri.ToString(), this.MachineIdentifier, title, listType, itemRatingKeys);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playlist"></param>
+        /// <param name="itemRatingKeys"></param>
+        /// <returns></returns>
+        public async Task<PlaylistContainer> AddPlaylistItems(PlaylistMetadata playlist, IEnumerable<string> itemRatingKeys) =>
+            await this.plexServerClient.AddPlaylistItems(this.AccessToken, this.Uri.ToString(), this.MachineIdentifier, playlist, itemRatingKeys);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playlist"></param>
+        /// <returns></returns>
+        public async Task<MediaContainer> GetPlaylistItems(PlaylistMetadata playlist) =>
+            await this.plexServerClient.GetPlaylistItems(this.AccessToken, this.Uri.ToString(), playlist);
+
+        /// <summary>
         /// Get metadata for a given rating key.
         /// </summary>
         /// <param name="ratingKey">The rating key to get info from.</param>

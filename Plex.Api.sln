@@ -56,6 +56,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{DB90
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlexBlazorServerOAuthExample", "Samples\PlexBlazorServerOAuthExample\PlexBlazorServerOAuthExample.csproj", "{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexPlaylistSplitter", "Samples\PlexPlaylistSplitter\PlexPlaylistSplitter.csproj", "{B82940FD-79C5-4364-8910-B6EA4B94FFED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82940FD-79C5-4364-8910-B6EA4B94FFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82940FD-79C5-4364-8910-B6EA4B94FFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82940FD-79C5-4364-8910-B6EA4B94FFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82940FD-79C5-4364-8910-B6EA4B94FFED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{820AA2CC-8529-43F1-9E25-6AB53A368D1E} = {719809C2-A551-4C4A-9EFD-B10FB5E35BC0}
 		{26E41804-CA5F-4A99-993A-126287B57884} = {E1B24F25-B8A4-46EE-B7EB-7803DCFC543F}
 		{6FBB1D08-2EF6-4A6C-9BB1-4C1F9155FA97} = {DB90C6BE-7E69-4A0F-886A-5EDC88312422}
+		{B82940FD-79C5-4364-8910-B6EA4B94FFED} = {DB90C6BE-7E69-4A0F-886A-5EDC88312422}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73F36209-F8D6-4066-8951-D97729F773CF}

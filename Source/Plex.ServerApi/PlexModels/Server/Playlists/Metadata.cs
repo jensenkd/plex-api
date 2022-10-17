@@ -15,7 +15,7 @@ namespace Plex.ServerApi.PlexModels.Server.Playlists
         public string ContentRating { get; set; }
 
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        public long Duration { get; set; }
 
         [JsonPropertyName("grandparentArt")]
         public string GrandparentArt { get; set; }

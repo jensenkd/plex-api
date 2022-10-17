@@ -1,6 +1,7 @@
 namespace Plex.ServerApi.Clients.Interfaces
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Enums;
     using PlexModels.Hubs;
@@ -254,6 +255,29 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// <param name="plexServerHost"></param>
         /// <returns></returns>
         Task<PlaylistContainer> GetPlaylists(string authToken, string plexServerHost);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="authToken"></param>
+        /// <param name="plexServerHost"></param>
+        /// <param name="title"></param>
+        /// <param name="listType"></param>
+        /// <param name="itemRatingsKeys"></param>
+        /// <returns></returns>
+        Task<PlaylistContainer> CreatePlaylist(string authToken, string plexServerHost, string hostIdentifier, string title, string listType, IEnumerable<string> itemRatingsKeys);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="authToken"></param>
+        /// <param name="plexServerHost"></param>
+        /// <param name="playlist"></param>
+        /// <param name="itemRatingsKeys"></param>
+        /// <returns></returns>
+        Task<PlaylistContainer> AddPlaylistItems(string authToken, string plexServerHost, string hostIdentifier, PlaylistMetadata playlist, IEnumerable<string> itemRatingsKeys);
+
+        Task<MediaContainer> GetPlaylistItems(string authToken, string plexServerHost, PlaylistMetadata playlist);
 
         /// <summary>
         ///
