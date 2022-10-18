@@ -238,8 +238,7 @@ namespace Plex.ServerApi.Clients
                 { "includePreferences", "1" },
                 { "includeExtras", "1" },
                 { "includeStations", "1" },
-                { "includeChapters", "1" },
-                { "includeGuids", "1" }
+                { "includeChapters", "1" }
             };
             return await this.FetchWithWrapper<SessionContainer>(plexServerHost, "status/sessions",
                 authToken, HttpMethod.Get, queryParams);

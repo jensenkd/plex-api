@@ -159,9 +159,6 @@ namespace Plex.ServerApi.PlexModels.Server.Sessions
         [JsonPropertyName("TranscodeSession")]
         public TranscodeSession TranscodeSessions { get; set; }
 
-        [JsonPropertyName("Guid")]
-        public List<ScrapingId> ScrapingIds { get; set; }
-
         [JsonPropertyName("Collection")]
         public List<Collection> Collections { get; set; }
 
