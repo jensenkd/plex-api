@@ -1,171 +1,96 @@
-namespace Plex.ServerApi.PlexModels.Server.Sessions
+namespace Plex.ServerApi.PlexModels.Server.Sessions;
+
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Media;
+
+public class SessionMetadata
 {
-    using System.Collections.Generic;
-    using System.Text.Json.Serialization;
-    using Media;
+    public long AddedAt { get; set; }
+    public string Art { get; set; }
+    public double AudienceRating { get; set; }
+    public string AudienceRatingImage { get; set; }
+    public string ChapterSource { get; set; }
+    public string ContentRating { get; set; }
+    public long Duration { get; set; }
+    public string GrandparentArt { get; set; }
+    public string GrandparentGuid { get; set; }
+    public string GrandparentKey { get; set; }
+    public string GrandparentRatingKey { get; set; }
+    public string GrandparentTheme { get; set; }
+    public string GrandparentThumb { get; set; }
+    public string GrandparentTitle { get; set; }
+    public string Guid { get; set; }
+    public int Index { get; set; }
+    public string Key { get; set; }
 
-    public class SessionMetadata
-    {
-        [JsonPropertyName("addedAt")]
-        public long AddedAt { get; set; }
+    [JsonPropertyName("librarySectionID")]
+    public string LibrarySectionId { get; set; }
 
-        [JsonPropertyName("art")]
-        public string Art { get; set; }
+    public string LibrarySectionKey { get; set; }
+    public string LibrarySectionTitle { get; set; }
+    public string MusicAnalysisVersion { get; set; }
+    public string OriginallyAvailableAt { get; set; }
+    public long LastViewedAt { get; set; }
 
-        [JsonPropertyName("audienceRating")]
-        public double AudienceRating { get; set; }
+    public string ParentGuid { get; set; }
+    public int ParentIndex { get; set; }
+    public string ParentKey { get; set; }
+    public string ParentRatingKey { get; set; }
+    public int ParentYear { get; set; }
+    public string ParentThumb { get; set; }
+    public string ParentTitle { get; set; }
+    public double Rating { get; set; }
+    public int RatingCount { get; set; }
+    public string Studio { get; set; }
+    public string RatingKey { get; set; }
+    public string SessionKey { get; set; }
+    public string Summary { get; set; }
+    public string Tagline { get; set; }
+    public string Thumb { get; set; }
+    public string Title { get; set; }
+    public string TitleSort { get; set; }
+    public string Type { get; set; }
+    public long UpdatedAt { get; set; }
+    public long ViewOffset { get; set; }
+    public int Year { get; set; }
 
-        [JsonPropertyName("audienceRatingImage")]
-        public string AudienceRatingImage { get; set; }
+    [JsonPropertyName("Media")]
+    public List<Medium> Media { get; set; }
 
-        [JsonPropertyName("contentRating")]
-        public string ContentRating { get; set; }
+    [JsonPropertyName("User")]
+    public User User { get; set; }
 
-        [JsonPropertyName("duration")]
-        public long Duration { get; set; }
+    [JsonPropertyName("Player")]
+    public Player Player { get; set; }
 
-        [JsonPropertyName("grandparentArt")]
-        public string GrandparentArt { get; set; }
+    [JsonPropertyName("Session")]
+    public Session Session { get; set; }
 
-        [JsonPropertyName("grandparentGuid")]
-        public string GrandparentGuid { get; set; }
+    [JsonPropertyName("Writer")]
+    public List<Writer> Writers { get; set; }
 
-        [JsonPropertyName("grandparentKey")]
-        public string GrandparentKey { get; set; }
+    [JsonPropertyName("Director")]
+    public List<Director> Directors { get; set; }
 
-        [JsonPropertyName("grandparentRatingKey")]
-        public string GrandparentRatingKey { get; set; }
+    [JsonPropertyName("Genre")]
+    public List<Genre> Genres { get; set; }
 
-        [JsonPropertyName("grandparentTheme")]
-        public string GrandparentTheme { get; set; }
+    [JsonPropertyName("Role")]
+    public List<MediaRole> Roles { get; set; }
 
-        [JsonPropertyName("grandparentThumb")]
-        public string GrandparentThumb { get; set; }
+    [JsonPropertyName("Producer")]
+    public List<Producer> Producers { get; set; }
 
-        [JsonPropertyName("grandparentTitle")]
-        public string GrandparentTitle { get; set; }
+    [JsonPropertyName("TranscodeSession")]
+    public TranscodeSession TranscodeSessions { get; set; }
 
-        [JsonPropertyName("guid")]
-        public string Guid { get; set; }
+    [JsonPropertyName("Collection")]
+    public List<Collection> Collections { get; set; }
 
-        [JsonPropertyName("index")]
-        public int Index { get; set; }
+    [JsonPropertyName("Similar")]
+    public List<Similar> Similar { get; set; }
 
-        [JsonPropertyName("key")]
-        public string Key { get; set; }
-
-        [JsonPropertyName("librarySectionID")]
-        public string LibrarySectionId { get; set; }
-
-        [JsonPropertyName("librarySectionKey")]
-        public string LibrarySectionKey { get; set; }
-
-        [JsonPropertyName("librarySectionTitle")]
-        public string LibrarySectionTitle { get; set; }
-
-        [JsonPropertyName("originallyAvailableAt")]
-        public string OriginallyAvailableAt { get; set; }
-
-        [JsonPropertyName("parentGuid")]
-        public string ParentGuid { get; set; }
-
-        [JsonPropertyName("parentIndex")]
-        public int ParentIndex { get; set; }
-
-        [JsonPropertyName("parentKey")]
-        public string ParentKey { get; set; }
-
-        [JsonPropertyName("parentRatingKey")]
-        public string ParentRatingKey { get; set; }
-
-        [JsonPropertyName("parentThumb")]
-        public string ParentThumb { get; set; }
-
-        [JsonPropertyName("parentTitle")]
-        public string ParentTitle { get; set; }
-
-        [JsonPropertyName("rating")]
-        public double Rating { get; set; }
-
-        [JsonPropertyName("studio")]
-        public string Studio { get; set; }
-
-        [JsonPropertyName("ratingKey")]
-        public string RatingKey { get; set; }
-
-        [JsonPropertyName("sessionKey")]
-        public string SessionKey { get; set; }
-
-        [JsonPropertyName("summary")]
-        public string Summary { get; set; }
-
-        [JsonPropertyName("tagline")]
-        public string Tagline { get; set; }
-
-        [JsonPropertyName("thumb")]
-        public string Thumb { get; set; }
-
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
-
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-
-        [JsonPropertyName("updatedAt")]
-        public long UpdatedAt { get; set; }
-
-        [JsonPropertyName("viewOffset")]
-        public long ViewOffset { get; set; }
-
-        [JsonPropertyName("year")]
-        public int Year { get; set; }
-
-        [JsonPropertyName("Media")]
-        public List<Medium> Media { get; set; }
-
-        [JsonPropertyName("User")]
-        public User User { get; set; }
-
-        [JsonPropertyName("Player")]
-        public Player Player { get; set; }
-
-        [JsonPropertyName("Session")]
-        public Session Session { get; set; }
-
-        [JsonPropertyName("chapterSource")]
-        public string ChapterSource { get; set; }
-
-        [JsonPropertyName("lastViewedAt")]
-        public long LastViewedAt { get; set; }
-
-        [JsonPropertyName("titleSort")]
-        public string TitleSort { get; set; }
-
-        [JsonPropertyName("Writer")]
-        public List<Writer> Writers { get; set; }
-
-        [JsonPropertyName("Director")]
-        public List<Director> Directors { get; set; }
-
-        [JsonPropertyName("Genre")]
-        public List<Genre> Genres { get; set; }
-
-        [JsonPropertyName("Role")]
-        public List<MediaRole> Roles { get; set; }
-
-        [JsonPropertyName("Producer")]
-        public List<Producer> Producers { get; set; }
-
-        [JsonPropertyName("TranscodeSession")]
-        public TranscodeSession TranscodeSessions { get; set; }
-
-        [JsonPropertyName("Collection")]
-        public List<Collection> Collections { get; set; }
-
-        [JsonPropertyName("Similar")]
-        public List<Similar> Similar { get; set; }
-
-        [JsonPropertyName("Chapter")]
-        public List<Chapter> Chapters { get; set; }
-    }
+    [JsonPropertyName("Chapter")]
+    public List<Chapter> Chapters { get; set; }
 }
