@@ -2,6 +2,7 @@ namespace Plex.ServerApi.Clients
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Api;
@@ -245,9 +246,26 @@ namespace Plex.ServerApi.Clients
         }
 
         /// <inheritdoc/>
-        public Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost,
+        public async Task<SessionContainer> GetSessionByPlayerIdAsync(string authToken, string plexServerHost,
             string playerKey)
-            => throw new NotImplementedException();
+        {
+            var sessionContainer = await this.GetSessionsAsync(authToken, plexServerHost);
+
+            var sessionMetadata = sessionContainer.Metadata.SingleOrDefault(c => c.Player.MachineIdentifier == playerKey);
+
+            if (sessionMetadata != null)
+            {
+                sessionContainer.Size = 1;
+                sessionContainer.Metadata = new List<SessionMetadata> {sessionMetadata};
+            }
+            else
+            {
+                sessionContainer.Size = 0;
+                sessionContainer.Metadata = null;
+            }
+
+            return sessionContainer;
+        }
 
         /// <inheritdoc/>
         public async Task UnScrobbleItemAsync(string authToken, string plexServerHost, string key)

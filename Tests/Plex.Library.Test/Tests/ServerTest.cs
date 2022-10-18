@@ -48,6 +48,27 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_GetPlexServer_GetSessions()
+        {
+            var session = await this.plexServerClient.GetSessionsAsync(this.config.AuthenticationKey,
+                this.config.Host);
+
+            Assert.NotNull(session);
+            Assert.True(session.Size > 0);
+        }
+
+        [Fact]
+        public async void Test_GetPlexServer_GetSessionByPlayer()
+        {
+            const string playerKey = "jjmgbymh449v5jc7ip90sbj7";
+            var session = await this.plexServerClient.GetSessionByPlayerIdAsync(this.config.AuthenticationKey,
+                this.config.Host, playerKey);
+
+            Assert.NotNull(session);
+            Assert.True(session.Size > 0);
+        }
+
+        [Fact]
         public async void Test_GetPosterArt()
         {
             var server = await this.plexServerClient.GetPlexServerInfo(this.config.AuthenticationKey,
