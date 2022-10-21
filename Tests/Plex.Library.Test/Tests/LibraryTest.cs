@@ -28,6 +28,36 @@ namespace Plex.Library.Test.Tests
         }
 
         [Fact]
+        public async void Test_CreateCollectionThenDeleteCollection()
+        {
+            var itemsToAddToCollection = new string[] {"349591", "350758", "343369"};
+            var collectionName = "Test_Full_Cycle";
+            var libraryKey = "1";
+            //
+            // foreach (var item in itemsToAddToCollection)
+            // {
+            //     await this.plexLibraryClient.AddCollectionToLibraryItemAsync(this.config.AuthenticationKey,
+            //         this.config.Host, libraryKey, item, collectionName);
+            // }
+
+            var itemsAfterAdd = await this.plexLibraryClient.GetCollectionItemsByCollectionName(this.config.AuthenticationKey, this.config.Host,
+                libraryKey, collectionName);
+
+            Assert.Equal(itemsToAddToCollection.Length, itemsAfterAdd.Size);
+
+            foreach (var item in itemsAfterAdd.Media)
+            {
+                await this.plexLibraryClient.DeleteCollectionFromLibraryItemAsync(this.config.AuthenticationKey,
+                    this.config.Host, libraryKey, item.RatingKey, collectionName);
+            }
+
+            var itemsAfterDelete = await this.plexLibraryClient.GetCollectionItemsByCollectionName(this.config.AuthenticationKey, this.config.Host,
+                libraryKey, collectionName);
+
+            Assert.Equal(0, itemsAfterDelete.Size);
+        }
+
+        [Fact]
         public async void Test_GetCollectionItems()
         {
             const string collectionKey = "112898";
