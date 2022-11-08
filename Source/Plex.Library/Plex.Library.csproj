@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <IsPackable>True</IsPackable>
     <Title>Plex Api</Title>
     <PackageProjectUrl>https://github.com/jensenkd/plex-api</PackageProjectUrl>
