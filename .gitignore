@@ -375,3 +375,7 @@ MigrationBackup/
 .idea/**/dbnavigator.xml
 
 Artefacts/
+
+# Mac
+.DS_Store
+
