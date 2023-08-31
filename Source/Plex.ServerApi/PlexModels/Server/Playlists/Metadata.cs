@@ -11,6 +11,9 @@ namespace Plex.ServerApi.PlexModels.Server.Playlists
         [JsonPropertyName("art")]
         public string Art { get; set; }
 
+        [JsonPropertyName("composite")]
+        public string Composite { get; set; }
+
         [JsonPropertyName("contentRating")]
         public string ContentRating { get; set; }
 
@@ -47,6 +50,9 @@ namespace Plex.ServerApi.PlexModels.Server.Playlists
         [JsonPropertyName("key")]
         public string Key { get; set; }
 
+        [JsonPropertyName("leafCount")]
+        public int LeafCount { get; set; }
+
         [JsonPropertyName("librarySectionID")]
         public string LibrarySectionId { get; set; }
 
@@ -77,6 +83,9 @@ namespace Plex.ServerApi.PlexModels.Server.Playlists
         [JsonPropertyName("parentTitle")]
         public string ParentTitle { get; set; }
 
+        [JsonPropertyName("playlistType")]
+        public string PlaylistType { get; set; }
+
         [JsonPropertyName("rating")]
         public string Rating { get; set; }
 
@@ -85,6 +94,9 @@ namespace Plex.ServerApi.PlexModels.Server.Playlists
 
         [JsonPropertyName("sessionKey")]
         public string SessionKey { get; set; }
+
+        [JsonPropertyName("smart")]
+        public bool Smart { get; set; }
 
         [JsonPropertyName("summary")]
         public string Summary { get; set; }
