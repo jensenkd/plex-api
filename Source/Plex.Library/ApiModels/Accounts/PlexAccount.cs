@@ -160,10 +160,10 @@ namespace Plex.Library.ApiModels.Accounts
         /// Get Active Servers tied to this Account
         /// </summary>
         /// <returns>List of Server objects</returns>
-        public async Task<List<Server>> Servers()
+        public async Task<List<Server>> Servers(bool forceHttps = false, string instanceToken = null)
         {
             var servers = new List<Server>();
-            var accountServerContainer = await this.plexAccountClient.GetAccountServersAsync(this.AuthToken);
+            var accountServerContainer = await this.plexAccountClient.GetAccountServersAsync(this.AuthToken, forceHttps, instanceToken);
             foreach (var server in accountServerContainer.Servers)
             {
                 try
