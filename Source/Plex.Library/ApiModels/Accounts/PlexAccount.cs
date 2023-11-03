@@ -152,9 +152,12 @@ namespace Plex.Library.ApiModels.Accounts
         /// Get Server Summaries.  This does not return a Server Instance but a summary
         /// of all servers tied to your Plex Account.  The servers may not be active/online.
         /// </summary>
+        /// <param name="forceHttps">Forces URI scheme to https</param>
+        /// <param name="overrideHost">Accepts dictionary that overwrites the HOST part of the servers URI.
+        /// key = serverName, value = custom host string </param>
         /// <returns>AccountServerContainer</returns>
-        public async Task<AccountServerContainer> ServerSummaries() =>
-            await this.plexAccountClient.GetAccountServersAsync(this.AuthToken);
+        public async Task<AccountServerContainer> ServerSummaries(bool forceHttps = false, Dictionary<string, string> overrideHost = null) =>
+            await this.plexAccountClient.GetAccountServersAsync(this.AuthToken, forceHttps, overrideHost);
 
         /// <summary>
         /// Get Active Servers tied to this Account
