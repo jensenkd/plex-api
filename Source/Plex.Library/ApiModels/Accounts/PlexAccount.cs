@@ -159,6 +159,9 @@ namespace Plex.Library.ApiModels.Accounts
         /// <summary>
         /// Get Active Servers tied to this Account
         /// </summary>
+        /// <param name="forceHttps">Forces URI scheme to https</param>
+        /// <param name="overrideHost">Accepts dictionary that overwrites the HOST part of the servers URI.
+        /// key = serverName, value = custom host string </param>
         /// <returns>List of Server objects</returns>
         public async Task<List<Server>> Servers(bool forceHttps = false, Dictionary<string, string> overrideHost = null)
         {

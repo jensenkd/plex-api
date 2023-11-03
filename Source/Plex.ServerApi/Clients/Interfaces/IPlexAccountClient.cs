@@ -70,6 +70,9 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// Retrieves a list of servers tied to your Plex Account.
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
+        /// <param name="forceHttps">Forces URI scheme to https</param>
+        /// <param name="overrideHost">Accepts dictionary that overwrites the HOST part of the servers URI.
+        /// key = serverName, value = custom host string </param>
         /// <returns>AccountServerContainer.</returns>
         Task<AccountServerContainer> GetAccountServersAsync(string authToken, bool forceHttps = false, Dictionary<string, string> overrideHost = null);
 
