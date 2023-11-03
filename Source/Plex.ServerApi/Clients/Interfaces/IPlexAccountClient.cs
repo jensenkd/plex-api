@@ -71,7 +71,7 @@ namespace Plex.ServerApi.Clients.Interfaces
         /// </summary>
         /// <param name="authToken">Authentication Token.</param>
         /// <returns>AccountServerContainer.</returns>
-        Task<AccountServerContainer> GetAccountServersAsync(string authToken, bool forceHttps = false, string instanceToken = null);
+        Task<AccountServerContainer> GetAccountServersAsync(string authToken, bool forceHttps = false, Dictionary<string, string> overrideHost = null);
 
         /// <summary>
         /// Get Plex Announcements
