@@ -143,7 +143,7 @@ public class PlexAccountClient : IPlexAccountClient
     }
 
     /// <inheritdoc/>
-    public async Task<AccountServerContainer> GetAccountServersAsync(string authToken)
+    public async Task<AccountServerContainer> GetAccountServersAsync(string authToken, bool forceHttps = false, Dictionary<string, string> overrideHost = null)
     {
         var apiRequest = new ApiRequestBuilder("https://plex.tv/pms/servers.xml", string.Empty, HttpMethod.Get)
             .AddPlexToken(authToken)
@@ -151,6 +151,19 @@ public class PlexAccountClient : IPlexAccountClient
             .Build();
 
         var serverContainer = await this.apiService.InvokeApiAsync<AccountServerContainer>(apiRequest);
+
+        foreach (var server in serverContainer.Servers)
+        {
+            if (forceHttps)
+            {
+                server.Scheme = "https";
+            }
+
+            if (overrideHost != null && overrideHost.TryGetValue(server.Name, out var host))
+            {
+                server.Host = host;
+            }
+        }
 
         return serverContainer;
     }

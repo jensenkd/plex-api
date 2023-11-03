@@ -1,5 +1,6 @@
 namespace Plex.ServerApi.Test.Tests
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Clients.Interfaces;
@@ -206,6 +207,24 @@ namespace Plex.ServerApi.Test.Tests
         public async void Test_Get_Plex_ServerSummaries()
         {
             var container = await this.fixture.PlexAccount.ServerSummaries();
+            Assert.NotNull(container);
+        }
+
+        [Fact]
+        public async void Test_Get_Plex_ServerSummaries_ForceHttps()
+        {
+            var container = await this.fixture.PlexAccount.ServerSummaries(true);
+            Assert.NotNull(container);
+        }
+
+        [Fact]
+        public async void Test_Get_Plex_ServerSummaries_OverrideHosts()
+        {
+            var overrideHosts = new Dictionary<string, string>();
+
+            // overrideHosts.Add("serverName", "customHost");
+
+            var container = await this.fixture.PlexAccount.ServerSummaries(true, overrideHosts);
             Assert.NotNull(container);
         }
 
